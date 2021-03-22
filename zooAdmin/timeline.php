@@ -167,7 +167,7 @@ date_default_timezone_set('Asia/Calcutta');
  
 
 
-    $qn=$d->select("timeline_master","","ORDER BY timeline_id DESC LIMIT 200");
+    $qn=$d->select("timeline_master","","ORDER BY timeline_id DESC LIMIT 100");
      
          if(mysqli_num_rows($qn)>0){
           $feedCount=1;
@@ -193,9 +193,9 @@ $admin_data =  $adamin_array[$data_notification['admin_id']];
           //src="img/profile/<?php echo $admin_data['admin_profile']; 
           ?>
 
- <img  onerror="this.src='img/user.png'" class="imgRedonda"  src="../img/fav.png" width="10%">
+ <img  onerror="this.src='img/user.png'" class="imgRedonda lazyload"  src="../img/infinity.gif" data-src="../img/fav.png" width="10%">
        <?php  } else {?>
-        <img  onerror="this.src='img/user.png'" class="imgRedonda" src="../img/users/members_profile/<?php echo $userData['user_profile_pic']; ?>" width="10%">
+        <img  onerror="this.src='img/user.png'" class="imgRedonda lazyload" src="../img/infinity.gif"  data-src="../img/users/members_profile/<?php echo $userData['user_profile_pic']; ?>" width="10%">
       <?php } ?> 
         <a class="profileName" href="viewMember?id=<?php echo $data_notification['user_id']; ?>" target="_blank">
           <?php if($userData['user_full_name']=='') { echo 'Admin';//$admin_data['admin_name']; 
@@ -236,14 +236,14 @@ $admin_data =  $adamin_array[$data_notification['admin_id']];
            
             <a      href="viewMember?id=<?php echo $meetup_user_id1_data['user_id']; ?>"> 
 
-           <img  onerror="this.src='img/user.png'" class="imgRedonda" src="../img/users/members_profile/<?php echo $meetup_user_id1_data['user_profile_pic']; ?>" width="10%">
+           <img  onerror="this.src='img/user.png'" class="imgRedonda lazyload" src="../img/infinity.gif"  data-src="../img/users/members_profile/<?php echo $meetup_user_id1_data['user_profile_pic']; ?>" width="10%">
            <p style="word-break: break-all !important;"><?php echo $meetup_user_id1_data['user_full_name']; ?></p>
            </a>
          </div>
-         <div class="col-lg-2" style="text-align: center;"><p style="word-break: break-all !important;">Are <br>Saying </p><img  class="imgRedonda"   src="../img/lets_meet_icon.png" width="100%"></div>
+         <div class="col-lg-2" style="text-align: center;"><p style="word-break: break-all !important;">Are <br>Saying </p><img  class="imgRedonda lazyload" src="../img/infinity.gif"   data-src="../img/lets_meet_icon.png" width="100%"></div>
          <div class="col-lg-5" style="text-align: center;">
             <a     href="viewMember?id=<?php echo $meetup_user_id2_data['user_id']; ?>"> 
-           <img  onerror="this.src='img/user.png'" class="imgRedonda" src="../img/users/members_profile/<?php echo $meetup_user_id2_data['user_profile_pic']; ?>" width="10%">
+           <img  onerror="this.src='img/user.png'" class="imgRedonda lazyload" src="../img/infinity.gif" data-src="../img/users/members_profile/<?php echo $meetup_user_id2_data['user_profile_pic']; ?>" width="10%">
            <p style="word-break: break-all !important;"><?php echo $meetup_user_id2_data['user_full_name']; ?></p>
          </a>
        </div>
@@ -261,7 +261,7 @@ $admin_data =  $adamin_array[$data_notification['admin_id']];
           ?>
            <div id="carousel-4<?php echo $fedCount1; ?>" class="carousel slide" data-ride="carousel">
             <video style="max-height:450px;" class="d-block w-100" controls controlsList="nodownload">
-      <source src="../img/timeline/<?php echo $feeData22['video_name']; ?>"    type="video/mp4">
+      <source  src="../img/timeline/<?php echo $feeData22['video_name']; ?>"    type="video/mp4">
       
     </video>  </div>
      <br>
@@ -308,7 +308,7 @@ $admin_data =  $adamin_array[$data_notification['admin_id']];
              ?>
             <div style="background-color: white;" class="carousel-item <?php if($x1==1) { echo 'active';} else if($imageCount==1) { echo 'active';} ?>">
               <a    href="../img/timeline/<?php echo $feeData['photo_name']; ?>" data-fancybox="images<?php echo $timeline_id;?>" data-caption="Photo Name : <?php echo $feeData['photo_name']; ?>">
-              <img style="max-height:450px;" class="d-block w-100" src="../img/timeline/<?php echo $feeData['photo_name']; ?>" alt="">
+              <img style="max-height:450px;" class="d-block w-100 lazyload" src="../img/infinity.gif" data-src="../img/timeline/<?php echo $feeData['photo_name']; ?>" alt="">
               </a>
             </div>
             <?php } ?>
@@ -389,7 +389,7 @@ $totalCmt = mysqli_num_rows($qcomment);
         <div class="facebook-card-comments">
 
            <span style="float: left; ">
-          <img  onerror="this.src='img/user.png'" class="imgRedonda1" src="../img/users/members_profile/<?php echo $data_comment['user_profile_pic']; ?>" width="10%">
+          <img  onerror="this.src='img/user.png'" class="imgRedonda1 lazyload" src="../img/infinity.gif"  data-src="../img/users/members_profile/<?php echo $data_comment['user_profile_pic']; ?>" width="10%">
         </span>
           <span style="float: right;">
           <i title="Delete Comment" class=" text-danger fa fa-trash-o "  data-toggle="modal" data-target="#editFloor" onclick="deleteComment('<?php echo $comments_id; ?>')"></i>
@@ -412,7 +412,7 @@ $totalCmt = mysqli_num_rows($qcomment);
             $comments_id=$data_Sub_comment['comments_id'];?>
         <div class="facebook-card-comments" style="margin-left: 46px;">
           <span style="float: left; ">
-          <img  onerror="this.src='img/user.png'" class="imgRedonda1" src="../img/users/members_profile/<?php echo $data_Sub_comment['user_profile_pic']; ?>" width="10%">
+          <img  onerror="this.src='img/user.png'" class="imgRedonda1 lazyload" src="../img/infinity.gif" data-src="../img/users/members_profile/<?php echo $data_Sub_comment['user_profile_pic']; ?>" width="10%">
         </span>
 
         <span style="float: right;">
@@ -451,7 +451,7 @@ $totalCmt = mysqli_num_rows($qcomment);
          ?>
         <div class="facebook-card-comments">
           <span style="float: left; ">
-          <img  onerror="this.src='img/user.png'" class="imgRedonda1" src="../img/users/members_profile/<?php echo $data_comment['user_profile_pic']; ?>" width="10%">
+          <img  onerror="this.src='img/user.png'" class="imgRedonda1 lazyload" src="../img/infinity.gif" data-src="../img/users/members_profile/<?php echo $data_comment['user_profile_pic']; ?>" width="10%">
         </span>
 
         <span style="float: right;">
@@ -472,7 +472,7 @@ $totalCmt = mysqli_num_rows($qcomment);
             $comments_id=$data_Sub_comment['comments_id'];?>
         <div class="facebook-card-comments" style="margin-left: 46px;">
           <span style="float: left; ">
-          <img  onerror="this.src='img/user.png'" class="imgRedonda1" src="../img/users/members_profile/<?php echo $data_Sub_comment['user_profile_pic']; ?>" width="10%">
+          <img  onerror="this.src='img/user.png'" class="imgRedonda1 lazyload" src="../img/infinity.gif" data-src="../img/users/members_profile/<?php echo $data_Sub_comment['user_profile_pic']; ?>" width="10%">
         </span>
 
         <span style="float: right;">
@@ -497,7 +497,7 @@ $totalCmt = mysqli_num_rows($qcomment);
          ?>
         <div class="facebook-card-comments">
           <span class="cls-pic">
-          <img  onerror="this.src='img/user.png'" class="imgRedonda1" src="img/profile/<?php echo $data_comment['admin_profile']; ?>" width="10%">
+          <img  onerror="this.src='img/user.png'" class="imgRedonda1 lazyload" src="../img/infinity.gif" data-src="img/profile/<?php echo $data_comment['admin_profile']; ?>"  width="10%">
             </span>  
             
             <span class=" cls-delete"  >

@@ -187,7 +187,7 @@
   <script src="assets/js/sidebar-menu.js"></script>
   <!-- Custom scripts -->
   <script src="assets/js/app-script.js"></script>
-  <script src="assets/js/sweetDelete6.js"></script>
+  <script src="assets/js/sweetDelete7.js"></script>
 
   <!--Data Tables js-->
   <script src="assets/plugins/bootstrap-datatable/js/jquery.dataTables.min.js"></script>
@@ -221,6 +221,7 @@
   <script src="assets/plugins/fancybox/js/jquery.fancybox.min.js"></script>
   
 
+ 
 
   <!--Switchery Js-->
    <script src="assets/plugins/switchery/js/switchery.min.js"></script>
@@ -232,8 +233,15 @@
   </script>
  
   <?php include 'common/alert.php'; ?>
-
+ <script type="text/javascript" src="assets/js/lazyload.js"></script>
+  <script type="text/javascript">
+    window.addEventListener("load", function(event) { lazyload(); });
+  </script>
     <script>
+
+       
+
+
      $(document).ready(function() {
       //Default data table
        $('#default-datatable').DataTable();

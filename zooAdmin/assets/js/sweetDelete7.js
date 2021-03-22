@@ -81,10 +81,17 @@ function changeStatus(id,status) {
         success: function(response){
           console.log(response)
           if(response==1) {
+           
             document.location.reload(true);
           	swal("Status Changed", {
                       icon: "success",
                     });
+            //22march21
+             if(status=='is_upiTrue'){
+               window.location.replace("upiList");
+             }
+             //22march21
+
           } else {
             swal("Something Wrong!", {
                       icon: "error",

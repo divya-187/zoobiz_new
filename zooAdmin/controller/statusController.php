@@ -188,6 +188,13 @@ if(isset($_POST) && !empty($_POST) )//it can be $_GET doesn't matter
       );
       $q=$d->update('zoobiz_settings_master',$a1,"setting_id='$id'");
       if($q>0) {
+
+        $m->set_data('active_status','1');
+        $a1= array ('active_status'=> $m->get_data('active_status')
+        );
+        $q=$d->update('upi_app_master',$a1,"active_status=0");
+
+
          $d->insert_log("","0","$_SESSION[zoobiz_admin_id]","$created_by",ucwords('GLOBAL: upi set to false'));
         echo 1;
       } else {
@@ -203,6 +210,8 @@ if(isset($_POST) && !empty($_POST) )//it can be $_GET doesn't matter
       $q=$d->update('zoobiz_settings_master',$a1,"setting_id='$id'");
       if($q>0) {
          $d->insert_log("","0","$_SESSION[zoobiz_admin_id]","$created_by",ucwords('GLOBAL: upi set to true'));
+
+  //header("Location: ../upiList");exit;
         echo 1;
       } else {
         echo 0;
@@ -691,6 +700,11 @@ if(isset($_POST) && !empty($_POST) )//it can be $_GET doesn't matter
   );
     $q=$d->update('users_master',$a1,"user_id='$id'");
     if($q>0) {
+
+      $gu=$d->select("users_master","user_id='$id'  ");
+      $userData=mysqli_fetch_array($gu);
+      $d->insert_log("","0","$_SESSION[zoobiz_admin_id]","$created_by",$userData['user_full_name']." Activated");
+
       echo 1;
     } else {
       echo 0;
@@ -704,6 +718,11 @@ if(isset($_POST) && !empty($_POST) )//it can be $_GET doesn't matter
   );
     $q=$d->update('users_master',$a1,"user_id='$id'");
     if($q>0) {
+
+      $gu=$d->select("users_master","user_id='$id'  ");
+      $userData=mysqli_fetch_array($gu);
+      $d->insert_log("","0","$_SESSION[zoobiz_admin_id]","$created_by",$userData['user_full_name']." Deactivated");
+
       echo 1;
     } else {
       echo 0;

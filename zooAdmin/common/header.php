@@ -134,6 +134,8 @@ if(!isset($_GET['map_view_filter_city_id'])){
     src: url("assets/fonts/montserrat_regular.ttf"); /* IE9*/
 }
 
+ 
+
   </style>
   
 </head>
