@@ -1,7 +1,7 @@
 <?php 
  include '../common/objectController.php';
 
- 
+
 // delete user
 if(isset($deletepackage)) {
 

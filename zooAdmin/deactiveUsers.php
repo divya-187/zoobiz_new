@@ -142,8 +142,16 @@ $where="";
                     <td data-order="<?php echo date("U",strtotime($register_date)); ?>" ><?php echo date("d-m-Y", strtotime($register_date)); ?></td>
                     <td data-order="<?php echo date("U",strtotime($last_login)); ?>" ><?php if($last_login=="0000-00-00 00:00:00"){ echo "-"; }else  echo date("d-m-Y h:i:s A", strtotime($last_login)); ?></td>
 
-                    <td><?php $adm_data = $zoobiz_admin_master_arr[$inactive_by];
-                    echo $adm_data; ?></td>
+                    <td><?php
+                    if($inactive_by!=0){
+
+                     $adm_data = $zoobiz_admin_master_arr[$inactive_by];
+                     echo $adm_data;
+                    } else {
+                      
+                    }  
+                     ?></td>
+                    
 
 
                   </tr>

@@ -7,7 +7,4 @@ $d = new dao();
 $m = new model();
 $con=$d->dbCon();
 $base_url=$m->base_url();
-
-
-
  ?>

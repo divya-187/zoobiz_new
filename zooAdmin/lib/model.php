@@ -13,7 +13,7 @@ class model
     }
 
     function base_url() {
-        $base_url="http://localhost/zoobiz/";
+        $base_url="https://asif.zoobiz.in/";
                 return $base_url;
     }
     function api_key() {
@@ -27,7 +27,6 @@ class model
     $data = stripslashes($data);
      $data = strip_tags($data);
      $data = htmlspecialchars($data);
-     $data = addslashes($data);
      return $data;
 
 }

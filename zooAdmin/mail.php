@@ -1,4 +1,4 @@
-<?php
+<?php   
 // include 'common/object.php';
 $q=$d->select("email_configuration","");
 $data=mysqli_fetch_array($q);
@@ -15,8 +15,10 @@ require 'vendor/autoload.php';
 $mail = new PHPMailer(true);
 try {
     //Server settings
-  // $mail->SMTPDebug = SMTP::DEBUG_SERVER;
-
+ //  $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+ 
+   
+ 
 
     if ($smtp_type!='') {
         $mail->$smtp_type();

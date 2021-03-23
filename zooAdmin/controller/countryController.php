@@ -182,7 +182,6 @@ if($isbug=='true'){
                 'latitude'=> $m->get_data('latitude'),
                 'longitude'=> $m->get_data('longitude'),
                 'pincode'=> $m->get_data('pincode'),
-                'is_imported' =>'1'
             );
 
       

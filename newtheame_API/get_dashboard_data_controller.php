@@ -118,7 +118,7 @@ $response["rating_dialogue"] =false;
 
                 $d->update("users_master", $a, "user_id='$user_id'");
 
-                $q2 = $d->selectRow("user_notification_id","user_notification", "user_id='$user_id' AND (notification_type=0 or notification_type=2  or notification_type=3)  AND   read_status=0  and status='Active' ");
+                $q2 = $d->selectRow("user_notification_id","user_notification", "user_id='$user_id' AND notification_type !=10  AND   read_status=0  and status='Active' ");
 
                 $q3 = $d->selectRow("user_notification_id","user_notification", "user_id='$user_id' AND notification_type=1 AND   read_status=0  and status='Active' ");
 
@@ -193,7 +193,7 @@ $member_added_details["short_name"] =strtoupper(substr($data["user_first_name"],
                 }
 //refer by end
 
-$notmal_noti = $d->select("user_notification", "user_id='$user_id' AND   (notification_type !=10  and notification_type =1 )   AND   read_status=0  and status='Active' ");
+$notmal_noti = $d->select("user_notification", "user_id='$user_id' AND   notification_type !=10      AND   read_status=0  and status='Active' ");
 $meetup_noti = $d->select("user_notification", "user_id='$user_id' AND   notification_type =10    AND   read_status=0  and status='Active' ");
 $timeline_noti = $d->select("user_notification", "user_id='$user_id' AND notification_type=1 AND   read_status=0  and status='Active' ");
 $chatCount=$d->count_data_direct("chat_id","chat_master,users_master"," users_master.user_id =chat_master.msg_by and   chat_master.msg_for='$user_id'   AND chat_master.msg_status='0' AND users_master.office_member=0

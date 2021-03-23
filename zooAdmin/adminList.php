@@ -38,13 +38,13 @@
               <tbody>
                 <?php
                 $i=1;
-                $q=$d->select("role_master,zoobiz_admin_master"," role_master.role_id = zoobiz_admin_master.role_id   order by zoobiz_admin_master.admin_name asc   ");
+                $q=$d->select("zoobiz_admin_master,role_master"," role_master.role_id = zoobiz_admin_master.role_id   order by zoobiz_admin_master.admin_name asc   ");
                 while ($data=mysqli_fetch_array($q)) {
                   extract($data);
                   ?>
                   <tr>
                     
-                    <td class="text-right"><?php echo $i++;  ?></td>
+                    <td class="text-right"><?php echo $i++; ?></td>
                     <td><?php echo  $role_name; ?></td>
                     <td><?php echo  $admin_name; ?></td>
                     <td><?php echo  $admin_mobile; ?></td>
@@ -57,11 +57,10 @@
                   </a>
                 <?php  } ?> 
                  </td>
-                     <?php if($created_date ==""){ ?>  
-                     <td ><?php echo "-"; ?></td>
-                  <?php }  else { ?>
+                     <?php if($created_date !=""){ ?>  
                     <td data-order="<?php echo date("U",strtotime($created_date)); ?>"><?php echo date("d-m-Y h:i:s A", strtotime($created_date)); ?></td>
-                    
+                  <?php }  else { ?>
+                     <td ><?php echo "-"; ?></td>
                   <?php } ?>  
                    <td >
                       <div style="display: inline-block;">

@@ -4,7 +4,7 @@ $message = "
 		<head>
 		<meta name='viewport' content='width=device-width, initial-scale=1.0' />
 		<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
-		<title>Set up a new password for Fincasys</title>
+		<title>Set up a new password for ZooBiz</title>
 
 
 		</head>
@@ -37,11 +37,13 @@ $message = "
 		<tr>
 		<td class='email-body' width='100%' cellpadding='0' cellspacing='0' style='-premailer-cellpadding: 0; -premailer-cellspacing: 0; border-bottom-color: #EDEFF2; border-bottom-style: solid; border-bottom-width: 1px; border-top-color: #EDEFF2; border-top-style: solid; border-top-width: 1px; box-sizing: border-box; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; margin: 0; padding: 0; width: 100%; word-break: break-word;' bgcolor='#FFFFFF'>
 		<table class='email-body_inner' align='center' width='570' cellpadding='0' cellspacing='0' style='box-sizing: border-box; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; margin: 0 auto; padding: 0; width: 570px;' bgcolor='#FFFFFF'>
-
+		<tr>
+            <td align='center'><img src='https://zoobiz.in/img/zoobizLogo.png' width='100'></td>
+            </tr> 
 		<tr>
 		<td class='content-cell' style='box-sizing: border-box; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; padding: 35px; word-break: break-word;'>
 		<h1 style='box-sizing: border-box; color: #2F3133; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 19px; font-weight: bold; margin-top: 0;' align='left'>Hi $full_name,</h1>
-		<p style='box-sizing: border-box; color: #74787E; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 16px; line-height: 1.5em; margin-top: 0;' align='left'>You recently requested to reset your password for your Fincasys Soiciety account. Use the button below to reset it. <strong style='box-sizing: border-box; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;'>This password reset is only valid for the next 24 hours.</strong></p>
+		<p style='box-sizing: border-box; color: #74787E; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 16px; line-height: 1.5em; margin-top: 0;' align='left'>You recently requested to reset your password for your ZooBiz Soiciety account. Use the button below to reset it. <strong style='box-sizing: border-box; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;'>This password reset is only valid for the next 24 hours.</strong></p>
 
 		<table class='body-action' align='center' width='100%' cellpadding='0' cellspacing='0' style='box-sizing: border-box; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; margin: 30px auto; padding: 0; text-align: center; width: 100%;'>
 		<tr>

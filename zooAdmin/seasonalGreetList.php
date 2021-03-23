@@ -29,9 +29,10 @@
                   <th>Title</th>
                   
                   <th> Expiry</th>
-                
-                 <th class="text-right">Active<br>Images</th>
-                   <th class="text-right">InActive<br>Images</th>
+                   <th>Start Date</th>
+                    <th>End Date</th>
+                 <th class="text-right">Active Images</th>
+                   <th class="text-right">InActive Images</th>
                   <th>Created By</th>
                   <th>Created at</th>
                   <th>Action</th>
@@ -54,23 +55,11 @@
                     
 
 
-                    <td><?php echo  wordwrap( $title,20,"<br>\n"); ; ?></td>
+                    <td><?php echo  $title; ?></td>
                      
-                    <td><?php echo $is_expiry; ?>
-                       <?php if($is_expiry=="Yes"){
-                      ?>
-                       <button class="btn btn-warning btn-sm"  data-toggle="collapse" data-target="#demo<?php echo $seasonal_greet_id; ?>">View Dates</button>
-                      <div id="demo<?php echo $seasonal_greet_id; ?>" class="collapse">
-                        <?php    echo  'Start Date: '.date("d-m-Y", strtotime($start_date)) ;
-                        echo  '<br> End Date: '.date("d-m-Y", strtotime($end_date)) ;?>
-                      </div>
-                      <?php 
-                    } ?>
-
-                    </td>
-
-
-                    
+                    <td><?php echo $is_expiry; ?></td>
+                    <td><?php if($is_expiry=="Yes" && $start_date!="0000-00-00" ) {echo date("d-m-Y", strtotime($start_date));} else echo "-"; ?></td>
+                    <td><?php if($is_expiry=="Yes" && $end_date!="0000-00-00") {echo date("d-m-Y", strtotime($end_date));} else echo "-"; ?></td>
 
                      <td class="text-right"><?php
                      $q3=$d->select("seasonal_greet_image_master"," seasonal_greet_id='$seasonal_greet_id' and status ='Active'","");
@@ -83,7 +72,7 @@
 
                      ?></td>
                     <td><?php echo $admin_name; ?></td>
-                    <td data-order="<?php echo date("U",strtotime($created_at)); ?>"><?php echo    date("d-m-Y h:i:s A", strtotime($created_at)); ?></td>
+                    <td data-order="<?php echo date("U",strtotime($created_at)); ?>"><?php echo date("d-m-Y h:i:s A", strtotime($created_at)); ?></td>
                     <td>
 
                         

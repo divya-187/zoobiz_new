@@ -412,21 +412,6 @@ echo json_encode($response);
 
 
 
- $qch11_qry=$d->selectRow("block_by","user_block_master","user_id='$user_id' AND block_by in ($user_id_array) ");
-        $CArray = array();
-        $Ccounter = 0 ;
-        foreach ($qch11_qry as  $value) {
-            foreach ($value as $key => $valueNew) {
-                $CArray[$Ccounter][$key] = $valueNew;
-            }
-            $Ccounter++;
-        }
-        $block_u_arr = array('0');
-        for ($l=0; $l < count($CArray) ; $l++) {
-            $block_u_arr[] = $CArray[$l]['block_by']; 
-        }
-        
-
     if (count($dataArray) > 0) {
         $response["chat"] = array();
 

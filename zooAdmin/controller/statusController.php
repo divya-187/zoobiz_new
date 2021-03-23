@@ -696,13 +696,19 @@ if(isset($_POST) && !empty($_POST) )//it can be $_GET doesn't matter
   if($_POST['status']=="userActive") {
     $isActive=0;
     $m->set_data('active_status',$isActive);
-    $a1= array ('active_status'=> $m->get_data('active_status')
+    $a1= array (
+      'active_status'=> $m->get_data('active_status'), 
+      'inactive_by' => $_SESSION['zoobiz_admin_id']
   );
     $q=$d->update('users_master',$a1,"user_id='$id'");
     if($q>0) {
 
       $gu=$d->select("users_master","user_id='$id'  ");
       $userData=mysqli_fetch_array($gu);
+
+      
+
+
       $d->insert_log("","0","$_SESSION[zoobiz_admin_id]","$created_by",$userData['user_full_name']." Activated");
 
       echo 1;
@@ -714,13 +720,19 @@ if(isset($_POST) && !empty($_POST) )//it can be $_GET doesn't matter
   if($_POST['status']=="userDeactive") {
     $isActive=1;
     $m->set_data('active_status',$isActive);
-    $a1= array ('active_status'=> $m->get_data('active_status')
+    $a1= array (
+      'active_status'=> $m->get_data('active_status'),
+       'inactive_by' => $_SESSION['zoobiz_admin_id']
   );
     $q=$d->update('users_master',$a1,"user_id='$id'");
     if($q>0) {
 
       $gu=$d->select("users_master","user_id='$id'  ");
       $userData=mysqli_fetch_array($gu);
+
+      
+
+
       $d->insert_log("","0","$_SESSION[zoobiz_admin_id]","$created_by",$userData['user_full_name']." Deactivated");
 
       echo 1;

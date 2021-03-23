@@ -181,6 +181,17 @@ $qche_qry = $d->selectRow("follow_id,follow_to","follow_master", "follow_by='$ma
                 }
 //follow end
 
+$blocked_users = array('-2'); 
+$getBLockUserQry = $d->selectRow("user_id, block_by","user_block_master", " block_by='$user_id' or user_id='$user_id'  ", "");
+while($getBLockUserData=mysqli_fetch_array($getBLockUserQry)) {
+	 	 if($user_id != $getBLockUserData['user_id']){
+	 		$blocked_users[] = $getBLockUserData['user_id'];
+	 	}
+       if($user_id != $getBLockUserData['block_by']){
+	 		$blocked_users[] = $getBLockUserData['block_by'];
+	 	}
+ }
+
 				$response["NearByMember"] = array();
 				for ($l=0; $l < count($dataArray) ; $l++) {
 					$data_app =$dataArray[$l];
@@ -199,6 +210,12 @@ $qche_qry = $d->selectRow("follow_id,follow_to","follow_master", "follow_by='$ma
 						}
                         $NearByMember["is_follow"] = $follow_status;
                         //follow end
+
+                        if(in_array($data_app["user_id"],$blocked_users)){
+						$NearByMember["is_blocked"] =true;
+						} else {
+							$NearByMember["is_blocked"] =false;
+						}
 
 						$NearByMember["user_id"] = $data_app["user_id"];
 						//$NearByMember["city_name"] = $cityData["city_name"] . '';
@@ -675,7 +692,17 @@ $qche_qry = $d->selectRow("follow_id,follow_to","follow_master", "follow_by='$ma
                     $fol_array[$FArray[$l]['follow_to']] = $FArray[$l];
                 }
 
-                 
+             $blocked_users = array('-2'); 
+             //block_by='$user_id' or
+$getBLockUserQry = $d->selectRow("user_id, block_by","user_block_master", "  user_id='$user_id'  ", "");
+while($getBLockUserData=mysqli_fetch_array($getBLockUserQry)) {
+	 	 if($user_id != $getBLockUserData['user_id']){
+	 		$blocked_users[] = $getBLockUserData['user_id'];
+	 	}
+       if($user_id != $getBLockUserData['block_by']){
+	 		$blocked_users[] = $getBLockUserData['block_by'];
+	 	}
+ }     
 
 $response["NearByMember"] = array();
 				for ($l=0; $l < count($dataArray) ; $l++) {
@@ -685,7 +712,7 @@ $response["NearByMember"] = array();
 
 
 					$qche = $fol_array[$data_app["user_id"]];//  
-					if (count($qche) > 0) {
+					if (count($qche) > 0  ) {
 						$follow_status = true;
 					} else {
 						$follow_status = false;
@@ -694,6 +721,11 @@ $response["NearByMember"] = array();
                         $NearByMember["is_follow"] = $follow_status;
  
 
+					if(in_array($data_app["user_id"],$blocked_users)){
+						$NearByMember["is_blocked"] =true;
+					} else {
+						$NearByMember["is_blocked"] =false;
+					}
 
 						$NearByMember["user_id"] = $data_app["user_id"];
 						$NearByMember["business_category_id"] = $data_app["business_category_id"];

@@ -822,17 +822,13 @@ $zoobiz_settings_master_data=mysqli_fetch_array($zoobiz_settings_master_qry);
  $blocked_users = array('-2'); 
 $getBLockUserQry = $d->selectRow("user_id, block_by","user_block_master", " block_by='$user_id' or user_id='$user_id'  ", "");
 while($getBLockUserData=mysqli_fetch_array($getBLockUserQry)) {
-	 	
-	 	if($user_id != $getBLockUserData['user_id']){
+	 	 if($user_id != $getBLockUserData['user_id']){
 	 		$blocked_users[] = $getBLockUserData['user_id'];
 	 	}
-
-	 	if($user_id != $getBLockUserData['block_by']){
+       if($user_id != $getBLockUserData['block_by']){
 	 		$blocked_users[] = $getBLockUserData['block_by'];
 	 	}
-		
-	  
-}
+ }
 
              
 			$meq = $d->selectRow("users_master.user_id,business_categories.business_category_id,business_sub_categories.business_sub_category_id,users_master.user_full_name ,users_master.user_first_name,users_master.user_last_name ,users_master.zoobiz_id,users_master.public_mobile,users_master.user_mobile,users_master.user_profile_pic,business_categories.category_name,business_sub_categories.sub_category_name,user_employment_details.company_name, user_employment_details.company_logo, user_employment_details.search_keyword",

@@ -48,7 +48,7 @@
                 ?>
                 <tr>
                   <!-- <td class='text-center'>
-                    <input type="checkbox" class="multiDelteCheckbox"  value="<?php //echo $data['feedback_id']; ?>">
+                    <input type="checkbox" class="multiDelteCheckbox"  value="<?php echo $data['feedback_id']; ?>">
                   </td> -->
                   <td class="text-right"><?php echo $i++; ?></td>
                   <td><?php echo  $salutation.' '.$user_full_name; ?></td>

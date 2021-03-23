@@ -298,8 +298,8 @@ $data_notification = $dataArray[$tf];
 						$feed["timeline_text"] = htmlspecialchars_decode (stripslashes(  html_entity_decode($data_notification['timeline_text']. ' ' . $block_status )) );   
 						$feed["timeline_text"] = html_entity_decode($data_notification["timeline_text"] , ENT_QUOTES);
  
-						 
-						
+						 $feed["timeline_text"] = htmlspecialchars_decode($feed["timeline_text"], ENT_QUOTES);
+						$feed["timeline_text"] =html_entity_decode ($feed["timeline_text"]);
 
 
 						$feed["user_name"] = $user_full_name;
@@ -755,9 +755,9 @@ if(isset($debug)){
               //echo "<pre>";print_r($sub_cmt_array);exit;
 //code opt end
 
-if(isset($debug)){
+/*if(isset($debug)){
 	print_r($dataArray);exit;
-}
+}*/
 
 			if (count($dataArray) > 0) {
 				$response["feed"] = array();
@@ -905,7 +905,8 @@ $feed["mobile_privacy"]=false;
 						$feed["timeline_text"] =  htmlspecialchars_decode (stripslashes(  html_entity_decode($data_notification['timeline_text']. ' ' . $block_status )) );    
 
 						$feed["timeline_text"] = html_entity_decode($feed["timeline_text"] , ENT_QUOTES);
-
+ $feed["timeline_text"] = htmlspecialchars_decode($feed["timeline_text"], ENT_QUOTES);
+						$feed["timeline_text"] =html_entity_decode ($feed["timeline_text"]);
  
 
 						
@@ -1107,7 +1108,7 @@ $feed["mobile_privacy"]=false;
 
 		} 
 		else if ($_POST['addFeed'] == "addFeed" && filter_var($user_id, FILTER_VALIDATE_INT) == true) {
-
+ 
 $blocked_users = array('-2'); 
 $getBLockUserQry = $d->selectRow("user_id, block_by","user_block_master", " block_by='$user_id' or user_id='$user_id'  ", "");
 while($getBLockUserData=mysqli_fetch_array($getBLockUserQry)) {
@@ -1123,6 +1124,25 @@ while($getBLockUserData=mysqli_fetch_array($getBLockUserQry)) {
 	  
 }
 $blocked_users = implode(",", $blocked_users); 
+ $timeline_text = stripslashes($timeline_text);
+$timeline_text = htmlentities($timeline_text,ENT_QUOTES);
+/*if(isset($debug)){
+
+	echo $timeline_text;
+	//echo $m->get_data('timeline_text');
+	exit;
+}*/
+
+
+
+$m->set_data('timeline_text',htmlspecialchars($timeline_text));
+
+/*if(isset($debug)){
+
+	echo $timeline_text;
+	//echo $m->get_data('timeline_text');
+	exit;
+}*/
 
 				// $timeline_text = htmlspecialchars($timeline_text, ENT_QUOTES) ;
 				 
@@ -1132,7 +1152,7 @@ $blocked_users = implode(",", $blocked_users);
 
 
 			$user_id_add= $user_id;
-			$timeline_text = addslashes($timeline_text);
+			//$timeline_text = addslashes($timeline_text);
 			if ($feed_type == "2" || $feed_type == "1") {
 				$gb_devider = 1073741824;
 				$timeline_photos_master_det = $d->selectRow("round(sum(size)/".$gb_devider.",1) as used_space","timeline_photos_master", "user_id='$user_id' group by `user_id`  ", "");
@@ -1174,7 +1194,7 @@ $blocked_users = implode(",", $blocked_users);
 				$total = count($_FILES['photo']['tmp_name']);
 				$m->set_data('feed_type', 1);
 				
-				$m->set_data('timeline_text', stripslashes(  html_entity_decode(($timeline_text))));
+			//	$m->set_data('timeline_text', stripslashes(  html_entity_decode(($timeline_text))));
 
 
 				$m->set_data('user_id', $user_id);
@@ -1275,6 +1295,8 @@ $blocked_users = implode(",", $blocked_users);
 					} else {
 						$description = stripslashes(  html_entity_decode($timeline_text));
 					}
+
+					
 					$d->insertFollowNotification($title, $description, $timeline_id, $user_id, 1, "timeline");
 					$fcmArray = $d->get_android_fcm("users_master,follow_master", "users_master.user_id=follow_master.follow_by AND follow_master.follow_to='$user_id' AND users_master.user_token!='' AND  lower(users_master.device) ='android' and timeline_alert=0  and users_master.user_id not in ($blocked_users) ");
 					$fcmArrayIos = $d->get_android_fcm("users_master,follow_master", "users_master.user_id=follow_master.follow_by AND follow_master.follow_to='$user_id' AND users_master.user_token!='' AND  lower(users_master.device) ='ios' and timeline_alert=0  and users_master.user_id not in ($blocked_users)  ");
@@ -1315,7 +1337,7 @@ $blocked_users = implode(",", $blocked_users);
 			//17dec2020
 			else if ($feed_type == "2") {
 				$m->set_data('feed_type', 2);
-				$m->set_data('timeline_text', stripslashes(  html_entity_decode(($timeline_text))));
+			//	$m->set_data('timeline_text', stripslashes(  html_entity_decode(($timeline_text))));
 				$m->set_data('user_id', $user_id);
 				$m->set_data('user_name', $user_name);
 				$m->set_data('created_date', $modify_date);
@@ -1456,7 +1478,7 @@ $blocked_users = implode(",", $blocked_users);
 					//echo $m->get_data('timeline_text');exit;
 				}
 				$m->set_data('feed_type', 0);
-				$m->set_data('timeline_text', addslashes($timeline_text));
+				//$m->set_data('timeline_text', addslashes($timeline_text));
 
 				
 				$m->set_data('user_id', $user_id);
@@ -1476,9 +1498,9 @@ $blocked_users = implode(",", $blocked_users);
 					$d->insertFollowNotification($title, $description, $timeline_id, $user_id, 1, "timeline");
 					$fcmArray = $d->get_android_fcm("users_master,follow_master", "users_master.user_id=follow_master.follow_by AND follow_master.follow_to='$user_id' AND users_master.user_token!='' AND  lower(users_master.device)='android' and users_master.user_id != '$user_id' and timeline_alert=0  and users_master.user_id not in ($blocked_users) ");
 
-					if(isset($debug)){
+					/*if(isset($debug)){
 						echo "users_master.user_id=follow_master.follow_by AND follow_master.follow_to='$user_id' AND users_master.user_token!='' AND  lower(users_master.device)='android' and users_master.user_id != '$user_id' and timeline_alert=0  and users_master.user_id not in ($blocked_users) ";exit;
-					}
+					}*/
 					$fcmArrayIos = $d->get_android_fcm("users_master,follow_master", "users_master.user_id=follow_master.follow_by AND follow_master.follow_to='$user_id' AND users_master.user_token!='' AND  lower(users_master.device)='ios' and users_master.user_id != '$user_id' and timeline_alert=0  and users_master.user_id not in ($blocked_users)  ");
 					$getCatId = $d->selectRow("business_category_id","user_employment_details", "user_id = '$user_id'");
 					$getCatData = mysqli_fetch_array($getCatId);
@@ -2228,6 +2250,11 @@ if(in_array($data_notification['timeline_id'], $saved_timeline_array)){
 					$feed["timeline_text"] =  htmlspecialchars_decode (stripslashes(  html_entity_decode($data_notification['timeline_text'] )) );    
 
 					$feed["timeline_text"] = html_entity_decode($feed["timeline_text"] , ENT_QUOTES);
+
+					 $feed["timeline_text"] = htmlspecialchars_decode($feed["timeline_text"], ENT_QUOTES);
+						$feed["timeline_text"] =html_entity_decode ($feed["timeline_text"]);
+
+
 $feed["short_name"] =strtoupper(substr($data_notification["user_first_name"], 0, 1).substr($data_notification["user_last_name"], 0, 1) );
 					$feed["user_name"] = $data_notification['user_full_name'];
 					$feed["company_name"] = html_entity_decode($data_notification['company_name']);
@@ -2654,6 +2681,11 @@ timeline_master.meetup_user_id2,timeline_master.meetup_user_id1,timeline_master.
 					$feed["timeline_text"] = htmlspecialchars_decode (stripslashes(  html_entity_decode($data_notification['timeline_text'] )) );    
 
 					$feed["timeline_text"] = html_entity_decode($feed["timeline_text"] , ENT_QUOTES); 
+
+					 $feed["timeline_text"] = htmlspecialchars_decode($feed["timeline_text"], ENT_QUOTES);
+						$feed["timeline_text"] =html_entity_decode ($feed["timeline_text"]);
+
+
 					$feed["short_name"] =strtoupper(substr($data_notification["user_first_name"], 0, 1).substr($data_notification["user_last_name"], 0, 1) );
 					$feed["user_name"] = $data_notification['user_full_name'];
 					$feed["user_id"] = $data_notification['user_id'];
@@ -2990,6 +3022,10 @@ timeline_master.meetup_user_id2,timeline_master.meetup_user_id1,timeline_master.
 					$feed["timeline_text"] = htmlspecialchars_decode (stripslashes(  html_entity_decode($data_notification['timeline_text'] )) );    
 
 					$feed["timeline_text"] = html_entity_decode($feed["timeline_text"] , ENT_QUOTES);
+
+					 $feed["timeline_text"] = htmlspecialchars_decode($feed["timeline_text"], ENT_QUOTES);
+						$feed["timeline_text"] =html_entity_decode ($feed["timeline_text"]);
+						
 					$feed["short_name"] =strtoupper(substr($data_notification["user_first_name"], 0, 1).substr($data_notification["user_last_name"], 0, 1) );
 					$timeline_id = $data_notification['timeline_id'];
 					$feed["feed_type"] = $data_notification['feed_type'];

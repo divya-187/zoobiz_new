@@ -6,6 +6,26 @@ $currency_master_data=mysqli_fetch_array($currency_master);
 extract($currency_master_data);
 }
 ?>
+<style type="text/css">
+  input { 
+    text-transform: uppercase;
+}
+::-webkit-input-placeholder { /* WebKit browsers */
+    text-transform: none;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    text-transform: none;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    text-transform: none;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    text-transform: none;
+}
+::placeholder { /* Recent browsers */
+    text-transform: none;
+}
+</style>
 <div class="content-wrapper">
   <div class="container-fluid">
     <!-- Breadcrumb-->

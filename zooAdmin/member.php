@@ -198,7 +198,7 @@
                              
                                 <label  style="display: none" id="refere_by_user_div" class="col-lg-2 col-form-label form-control-label" for="refere_by_name" >Referred Member <span class="required">*</span></label>
                                  <div   class="col-lg-4" style="display: none" id="refere_by_user_div2" >
-                                <input maxlength="50" class="form-control" type="text" id="refer_friend_name" name="refer_friend_name"    placeholder="Type Membebr Name To Get Selections" autocomplete="off">
+                                <input maxlength="50" class="form-control" type="text" id="refer_friend_name" name="refer_friend_name"    placeholder="Type Member Name To Get Selections" autocomplete="off">
                              
                              <select   class="form-control multiple-select" name="refer_friend_id"   required=""    id="refer_friend_id">
                             </select>

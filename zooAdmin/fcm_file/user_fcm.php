@@ -19,7 +19,7 @@ class firebase_resident
         if (is_array($registrationIds)) {
             $registrationIds=$registrationIds;
             $registrationIds = array_unique($registrationIds);
-             $registrationIds = array_values($registrationIds);
+            // $registrationIds = array_values($registrationIds);
 
               //15february2021
           $d = new dao();
@@ -34,12 +34,12 @@ class firebase_resident
                       }
          }
         //15february2021
-
+//$registrationIds = array($registrationIds);
         } else {
             $registrationIds = array($registrationIds);
         }
 
-
+ 
         
         if ($image=='' && $profile=='') {
             $image= "https://www.zoobiz.in/img/logo.png";
@@ -69,7 +69,7 @@ class firebase_resident
             'profile' =>$profile,
             'short_name' =>$short_name
         );
-      
+    
         $fields = array(
             'title'=> $title,
             'registration_ids' =>  $registrationIds,
@@ -77,11 +77,12 @@ class firebase_resident
              'priority' => 'high',
              'data'    => $data
         );
-        $headers = array(
+        // echo "<pre>";print_r( json_encode($fields));
+         $headers = array(
             'Authorization: key=' . API_ACCESS_KEY,
             'Content-Type: application/json'
         );
-        #Send Reponse To FireBase Server	
+        #Send Reponse To FireBase Server    
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
         curl_setopt($ch, CURLOPT_POST, true);
@@ -90,16 +91,12 @@ class firebase_resident
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
         $result = curl_exec($ch);
+        
         curl_close($ch);
         $result = json_decode($result, true);
-        $re = $result['success'];
-        if($title == "Thursday Greeting Creative is Available. Lets Zoobiz!"){
 
-            echo "<pre>"; 
-            print_r($fields);
-            print_r($registrationIds);
-            print_r($result);exit;
-        }
+      //  echo "<pre>";print_r( $result);exit;
+        $re = $result['success'];
         if ($re == 1) {
             // header("location:$url");
             return true;
@@ -119,7 +116,7 @@ class firebase_resident
         if (is_array($registrationIds)) {
             $registrationIds=$registrationIds;
             $registrationIds = array_unique($registrationIds);
-             $registrationIds = array_values($registrationIds);
+          //   $registrationIds = array_values($registrationIds);
 
                //15february2021
           $d = new dao();
@@ -134,11 +131,13 @@ class firebase_resident
                       }
          }
         //15february2021
+
+//$registrationIds = array($registrationIds);
         } else {
             $registrationIds = array($registrationIds);
         }
-
-        
+ 
+       // echo "<pre>";print_r( $registrationIds); 
         if ($image=='') {
             $image= "https://www.zoobiz.in/img/logo.png";
         }
@@ -206,7 +205,7 @@ class firebase_resident
              'data'    => $data
         );
 
-        
+      //   echo "<pre>";print_r( json_encode($fields)); 
         $headers = array(
             'Authorization: key=' . API_ACCESS_KEY,
             'Content-Type: application/json'
@@ -220,6 +219,8 @@ class firebase_resident
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
         $result = curl_exec($ch);
+
+        //echo "<pre>";print_r($result );exit;
         curl_close($ch);
         $result = json_decode($result, true);
         $re = $result['success'];

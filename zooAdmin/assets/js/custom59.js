@@ -2110,8 +2110,6 @@ $("#refer_friend_name").keypress(function (e) {
             
         }
      });
-   } else if(refer_friend_name.length ==0 ){
-        $('#refer_friend_id').html('');
    }
   
   }, 0);
@@ -2151,7 +2149,6 @@ inputxx.onkeydown = function() {
 
 $('#refer_friend_name').change(function() {
    var refer_friend_name = $("#refer_friend_name").val();
-    
    if(refer_friend_name.length ==0 ){
        $('#refer_friend_id').html('');
    }

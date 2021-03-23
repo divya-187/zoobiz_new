@@ -143,16 +143,20 @@ $followers= mysqli_num_rows($tq33);
     <?php if ($user_email!='') { ?>
       <hr>
       <div class="media align-items-center">
+         
         <div>
-          <i class="fa fa-envelope"></i>
+         <a href="mailto:<?php echo $user_email;?>"  > <i class="fa fa-envelope"></i></a>
         </div>
         <div class="media-body text-left">
-          <div class="progress-wrapper">
-            <marquee scrollamount="3"><?php echo $user_email;?></marquee>
+         <div class="progress-wrapper">
+            <marquee scrollamount="3"> <a href="mailto:<?php echo $user_email;?>"  >  <?php echo $user_email;?></a>   </marquee>
             
-          </div>                   
+          </div>                
         </div>
+
       </div> 
+
+
     <?php }?>
 
    
@@ -515,9 +519,13 @@ if (isset($_SESSION['zoobiz_admin_id'])) { ?>
  </div>
  <div class="media-body text-left">
   <div class="progress-wrapper">Is Office Member?: 
-    <?php if($office_member=="1"){ ?>
+    <?php   if($office_member=="1"){ ?>
      <input type="checkbox" checked class="js-switch" data-color="#15ca20" onchange ="changeStatus('<?php echo $user_id; ?>','OfficeMemberDeactive');" data-size="small"/>
-     <?php echo '<br> OTP: '.$otp; ?>
+     <?php
+     if($_SERVER['SERVER_NAME'] =="asif.zoobiz.in"){
+       echo '<br> OTP: '.$otp;
+     }
+      ?>
    <?php } else { ?>
     <input type="checkbox"  class="js-switch" data-color="#15ca20" onchange ="changeStatus('<?php echo $user_id; ?>','OfficeMemberActive');" data-size="small"/>
   <?php } ?>

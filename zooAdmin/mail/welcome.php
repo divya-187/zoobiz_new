@@ -163,7 +163,7 @@
             <div class="media align-items-center">
             <div class="media-body">
               <p class="text-white">App Benner </p>
-              <h4 class="text-white line-height-5"><?php echo $d->count_data_direct("slider_id","slider_master","status=0"); ?></h4>
+              <h4 class="text-white line-height-5"><?php echo $d->count_data_direct("slider_id","slider_master",""); ?></h4>
             </div>
             <div class="w-circle-icon rounded-circle  border-white">
               <img class="myIcon" src="img/icons/carousel.png"></div>

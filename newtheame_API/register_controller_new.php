@@ -168,7 +168,8 @@ $a = array(
 				'referred_by_user_id' => $m->get_data('referred_by_user_id'),
 				'refere_by_name' => $m->get_data('refere_by_name'),
 				'refere_by_phone_number' => $m->get_data('refere_by_phone_number'),
-				'remark' => $m->get_data('remark')
+				'remark' => $m->get_data('remark'),
+
 			);
 $q = $d->insert("users_master", $a);
 $user_id  = $con->insert_id; 
@@ -979,6 +980,7 @@ $zoobiz_settings_master_data=mysqli_fetch_array($zoobiz_settings_master_qry);
 				/*'user_email' => $m->get_data('user_email'),*/
 				'gender' => $m->get_data('gender'),
 				'user_profile_pic' => $m->get_data('user_profile_pic'),
+				'is_profile_completed' => 1,
 			);
 
 			$compAry = array(
@@ -1017,6 +1019,8 @@ $zoobiz_settings_master_data=mysqli_fetch_array($zoobiz_settings_master_qry);
 			$q2 = $d->insert("business_adress_master", $adrAry);
 
 			if ($q and $q1 and $q2) {
+
+				 
 				$con->commit();
 
 				$androidLink = 'https://play.google.com/store/apps/details?id=com.silverwing.zoobiz';
@@ -1198,8 +1202,8 @@ $zoobiz_settings_master_data=mysqli_fetch_array($zoobiz_settings_master_qry);
 					}
 					$user_ids_array = implode(",", $user_ids_array);
 
-
- 					$d->insertAllUserNotificationMemberSpecial($title,$description,"viewMemeber",$user_profile_pic,"active_status=0 and user_id in ($user_ids_array) AND user_id != $user_id",11,$ref_users_master_data['user_id']);
+ 
+ 					$d->insertAllUserNotificationMemberSpecial($title,$description,"viewMemeber",$user_profile_pic,"active_status=0 and user_id in ($user_ids_array) AND user_id != $user_id",11,$user_id);
 
 					$fcmArray = $d->get_android_fcm("users_master", "user_token!='' AND  lower(device) ='android' and user_id in ($user_ids_array) AND user_id != $user_id");
 

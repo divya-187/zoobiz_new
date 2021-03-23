@@ -88,7 +88,7 @@ $message = "
 		<table class='email-footer' align='center' width='570' cellpadding='0' cellspacing='0' style='box-sizing: border-box; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; margin: 0 auto; padding: 0; text-align: center; width: 570px;'>
 		<tr>
 		<td class='content-cell' align='center' style='box-sizing: border-box; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; padding: 35px; word-break: break-word;'>
-		<p class='sub align-center' style='box-sizing: border-box; color: #AEAEAE; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 12px; line-height: 1.5em; margin-top: 0;' align='center'>© ".date("Y")."  ZooBiz. All rights reserved.</p>
+		<p class='sub align-center' style='box-sizing: border-box; color: #AEAEAE; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 12px; line-height: 1.5em; margin-top: 0;' align='center'>© 2020  ZooBiz. All rights reserved.</p>
 		<p class='sub align-center' style='box-sizing: border-box; color: #AEAEAE; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 12px; line-height: 1.5em; margin-top: 0;' align='center'>
 		ZooBiz
 		</p>

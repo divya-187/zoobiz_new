@@ -25,7 +25,7 @@ if(isset($_SESSION['zoobiz_admin_id']))
   <!-- Icons CSS-->
   <link href="assets/css/icons.css" rel="stylesheet" type="text/css"/>
   <!-- Custom Style-->
-  <link href="assets/css/app-style11.css" rel="stylesheet"/>
+  <link href="assets/css/app-style10.css" rel="stylesheet"/>
   
 </head>
 

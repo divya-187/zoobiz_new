@@ -32,7 +32,6 @@ if(isset($_POST) && !empty($_POST) )//it can be $_GET doesn't matter
 
   if($is_unlimited ==0){
     $m->set_data('coupon_limit',$coupon_limit);
-   
   } else {
     $m->set_data('coupon_limit','0');
   }
@@ -81,19 +80,16 @@ if(isset($_POST) && !empty($_POST) )//it can be $_GET doesn't matter
 
   $m->set_data('is_unlimited',$is_unlimited);
 $updated_at = date('Y-m-d H:i:s');
-
-$m->set_data('cpn_expiry',$cpn_expiry);
    $m->set_data('updated_at',$updated_at);
   if($is_unlimited ==0){
     $m->set_data('coupon_limit',$coupon_limit);
-    
   } else {
     $m->set_data('coupon_limit','0');
   }
      $m->set_data('updated_by',$_SESSION[zoobiz_admin_id]);
   
 
-  
+  $m->set_data('cpn_expiry',$cpn_expiry);
   if(isset($start_date)){
     $start_date = date("Y-m-d", strtotime($start_date));
   } else {
