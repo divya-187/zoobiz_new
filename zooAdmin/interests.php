@@ -50,7 +50,7 @@
                   <td class='text-center'>
                      <?php 
                    
-                    $q3=$d->select("interest_relation_master"," interest_id='$interest_id'",""); 
+                    $q3=$d->select("interest_relation_master,users_master","users_master.user_id =interest_relation_master.member_id and   interest_relation_master.interest_id='$interest_id'",""); 
                  $totalCategory =   mysqli_num_rows($q3);
                   if ($totalCategory==0) {
                   ?>  
@@ -69,7 +69,17 @@
                     echo "0";
                     } else {
                      echo $totalCategory;
+                     ?>
+                      <button class="btn btn-secondary btn-sm"  data-toggle="collapse" data-target="#demo<?php echo $interest_id; ?>">View</button>
+                      <div id="demo<?php echo $interest_id; ?>" class="collapse">
+                     <?php
+                     while ($data3=mysqli_fetch_array($q3)) {
+                      ?>
+                      <a  target="_blank"  title="View Profile"  href="viewMember?id=<?php echo $data3['member_id']; ?>" ><?php echo  $data3['user_full_name']; ?></a><br>
+                      <?php
+                     }
                   } ?>
+                </div>
                   </td>
 
 

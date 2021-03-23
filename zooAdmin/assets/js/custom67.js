@@ -2097,7 +2097,7 @@ $("#refer_friend_name").keypress(function (e) {
    setTimeout(function() {
    var refer_friend_name = $("#refer_friend_name").val();
    var userMobile = $("#userMobile").val();
-  
+   $('#refer_friend_id').html('');
    if(refer_friend_name.length > 2 ){
       $.ajax({
         url: "getRefUsers.php",
@@ -2118,15 +2118,20 @@ $("#refer_friend_name").keypress(function (e) {
   
 
 if($('#refer_friend_name').length){
-
+setTimeout(function() {
  var inputxx = document.getElementById('refer_friend_name');
-
+ 
 inputxx.onkeydown = function() {
+
+
     var key = event.keyCode || event.charCode;
      
-    if( key == 8 ){
+    if( key == 8 ){ 
       var refer_friend_name = $("#refer_friend_name").val();
        var userMobile = $("#userMobile").val();
+
+        $('#refer_friend_id').html('');
+
            if(refer_friend_name.length > 3 ){
               $.ajax({
                 url: "getRefUsers.php",
@@ -2144,15 +2149,24 @@ inputxx.onkeydown = function() {
            }
     }
 };
+
+}, 800);
 }
 
 
-$('#refer_friend_name').change(function() {
-   var refer_friend_name = $("#refer_friend_name").val();
+$("#refer_friend_name").on('keyup', function() {
+
+setTimeout(function() { 
+
+  
+    var refer_friend_name = $("#refer_friend_name").val();
    if(refer_friend_name.length ==0 ){
        $('#refer_friend_id').html('');
-   }
+       $('#refer_friend_name').val('');
+   } 
+  }, 500);
 });
+ 
 
 
 
