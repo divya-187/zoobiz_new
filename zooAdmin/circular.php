@@ -5,7 +5,7 @@ if (isset($circular_id)) {
   $q=$d->select("circulars_master","circular_id='$circular_id'");
   $row=mysqli_fetch_array($q);
 }
-
+    
 ?>
 
 <link rel="stylesheet" href="assets/plugins/summernote/dist/summernote-bs4.css"/>

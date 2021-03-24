@@ -27,7 +27,7 @@ if(isset($_POST) && !empty($_POST) )//it can be $_GET doesn't matter
     if($q==TRUE) {
       $_SESSION['msg']=$data_q['circular_title']." Circular Deleted";
       $d->insert_log("","0","$_SESSION[zoobiz_admin_id]","$created_by",$_SESSION['msg']);
-      header("Location: ../manageCirculers");
+      header("Location: ../manageCirculars");
     } else {
       $_SESSION['msg1']="Something Wrong";
       header("Location: ../Updated");
@@ -79,9 +79,9 @@ if(isset($_POST) && !empty($_POST) )//it can be $_GET doesn't matter
       $_SESSION['msg']=$circular_title." Circular Added";
       //IS_1210
       $d->insert_log("","0","$_SESSION[zoobiz_admin_id]","$created_by",$_SESSION['msg']);
-      header("Location: ../manageCirculers");
+      header("Location: ../manageCirculars");
     } else {
-      header("Location: ../manageCirculers");
+      header("Location: ../manageCirculars");
     }
   }
 
@@ -128,10 +128,10 @@ if(isset($_POST) && !empty($_POST) )//it can be $_GET doesn't matter
     if($q==TRUE) {
       $_SESSION['msg']=$circular_title. " Circular Updated";
       $d->insert_log("","0","$_SESSION[zoobiz_admin_id]","$created_by",$_SESSION['msg']);
-      header("Location: ../manageCirculers");
+      header("Location: ../manageCirculars");
     } else {
       $_SESSION['msg1']="Something Wrong";
-      header("Location: ../manageCirculers");
+      header("Location: ../manageCirculars");
     }
   }
 }

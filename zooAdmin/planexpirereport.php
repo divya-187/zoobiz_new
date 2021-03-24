@@ -12,25 +12,27 @@ error_reporting(0);
          <?php if ( !isset($_GET['from'])) { $_GET['from'] = date('Y-m-01');}
          if ( !isset($_GET['toDate'])) { $_GET['toDate'] = date('Y-m-t', strtotime('+1 month'));   }   ?>
        </div>
-        <div class="col-sm-3">
-          <div class="">
 
-             <input id="start_date" required="" type="text"  readonly="" class="form-control"   value="<?php if ( !isset($_GET['from'])) { echo date('Y-m-01');} else {  echo $_GET['from']; } ?>"  name="from"  >
 
-             
- 
-          </div>
+
+       <div class="col-sm-5"  >
+
+
+        <div class="input-daterange input-group">
+                <input readonly="" type="text" class="form-control" autocomplete="off"   placeholder="Start Date" id="FromDate" name="from" value="<?php if ( !isset($_GET['from'])) { echo date('Y-m-01');} else {  echo $_GET['from']; } ?>"  />
+                <div class="input-group-prepend">
+                 <span class="input-group-text">to</span>
+                </div>
+                <input readonly="" type="text" class="form-control" autocomplete="off"   placeholder="End Date" id="ToDate" name="toDate" value="<?php if ( !isset($_GET['toDate'])) { echo date('Y-m-t');} else { echo $_GET['toDate'];  } ?>" />
+               </div>
+
+
         </div>
-       <div class="col-sm-1"> TO</div>
-        <div class="col-sm-3">
-          <div class="">
 
-            
+           
 
-              <input id="end_date" required="" type="text"  readonly="" class="form-control"   value="<?php if ( !isset($_GET['toDate'])) { echo date('Y-m-t');} else { echo $_GET['toDate'];  } ?>"  name="toDate"  >
- 
-          </div>
-        </div>
+
+         
 
 
          <div class="col-lg-2 col-3">

@@ -15,6 +15,8 @@
      
      <div class="col-sm-3">
        <div class="btn-group float-sm-right">
+          <a href="javascript:void(0)" onclick="DeleteAll6('deleteSessionlog');" class="btn  btn-sm btn-danger pull-right"><i class="fa fa-trash-o fa-lg"></i> Delete </a>
+          
         <?php /* ?> 
         <a href="javascript:void(0)" onclick="DeleteAll('deleteSessionlog');"  class="btn btn-sm btn-danger shadow-danger waves-effect waves-light"><i class="fa fa-trash-o mr-1"></i> Delete</a>
        <?php */ ?> 
@@ -33,7 +35,7 @@
             <!-- <div class="card-header"><i class="fa fa-table"></i> Data Exporting</div> -->
             <div class="card-body">
               <div class="table-responsive">
-              <table id="example" class="table table-bordered">
+              <table id="example6" class="table table-bordered">
                 <thead>
                     <tr>
                       <th class="deleteTh">

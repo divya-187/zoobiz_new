@@ -21,9 +21,9 @@ error_reporting(0);
                 $nTo= date_format($dateTo,"Y-m-d 23:59:59");
                 $where .=" and  user_employment_details.complete_profile_date  BETWEEN '$nFrom' AND '$nTo'";
 }
- if (isset($_GET['city_id'])!='' && $_GET['city_id'] != 0 ) { 
+ if (isset($_GET['company_id'])!='' && $_GET['company_id'] != 0 ) { 
                  extract(array_map("test_input" , $_GET));
-                $where .=" and  users_master.city_id  = '$city_id' ";
+                $where .=" and  users_master.company_id  = '$company_id' ";
 }  
 
 $transCond ="";
@@ -38,7 +38,7 @@ $transCond ="";
 }
 $where .=$transCond;
 
- $summ_qry=$d->select("users_master,user_employment_details,cities,transection_master","cities.city_id= users_master.city_id and   users_master.user_id =transection_master.user_id and    user_employment_details.user_id =users_master.user_id and  users_master.active_status= 0      $where group by transection_master.user_id   ","");
+ /*$summ_qry=$d->select("users_master,user_employment_details,company_master,transection_master","company_master.company_id= users_master.company_id and   users_master.user_id =transection_master.user_id and    user_employment_details.user_id =users_master.user_id and  users_master.active_status= 0      $where group by transection_master.user_id   ","");
  $paid_total = 0 ;
  $free_total = 0 ; 
  while ($summ_data=mysqli_fetch_array($summ_qry)) {
@@ -47,7 +47,7 @@ $where .=$transCond;
     } else  {
        $paid_total += $summ_data['transection_amount'] ;
     }
-}
+}*/
 
 ?> 
 <div class="row pt-2 pb-2">
@@ -56,7 +56,7 @@ $where .=$transCond;
       </div>
 
 
-<?php if (isset($_GET['paid_trans'])  && ( $_GET['paid_trans'] == 2 ) ) { } else {?>
+<?php /*if (isset($_GET['paid_trans'])  && ( $_GET['paid_trans'] == 2 ) ) { } else {?>
        <div class="col-sm-3">
          
            <span class="badge badge-pill badge-success m-1"> <span >Paid <i class="fa fa-inr"></i> <?php  echo number_format($paid_total,2,'.',''); ?> </span > </span > 
@@ -67,7 +67,7 @@ $where .=$transCond;
           <a href="couponReport"> <span class="badge badge-pill badge-danger m-1"> <span >Free <i class="fa fa-inr"></i><?php echo number_format($free_total,2,'.',''); ?> </span > </span > </a>
         
       </div>
-<?php } ?> 
+<?php }*/ ?> 
 
 </div>
 <?php //25nov2020
@@ -93,17 +93,17 @@ $_REQUEST['paid_trans'] = 0 ; ?>
           <?php 
         
    
-          $qry=$d->select("cities"," city_flag=1","ORDER BY city_name ASC");
+          $qry=$d->select("company_master"," status=0","ORDER BY company_name ASC");
           //onchange="this.form.submit();"
           ?>
        
-        <select name="city_id"  class="form-control single-select">
+        <select name="company_id"  class="form-control single-select">
           
            <option  value="0">All</option>
           <?php   
            while ($blockRow=mysqli_fetch_array($qry)) {
          ?>
-          <option <?php if ( isset($_REQUEST['city_id']) &&  $blockRow['city_id']==$_REQUEST['city_id'] ) { echo 'selected';} ?> value="<?php echo $blockRow['city_id'];?>"><?php echo $blockRow['city_name'];?></option>
+          <option <?php if ( isset($_REQUEST['company_id']) &&  $blockRow['company_id']==$_REQUEST['company_id'] ) { echo 'selected';} ?> value="<?php echo $blockRow['company_id'];?>"><?php echo $blockRow['company_name'].' - '.$blockRow['comp_gst_number'];?></option>
           <?php }?>
         </select>
          
@@ -143,8 +143,8 @@ $_REQUEST['paid_trans'] = 0 ; ?>
                 <tr>
                  
                   <th class="text-right">#</th>
-                 <th>City Name</th>
-                  <th>Business Name</th>
+                 <th>Company Name</th>
+                  
                   <th>User Name</th>
                    <th>Device</th>
                   <th>Mobile</th>
@@ -165,7 +165,7 @@ $_REQUEST['paid_trans'] = 0 ; ?>
                
               /*  $q3=$d->select("transection_master,company_master,users_master,user_employment_details ","user_employment_details.user_id =users_master.user_id and   company_master.company_id =transection_master.company_id and users_master.user_id =transection_master.user_id and    users_master.active_status= 0 and users_master.user_payment_mode != 0   $where  ","");*/
 // /and users_master.user_payment_mode = 0
- $q3=$d->select("users_master,user_employment_details,cities,transection_master,business_categories,business_sub_categories ","cities.city_id= users_master.city_id AND business_sub_categories.business_sub_category_id=user_employment_details.business_sub_category_id AND   business_categories.business_category_id=user_employment_details.business_category_id  and   users_master.user_id =transection_master.user_id and    user_employment_details.user_id =users_master.user_id and  users_master.office_member=0 AND users_master.active_status= 0       $where group by transection_master.user_id order by user_employment_details.complete_profile_date  asc  ","");
+ $q3=$d->select("users_master,user_employment_details,company_master,transection_master,business_categories,business_sub_categories ","company_master.company_id= users_master.company_id AND business_sub_categories.business_sub_category_id=user_employment_details.business_sub_category_id AND   business_categories.business_category_id=user_employment_details.business_category_id  and   users_master.user_id =transection_master.user_id and    user_employment_details.user_id =users_master.user_id and  users_master.office_member=0 AND users_master.active_status= 0       $where group by transection_master.user_id order by user_employment_details.complete_profile_date  asc  ","");
 
   
  
@@ -175,7 +175,7 @@ $_REQUEST['paid_trans'] = 0 ; ?>
                 <tr>
                   
                   <td class="text-right"><?php echo $i++; ?></td>
-                   <td><?php  echo $city_name; ?></td>
+                    
                   <td><?php  echo $company_name; ?></td>
                   <td><a target="_blank"   title="View Profile"  href="viewMember?id=<?php echo $user_id; ?>" ><?php echo  $salutation.' '.$user_full_name; ?></a></td>
                    <td><?php echo $device; ?></td>

@@ -13,13 +13,19 @@ error_reporting(0);
         </div>
          
 
-       <div class="col-sm-2">
+       <div class="col-sm-5"  >
 
-         <input readonly="" type="text" class="form-control" autocomplete="off" required="" placeholder="Start Date" id="start_date" name="from" value="<?php if ( !isset($_GET['from'])) { echo date('Y-m-01');} else {  echo $_GET['from']; } ?>" />
-       </div>
-       <div class="col-sm-1">TO </div>
-        <div class="col-sm-2">
-         <input readonly="" type="text" class="form-control" autocomplete="off" required="" placeholder="End Date" id="end_date" name="toDate" value="<?php if ( !isset($_GET['toDate'])) { echo date('Y-m-t');} else { echo $_GET['toDate'];  } ?>" />
+
+        <div class="input-daterange input-group">
+                <input readonly="" type="text" class="form-control" autocomplete="off"   placeholder="Start Date" id="FromDate" name="from" value="<?php if ( !isset($_GET['from'])) { echo date('Y-m-01');} else {  echo $_GET['from']; } ?>"  />
+                <div class="input-group-prepend">
+                 <span class="input-group-text">to</span>
+                </div>
+                <input readonly="" type="text" class="form-control" autocomplete="off"   placeholder="End Date" id="ToDate" name="toDate" value="<?php if ( !isset($_GET['toDate'])) { echo date('Y-m-t');} else { echo $_GET['toDate'];  } ?>" />
+               </div>
+
+
+        
 
            
        </div>
@@ -31,7 +37,8 @@ error_reporting(0);
             <option <?php if ( $_REQUEST['meet_status'] =="Pending" ) { echo 'selected';} ?> value="Pending">Pending</option>
             <option <?php if ( $_REQUEST['meet_status']  =="Approve" ) { echo 'selected';} ?> value="Approve">Approved</option>
             <option <?php if ( $_REQUEST['meet_status'] =="Reject" ) { echo 'selected';} ?> value="Reject">Rejected</option>
-            <option <?php if (  $_REQUEST['meet_status']   =="Reschedule" ) { echo 'selected';} ?> value="Reschedule">Rescheduled</option> 
+            <option <?php if (  $_REQUEST['meet_status']   =="Reschedule" ) { echo 'selected';} ?> value="Reschedule">Rescheduled</option>
+             <option <?php if (  $_REQUEST['meet_status']   =="Deleted" ) { echo 'selected';} ?> value="Deleted">Deleted</option>  
           
         </select>
        </div>

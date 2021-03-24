@@ -122,7 +122,11 @@ if (isset($_POST) && !empty($_POST)) {
    $gu=$d->select("meeting_master","meeting_id ='$meeting_id'");
    $meetingData=mysqli_fetch_array($gu);
 
-   $q = $d->delete("meeting_master","meeting_id='$meeting_id'");
+   //$q = $d->delete("meeting_master","meeting_id='$meeting_id'");
+   $a = array(
+    'status' => 'Deleted' 
+   );
+  $q = $d->update("meeting_master",$a,"meeting_id ='$meeting_id'" );
 
    if($q>0) {
      $d->insert_myactivity($user_id,"0","", "Rejected Meetup Deleted - ".$meetingData['date'].' '.$meetingData['time'],"activity.png");
@@ -691,7 +695,7 @@ else if ($_POST['getMyMeetings'] == "getMyMeetings" && filter_var($user_id, FILT
 
 
 
-  $q3=$d->selectRow("meeting_master.action_user_id, meeting_master.meeting_id ,meeting_master.user_id,meeting_master.member_id,users_master.user_profile_pic,users_master.user_full_name,meeting_master.date,meeting_master.time,meeting_master.place, meeting_master.agenda, meeting_master.status,meeting_master.reason,user_employment_details.company_name,user_employment_details.designation","user_employment_details, users_master,meeting_master","user_employment_details.user_id = users_master.user_id and   meeting_master.user_id = users_master.user_id  AND users_master.active_status=0     and (  meeting_master.member_id = '$user_id' OR  meeting_master.user_id = '$user_id' ) 
+  $q3=$d->selectRow("meeting_master.action_user_id, meeting_master.meeting_id ,meeting_master.user_id,meeting_master.member_id,users_master.user_profile_pic,users_master.user_full_name,meeting_master.date,meeting_master.time,meeting_master.place, meeting_master.agenda, meeting_master.status,meeting_master.reason,user_employment_details.company_name,user_employment_details.designation","user_employment_details, users_master,meeting_master","user_employment_details.user_id = users_master.user_id and   meeting_master.user_id = users_master.user_id  AND users_master.active_status=0  and meeting_master.status !='Deleted'    and (  meeting_master.member_id = '$user_id' OR  meeting_master.user_id = '$user_id' ) 
     "," group by meeting_master.meeting_id ORDER BY meeting_master.date desc ");
 
 

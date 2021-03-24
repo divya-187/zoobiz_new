@@ -8,7 +8,7 @@
        </div>
        <div class="col-sm-3">
          <div class="btn-group float-sm-right">
-           <a href="javascript:void(0)" onclick="DeleteAll('deleteInterest');" class="btn  btn-sm btn-danger pull-right"><i class="fa fa-trash-o fa-lg"></i> Delete </a>
+           <a href="javascript:void(0)" onclick="DeleteAll6('deleteInterest');" class="btn  btn-sm btn-danger pull-right"><i class="fa fa-trash-o fa-lg"></i> Delete </a>
           <a href="#" data-toggle="modal" data-target="#addInterest" class="btn btn-sm btn-primary waves-effect waves-light"><i class="fa fa-plus mr-1"></i> Add New </a>
        </div>
      </div>
@@ -22,11 +22,11 @@
         <!-- <div class="card-header"><i class="fa fa-table"></i> Data Exporting</div> -->
         <div class="card-body">
           <div class="table-responsive">
-            <table id="example" class="table table-bordered">
+            <table id="example6" class="table table-bordered">
               <thead>
                 <tr>
                   <th class="deleteTh">
-                    <input type="checkbox" class="selectAll" label="check all"  />
+                    <input type="checkbox" class="selectAll" label="check all"  />       
                   </th>
                   <th class="text-right">#</th>
                  <th>Members</th>

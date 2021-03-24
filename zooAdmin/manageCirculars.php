@@ -18,7 +18,7 @@ extract(array_map("test_input" , $_POST));
      </div>
      <div class="col-sm-3 col-6">
         <div class="btn-group float-sm-right">
-          <a href="circuler" class="btn btn-sm btn-primary waves-effect waves-light"><i class="fa fa-plus mr-1"></i> Add New</a>
+          <a href="circular" class="btn btn-sm btn-primary waves-effect waves-light"><i class="fa fa-plus mr-1"></i> Add New</a>
           <!-- </button> -->
         </div>
       </div>
@@ -81,9 +81,13 @@ extract(array_map("test_input" , $_POST));
             <div  class="card-footer">
               <?php   //IS_1008
               // Updated on: <?php echo $row['notice_time']; 
-               if($row['updated_at'] !=''){ ?>
+               if($row['updated_at'] ==$row['created_date']){ ?>
+                Added on: <?php   echo  date("d M Y H:i A", strtotime($row['created_date']));?><br>
+              <?php  } else { ?>
                 Updated on: <?php   echo  date("d M Y H:i A", strtotime($row['updated_at']));?><br>
-              <?php  }  //IS_1008 ?>
+              <?php
+
+              } //IS_1008 ?>
 
 
            
@@ -91,7 +95,7 @@ extract(array_map("test_input" , $_POST));
                 <input type="hidden" name="circular_id_delete" value="<?php echo $row['circular_id']; ?>">
                 <button type="submit" class="btn btn-sm btn-danger form-btn"><i class="fa fa-trash-o"></i> Delete</button>
               </form>
-              <form style="float: left;margin-left: 15px;" action="circuler" method="post">
+              <form style="float: left;margin-left: 15px;" action="circular" method="post">
                 <input type="hidden" name="circular_id" value="<?php echo $row['circular_id']; ?>">
                 <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-pencil"></i> Edit</button>
               </form>

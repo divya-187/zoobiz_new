@@ -78,10 +78,16 @@ if(isset($_POST["forgot_mobile"])) {
 	extract(array_map("test_input" , $_POST));
 	$forgot_email=mysqli_real_escape_string($con, $forgot_email);
 
-	$q=$d->select("zoobiz_admin_master","admin_mobile='$forgot_mobile' OR admin_email='$forgot_mobile' and zoobiz_admin_master.status=0 ");
+	$q=$d->select("zoobiz_admin_master","admin_mobile='$forgot_mobile' OR admin_email='$forgot_mobile' /*and zoobiz_admin_master.status=0*/ ");
 	$data = mysqli_fetch_array($q); 
 	extract($data);
 	if ($data > 0) {
+
+		if($data['status'] !=0){
+			$_SESSION['msg1']= "Your Admin Account is Deactivated";
+		    header("location:../forgot.php");
+		    exit;
+		}
 		$full_name = $data['admin_name'];
 		$mobile_number = $data['mobile_number'];
 		$admin_email = $data['admin_email'];

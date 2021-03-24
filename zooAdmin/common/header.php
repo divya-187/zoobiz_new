@@ -75,7 +75,7 @@ if(!isset($_GET['map_view_filter_city_id'])){
   <link href="assets/css/sidebar-menu3.css" rel="stylesheet"/>
   <!-- Custom Style-->
   <link href="assets/css/app-style13.css" rel="stylesheet"/>
-
+  <link href="assets/css/custom1.css" rel="stylesheet"/>
   <link href="assets/plugins/bootstrap-datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
   <link href="assets/plugins/bootstrap-datatable/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css">
   <!--Lightbox Css-->
@@ -107,34 +107,8 @@ if(!isset($_GET['map_view_filter_city_id'])){
 
   <link href="assets/plugins/bootstrap-switch/bootstrap-switch.min.css" rel="stylesheet">
 
-  <style type="text/css">
-    .custom-modal{
-  max-width: 800px !important;
-}
-
-
-@font-face {font-family: "gotham_bold";
-    src: url("assets/fonts/gotham_bold.ttf"); /* IE9*/
-}
-@font-face {font-family: "gotham_book";
-    src: url("assets/fonts/gotham_book.ttf"); /* IE9*/
-}
-@font-face {font-family: "gotham_black";
-    src: url("assets/fonts/gotham_black.ttf"); /* IE9*/
-}
-@font-face {font-family: "great_Vibes";
-    src: url("assets/fonts/great_Vibes.ttf"); /* IE9*/
-}
-
-@font-face {font-family: "montserrat_semi_bold";
-    src: url("assets/fonts/montserrat_semi_bold.ttf"); /* IE9*/
-}
-
-@font-face {font-family: "montserrat_regular";
-    src: url("assets/fonts/montserrat_regular.ttf"); /* IE9*/
-}
-
-  </style>
+   
+ 
   
 </head>
 
@@ -189,7 +163,7 @@ if(!isset($_GET['map_view_filter_city_id'])){
       <a   href="<?php echo $base_url;?>" target="_blank" class="nav-link dropdown-toggle dropdown-toggle-nocaret waves-effect"  ><i class="fa fa-globe"></i></a>
     </li> 
 
-
+<?php  if($_SESSION['role_id'] == 1     ){  ?>
     <li class="nav-item dropdown-lg">
       <a  data-toggle="modal" data-target="#dealModal"  class="nav-link dropdown-toggle dropdown-toggle-nocaret waves-effect"  href="javascript:void();"><i class="fa fa-certificate"></i><span class="badge badge-warning badge-up">+</span> </a>
     </li> 
@@ -197,7 +171,7 @@ if(!isset($_GET['map_view_filter_city_id'])){
       <a  data-toggle="modal" data-target="#notification"  class="nav-link dropdown-toggle dropdown-toggle-nocaret waves-effect"  href="javascript:void();">
       <i class="fa fa-bullhorn"></i><span class="badge badge-warning badge-up">+</span></a>
     </li> 
-
+<?php }?> 
     <li class="nav-item dropdown-lg">
       <a class="nav-link dropdown-toggle dropdown-toggle-nocaret waves-effect" data-toggle="dropdown" href="javascript:void();">
     <i class="fa fa-bell-o"></i><span class="badge badge-danger badge-up"><?php

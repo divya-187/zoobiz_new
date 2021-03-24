@@ -164,7 +164,7 @@ $asif = 0 ;
       </div>
       <div class="col-6 col-lg-6 col-xl-3">
         <div class="card gradient-ohhappiness">
-          <a href="manageCirculers">
+          <a href="manageCirculars">
           <div class="p-2">
             <div class="media align-items-center">
             <div class="media-body">
@@ -379,7 +379,15 @@ $asif = 0 ;
                ?>
                <tr>
                  <td><?php echo $i++; ?></td>
-                 <td><a href="viewMember?id=<?php echo $newUserData['user_id']; ?>"><?php echo $newUserData['user_full_name']; ?></a></td>
+                 <td>
+                  
+                  <?php if($_SESSION['role_id'] == 1 || $_SESSION['role_id'] == 2   ){ ?>
+                  <a href="viewMember?id=<?php echo $newUserData['user_id']; ?>"><?php echo $newUserData['user_full_name']; ?></a></td>
+                  <?php } else { ?> 
+                    <a href="memberView?id=<?php echo $newUserData['user_id']; ?>"><?php echo $newUserData['user_full_name']; ?></a>
+                   <?php } ?>
+
+
                  <td><?php echo $newUserData['user_email']; ?></td>
                  <td><?php echo $newUserData['user_mobile']; ?></td>
                  <td><?php echo $newUserData['plan_renewal_date']; ?></td>
@@ -449,7 +457,12 @@ $today_date = date("Y-m-d");
                ?>
                <tr>
                  <td><?php echo $i++; ?></td>
-                 <td><a href="viewMember?id=<?php echo $newUserData['user_id']; ?>"><?php echo $newUserData['user_full_name']; ?></a></td>
+                 <td>
+<?php if(  $_SESSION['role_id'] == 1 || $_SESSION['role_id'] == 2   ){ ?>
+                  <a href="viewMember?id=<?php echo $newUserData['user_id']; ?>"><?php echo $newUserData['user_full_name']; ?></a>
+                  <?php } else { ?> 
+                    <a href="memberView?id=<?php echo $newUserData['user_id']; ?>"><?php echo $newUserData['user_full_name']; ?></a>
+                   <?php } ?> </td>
                  <td><?php echo $newUserData['user_email']; ?></td>
                  <td><?php echo $newUserData['user_mobile']; ?></td>
                  <td><?php echo $newUserData['plan_renewal_date']; ?></td>
@@ -464,7 +477,9 @@ $today_date = date("Y-m-d");
        </div>
     </div>
 
+<?php  
 
+if($_SESSION['role_id'] == 1   ){  ?>
      <div class="row">
        <div class="col-12 col-lg-12 col-xl-12">
          <div class="card">
@@ -558,3 +573,4 @@ $today_date = date("Y-m-d");
          </div>
        </div>
     </div>
+    <?php } ?> 
