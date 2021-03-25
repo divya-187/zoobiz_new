@@ -217,6 +217,9 @@ extract($company_master_data);
                 <div class="form-group row">
                   
                 </div>
+
+
+                
               </fieldset>
 
 
@@ -281,6 +284,8 @@ extract($company_master_data);
                 </div>
 
                 
+                
+
              
               </fieldset>
  
@@ -317,6 +322,20 @@ extract($company_master_data);
 
 
                   
+                  </div>
+                  
+                </div>
+
+
+                <div class="form-group row">
+                  <label class="col-lg-2 col-form-label form-control-label">Test Mode MERCHANT ID </label>
+                  <div class="col-lg-4">
+                   <input    type="text" class="form-control" name="test_paytm_merchant_id" id="test_paytm_merchant_id" value="<?php if(isset($company_id)){  echo $test_paytm_merchant_id; } ?>" placeholder="Test Merchant Id" minlength="3" maxlength="50"  >
+                  </div>
+                
+                   <label class="col-lg-2 col-form-label form-control-label">Test Mode MERCHANT KEY </label>
+                  <div class="col-lg-4">
+                    <input    type="text" class="form-control" name="test_paytm_merrchant_key" id="test_paytm_merrchant_key" value="<?php if(isset($company_id)){  echo $test_paytm_merrchant_key ; } ?>" placeholder="Test Merchant Key" minlength="3" maxlength="50"  >
                   </div>
                   
                 </div>

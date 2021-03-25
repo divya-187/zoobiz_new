@@ -95,7 +95,7 @@ error_reporting(0);
                 $where .=" and  users_master.refer_by  = '$refer_by' ";
 }                
                
-                $q6=$d->select("company_master,users_master","company_master.company_id =  users_master.company_id  and    users_master.active_status= 0  and users_master.refer_by!= 0  AND users_master.active_status=0   $where  ","");
+                $q6=$d->select("company_master,users_master","company_master.company_id =  users_master.company_id  and    users_master.active_status= 0  and users_master.refer_by!= 0  AND users_master.active_status=0 AND users_master.office_member=0   $where  ","");
 
                 $user_id_array = array('0');
                  while ($data3=mysqli_fetch_array($q6)) {
@@ -103,7 +103,7 @@ error_reporting(0);
                  }
                   $user_id_array = implode(",", $user_id_array);
  
-                 $q3= $d->select("company_master,users_master,user_employment_details, cities"," cities.city_id = users_master.city_id and   user_employment_details.user_id = users_master.user_id and   company_master.company_id =  users_master.company_id  and    users_master.active_status= 0  and users_master.refer_by!= 0 AND users_master.active_status=0   $where  ","");
+                 $q3= $d->select("company_master,users_master,user_employment_details, cities"," cities.city_id = users_master.city_id and   user_employment_details.user_id = users_master.user_id and   company_master.company_id =  users_master.company_id  and    users_master.active_status= 0  and users_master.refer_by!= 0 AND users_master.active_status=0 AND users_master.office_member=0   $where  ","");
 
 
                 

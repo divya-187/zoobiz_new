@@ -61,7 +61,7 @@
                     <td><?php echo $api_file;   ?></td>
                     <td><?php echo $api_version;  ?></td>
                     <td><?php echo wordwrap($description,30,"<br>\n");   ?></td>
-                    <td><?php echo $created_at;  ?></td>
+                    <td data-order="<?php echo date("U",strtotime($created_at)); ?>" ><?php echo $created_at;  ?></td>
                     <td>
                        <a  class="btn btn-sm btn btn-secondary" href="../img/api/<?php echo $api_file; ?>" download><i class="fa fa-download" aria-hidden="true"></i> Download</a>
 
@@ -111,7 +111,7 @@
             <div class="form-group row">
               <label for="state" class="col-sm-3 col-form-label">Description</label>
               <div class="col-sm-9">
-                    <textarea  minlength="1" maxlength="250" value="" required="" class="form-control" id="description" name="description"></textarea>
+                    <textarea  minlength="1" maxlength="250" value=""  class="form-control" id="description" name="description"></textarea>
               </div>
             </div>
 

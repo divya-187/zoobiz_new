@@ -47,7 +47,7 @@ error_reporting(0);
                  
                   <th class="text-right">#</th>
                  
-                  <th class="text-right">Post</th>
+                  
                   <th>Name</th>
                   <th>Email</th>
                   <th>Mobile</th>
@@ -93,9 +93,7 @@ error_reporting(0);
                     <input type="checkbox" class="multiDelteCheckbox"  value="<?php echo $data['feedback_id']; ?>">
                   </td> -->
                   <td class="text-right"><?php echo $i++; ?></td>
-                  <td class="text-right">
-                    <?php //echo  $totalUsage; ?>
-                  </td>
+                 
                   <td><a target="_blank"   title="View Profile"  href="viewMember?id=<?php echo $user_id; ?>" ><?php echo  $salutation.' '.$user_full_name; ?></a></td>
                   <td><?php echo $user_email ; ?></td>
                   <td><?php echo $user_mobile; ?></td>

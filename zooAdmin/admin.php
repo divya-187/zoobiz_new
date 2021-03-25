@@ -27,7 +27,7 @@ extract($zoobiz_admin_master_data);
         <div class="card">
           <div class="card-body">
             
-            <form id="adminFrm" action="controller/adminController.php" method="post" enctype="multipart/form-data">
+            <form autocomplete="off" id="adminFrm" action="controller/adminController.php" method="post" enctype="multipart/form-data">
               <?php
               if(isset($zoobiz_admin_id_edit)){
                 ?>
@@ -69,7 +69,7 @@ extract($zoobiz_admin_master_data);
                   
                   <label class="col-lg-2 col-form-label form-control-label">Admin Email <span class="required">*</span></label>
                   <div class="col-lg-10">
-                    <input  required="" type="email" class="form-control" name="admin_email" id="admin_email" value="<?php if(isset($zoobiz_admin_id_edit)){  echo $admin_email;} ?>" placeholder="Admin Email" minlength="3" maxlength="80"  >
+                    <input readonly onfocus="this.removeAttribute('readonly');" onblur="this.setAttribute('readonly','');"  autocomplete="off"   required="" type="email" class="form-control" name="admin_email" id="admin_email" value="<?php if(isset($zoobiz_admin_id_edit)){  echo $admin_email;} ?>" placeholder="Admin Email" minlength="3" maxlength="80"  >
                     
                   </div>
                  
@@ -79,7 +79,7 @@ extract($zoobiz_admin_master_data);
                   
                   <label class="col-lg-2 col-form-label form-control-label">Admin Mobile <span class="required">*</span></label>
                   <div class="col-lg-10">
-                    <input autocomplete="off"  onblur="checkMobileAdmin()"    maxlength="10" minlength="10"  required="" type="text" class="form-control onlyNumber" name="admin_mobile" id="admin_mobile" value="<?php if(isset($zoobiz_admin_id_edit)){  echo $admin_mobile;} ?>" placeholder="Admin Mobile"   >
+                    <input  readonly onfocus="this.removeAttribute('readonly');" onblur="this.setAttribute('readonly','');"  autocomplete="off"   onblur="checkMobileAdmin()"    maxlength="10" minlength="10"  required="" type="text" class="form-control onlyNumber" name="admin_mobile" id="admin_mobile" value="<?php if(isset($zoobiz_admin_id_edit)){  echo $admin_mobile;} ?>" placeholder="Admin Mobile"   >
                     
                   </div>
                  
@@ -89,12 +89,12 @@ extract($zoobiz_admin_master_data);
                  <div class="form-group row">
           <label class="col-lg-2 col-form-label form-control-label">Password <span class="required">*</span></label>
           <div class="col-lg-4">
-            <input class="form-control" minlength="5" maxlength="50" required="" type="password" name="password" id="password" value="">
+            <input  readonly onfocus="this.removeAttribute('readonly');" onblur="this.setAttribute('readonly','');"  autocomplete="off"   class="form-control" minlength="5" maxlength="50" required="" type="password" name="password" id="password" value="">
           </div>
        
           <label class="col-lg-2 col-form-label form-control-label">Confirm password <span class="required">*</span></label>
           <div class="col-lg-4">
-            <input class="form-control" minlength="5" maxlength="50" required="" name="password2" type="password" value="">
+            <input  readonly onfocus="this.removeAttribute('readonly');" onblur="this.setAttribute('readonly','');" class="form-control" minlength="5" maxlength="50" required="" name="password2" type="password" value="">
           </div>
         </div>
 <?php } ?>

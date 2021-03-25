@@ -6,11 +6,7 @@ $(document).ready(function() {
     $('#default-datatable3').DataTable();
     var table = $('#example').DataTable({
         lengthChange: false,
-        buttons: ['copy', 'excel', 'pdf', 'print', 'colvis'],
-        'columnDefs': [ {
-        'targets': [0], // column index (start from 0)
-        'orderable': false, // set orderable false for selected columns
-     }], "order": [[ 2, "asc" ]]
+        buttons: ['copy', 'excel', 'pdf', 'print', 'colvis'] 
     });
 
     var table1 = $('#exampleReport').DataTable({

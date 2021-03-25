@@ -56,8 +56,8 @@
                     <td><?php echo  $coupon_code; ?></td>
                     <td><?php echo  $package_name; ?></td>
                     <td><?php if($cpn_expiry==1) {echo 'Yes';} else echo "No"; ?></td>
-                    <td><?php if($cpn_expiry==1 && $start_date!="0000-00-00" ) {echo date("d-m-Y", strtotime($start_date));} else echo "-"; ?></td>
-                    <td><?php if($cpn_expiry==1 && $end_date!="0000-00-00") {echo date("d-m-Y", strtotime($end_date));} else echo "-"; ?></td>
+                    <td  <?php if($cpn_expiry==1 && $start_date!="0000-00-00" ) { ?> data-order="<?php echo date("U",strtotime($start_date)); ?>" <?php } ?> ><?php if($cpn_expiry==1 && $start_date!="0000-00-00" ) {echo date("d-m-Y", strtotime($start_date));} else echo "-"; ?></td>
+                    <td  <?php if($cpn_expiry==1 && $end_date!="0000-00-00" ) { ?> data-order="<?php echo date("U",strtotime($end_date)); ?>" <?php } ?>     ><?php if($cpn_expiry==1 && $end_date!="0000-00-00") {echo date("d-m-Y", strtotime($end_date));} else echo "-"; ?></td>
 
                     <td><?php if($is_unlimited==1) {echo 'Yes';} else echo "No"; ?></td>
                     <td><?php if($is_unlimited==1) {echo 'Unlimited';} else echo $coupon_limit; ?></td>

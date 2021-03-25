@@ -622,8 +622,7 @@ $payment_gateway_array["displayCurrency"] = $displayCurrency;
 if($payment_getway_master_data['paytm_merchant_id']!=""){ 
 $payment_gateway_array = array();
 $payment_gateway_array['gateway_name'] ='paytm';//$payment_getway_master_data['paytm_name'];
-$payment_gateway_array['paytm_merchant_id'] = $payment_getway_master_data['paytm_merchant_id'];
-$payment_gateway_array['paytm_merrchant_key'] =html_entity_decode( $payment_getway_master_data['paytm_merrchant_key']);
+
 $payment_gateway_array['is_upi'] =false;
 $payment_gateway_array['logo_url'] =$base_url.'img/PaytmLogo.png';
 $payment_gateway_array["displayCurrency"] = $displayCurrency;
@@ -636,12 +635,19 @@ if($payment_getway_master_data['paytm_is_live_mode']=="Yes"){
 	$payment_gateway_array["host_url"] = "https://securegw.paytm.in/";
     $payment_gateway_array["call_back_url"] = "https://securegw.paytm.in/theia/paytmCallback";
     $payment_gateway_array["show_payment_url"] = "https://securegw.paytm.in/theia/api/v1/showPaymentPage"; 
+
+    $payment_gateway_array['paytm_merchant_id'] = $payment_getway_master_data['paytm_merchant_id'];
+$payment_gateway_array['paytm_merrchant_key'] =html_entity_decode( $payment_getway_master_data['paytm_merrchant_key']);
+
 } else {
 	$payment_gateway_array["host_url"] = "https://securegw-stage.paytm.in/";
     $payment_gateway_array["call_back_url"] =   "https://securegw-stage.paytm.in/theia/paytmCallback"; 
 
     //$base_url.'/controller/successAndroid.php';//
      $payment_gateway_array["show_payment_url"] = "https://securegw-stage.paytm.in/theia/api/v1/showPaymentPage";
+
+     $payment_gateway_array['paytm_merchant_id'] = $payment_getway_master_data['test_paytm_merchant_id'];
+$payment_gateway_array['paytm_merrchant_key'] =html_entity_decode( $payment_getway_master_data['test_paytm_merrchant_key']);
 }
  array_push($response["payment_gateway_array"], $payment_gateway_array);
  }

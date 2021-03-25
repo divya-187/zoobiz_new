@@ -110,6 +110,12 @@ if(isset($_POST) && !empty($_POST) )//it can be $_GET doesn't matter
   $m->set_data('company_id',$company_id); 
  $m->set_data('upi_id',$upi_id); 
   $m->set_data('upi_name',$upi_name); 
+
+
+  $m->set_data('test_paytm_merchant_id',$test_paytm_merchant_id);
+  $m->set_data('test_paytm_merrchant_key',$test_paytm_merrchant_key);
+
+
   $payment_info =array(
     'company_id'=> $m->get_data('company_id'),
     'payment_getway_name'=> $m->get_data('payment_getway_name'),
@@ -129,7 +135,9 @@ if(isset($_POST) && !empty($_POST) )//it can be $_GET doesn't matter
     'paytm_name'=> $m->get_data('paytm_name') ,
     'paytm_merchant_id'=> $m->get_data('paytm_merchant_id') ,
     'paytm_merrchant_key'=> $m->get_data('paytm_merrchant_key') ,
-    'paytm_is_live_mode'=> $m->get_data('paytm_is_live_mode') 
+    'paytm_is_live_mode'=> $m->get_data('paytm_is_live_mode') ,
+    'test_paytm_merchant_id'=> $m->get_data('test_paytm_merchant_id') ,
+    'test_paytm_merrchant_key'=> $m->get_data('test_paytm_merrchant_key') 
   );
 
 
@@ -244,7 +252,8 @@ $q1=$d->update("company_master",$a,"company_id = '$company_id'");
   $m->set_data('paytm_merrchant_key',$paytm_merrchant_key);
   $m->set_data('paytm_is_live_mode',$paytm_is_live_mode);
 
-
+  $m->set_data('test_paytm_merchant_id',$test_paytm_merchant_id);
+  $m->set_data('test_paytm_merrchant_key',$test_paytm_merrchant_key);
 
 $payment_info =array(
   
@@ -265,7 +274,9 @@ $payment_info =array(
     'paytm_name'=> $m->get_data('paytm_name') ,
     'paytm_merchant_id'=> $m->get_data('paytm_merchant_id') ,
     'paytm_merrchant_key'=> $m->get_data('paytm_merrchant_key') ,
-    'paytm_is_live_mode'=> $m->get_data('paytm_is_live_mode')
+    'paytm_is_live_mode'=> $m->get_data('paytm_is_live_mode'),
+    'test_paytm_merchant_id'=> $m->get_data('test_paytm_merchant_id') ,
+    'test_paytm_merrchant_key'=> $m->get_data('test_paytm_merrchant_key')
 );
 
 $q2=$d->update("payment_getway_master",$payment_info,"company_id = '$company_id'");
@@ -402,7 +413,8 @@ $m->set_data('ccav_merchant_id',$ccav_merchant_id);
   $m->set_data('paytm_merrchant_key',$paytm_merrchant_key);
   $m->set_data('paytm_is_live_mode',$paytm_is_live_mode);
 
-    
+    $m->set_data('test_paytm_merchant_id',$test_paytm_merchant_id);
+  $m->set_data('test_paytm_merrchant_key',$test_paytm_merrchant_key);
   $payment_info =array(
     
     'payment_getway_name'=> $m->get_data('payment_getway_name'),
@@ -421,7 +433,9 @@ $m->set_data('ccav_merchant_id',$ccav_merchant_id);
     'ccav_live_mode'=> $m->get_data('ccav_live_mode')  ,
     'paytm_merchant_id'=> $m->get_data('paytm_merchant_id') ,
     'paytm_merrchant_key'=> $m->get_data('paytm_merrchant_key') ,
-    'paytm_is_live_mode'=> $m->get_data('paytm_is_live_mode')
+    'paytm_is_live_mode'=> $m->get_data('paytm_is_live_mode'),
+    'test_paytm_merchant_id'=> $m->get_data('test_paytm_merchant_id') ,
+    'test_paytm_merrchant_key'=> $m->get_data('test_paytm_merrchant_key')
   );
 
   $q2=$d->update("payment_getway_master",$payment_info,"company_id = '$company_id'");

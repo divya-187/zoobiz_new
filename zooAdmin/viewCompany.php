@@ -272,7 +272,19 @@ extract($compData);
                     
                   </div>
 
+                  <div class="form-group row">
+                  <label class="col-lg-4 col-form-label form-control-label">Test Mode MERCHANT ID </label>
+                  <div class="col-lg-8">
+                   <input    type="text" class="form-control" name="test_paytm_merchant_id" id="test_paytm_merchant_id" value="<?php if(isset($company_id)){  echo $test_paytm_merchant_id; } ?>" placeholder="Test Merchant Id" minlength="3" maxlength="50"  >
+                  </div>
+                </div>
+                <div class="form-group row">
+                   <label class="col-lg-4 col-form-label form-control-label">Test Mode MERCHANT KEY </label>
+                  <div class="col-lg-8">
+                    <input    type="text" class="form-control" name="test_paytm_merrchant_key" id="test_paytm_merrchant_key" value="<?php if(isset($company_id)){  echo $test_paytm_merrchant_key ; } ?>" placeholder="Test Merchant Key" minlength="3" maxlength="50"  >
+                  </div>
                   
+                </div>
                   <div class="form-group row">
                     <div class="col-lg-12 text-center">
                       <input type="submit"   class="btn btn-primary" name="updatePaymentDetails"  value="Update">

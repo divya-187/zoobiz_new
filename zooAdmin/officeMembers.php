@@ -79,7 +79,7 @@ while($business_sub_categories_data=mysqli_fetch_array($business_sub_categories_
                       <td><?php $sub_cat_array = $business_sub_categories_array[$business_sub_category_id];
                       echo $sub_cat_array; ?></td>
                   <td><?php echo $device; ?></td>
-                  <td><?php echo date("d-m-Y", strtotime($register_date)); ?></td>
+                  <td data-order="<?php echo date("U",strtotime($register_date)); ?>" ><?php echo date("d-m-Y", strtotime($register_date)); ?></td>
                  
                </tr>
 

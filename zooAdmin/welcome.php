@@ -390,7 +390,7 @@ $asif = 0 ;
 
                  <td><?php echo $newUserData['user_email']; ?></td>
                  <td><?php echo $newUserData['user_mobile']; ?></td>
-                 <td><?php echo $newUserData['plan_renewal_date']; ?></td>
+                 <td data-order="<?php echo date("U",strtotime($newUserData['plan_renewal_date'])); ?>" ><?php echo $newUserData['plan_renewal_date']; ?></td>
                  <td><?php  
                  if ($today>$newUserData['plan_renewal_date']) {
                       echo "<span class='text text-danger'>Expired</span>  ";
@@ -465,7 +465,7 @@ $today_date = date("Y-m-d");
                    <?php } ?> </td>
                  <td><?php echo $newUserData['user_email']; ?></td>
                  <td><?php echo $newUserData['user_mobile']; ?></td>
-                 <td><?php echo $newUserData['plan_renewal_date']; ?></td>
+                 <td data-order="<?php echo date("U",strtotime($newUserData['plan_renewal_date'])); ?>" ><?php echo $newUserData['plan_renewal_date']; ?></td>
                  
                  
                </tr>

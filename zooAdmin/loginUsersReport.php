@@ -96,7 +96,7 @@
                   <td><?php  echo $company_name;
                    ?></td>
                   <td><?php echo $device; ?></td>
-                   <td><?php if ($last_login!='0000-00-00 00:00:00') {
+                   <td data-order="<?php echo date("U",strtotime($last_login)); ?>" ><?php if ($last_login!='0000-00-00 00:00:00') {
                       echo date("d M Y h:i A", strtotime($last_login)); 
                     } ?></td>
                  
@@ -224,7 +224,7 @@
                   <td><?php  echo $company_name;
                    ?></td>
                   <td><?php echo $device; ?></td>
-                   <td><?php if ($last_login!='0000-00-00 00:00:00') {
+                   <td data-order="<?php echo date("U",strtotime($last_login)); ?>" ><?php if ($last_login!='0000-00-00 00:00:00') {
                       echo date("d M Y h:i A", strtotime($last_login)); 
                     } ?></td>
                    <!-- <td>

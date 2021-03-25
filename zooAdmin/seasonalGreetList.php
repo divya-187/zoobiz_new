@@ -58,8 +58,8 @@
                     <td><?php echo  $title; ?></td>
                      
                     <td><?php echo $is_expiry; ?></td>
-                    <td><?php if($is_expiry=="Yes" && $start_date!="0000-00-00" ) {echo date("d-m-Y", strtotime($start_date));} else echo "-"; ?></td>
-                    <td><?php if($is_expiry=="Yes" && $end_date!="0000-00-00") {echo date("d-m-Y", strtotime($end_date));} else echo "-"; ?></td>
+                    <td   <?php if($is_expiry=="Yes" && $start_date!="0000-00-00") {?> data-order="<?php echo date("U",strtotime($start_date)); ?>"  <?php } ?>  ><?php if($is_expiry=="Yes" && $start_date!="0000-00-00" ) {echo date("d-m-Y", strtotime($start_date));} else echo "-"; ?></td>
+                    <td <?php if($is_expiry=="Yes" && $end_date!="0000-00-00") {?> data-order="<?php echo date("U",strtotime($end_date)); ?>"  <?php } ?>  ><?php if($is_expiry=="Yes" && $end_date!="0000-00-00") {echo date("d-m-Y", strtotime($end_date));} else echo "-"; ?></td>
 
                      <td class="text-right"><?php
                      $q3=$d->select("seasonal_greet_image_master"," seasonal_greet_id='$seasonal_greet_id' and status ='Active'","");

@@ -104,9 +104,9 @@
                       </div>
                     <?php } ?> 
                   </td>
-                   <td> <?php  echo date("d-m-Y", strtotime($data['event_date']));?> </td>
+                   <td data-order="<?php echo date("U",strtotime($data['event_date'])); ?>" > <?php  echo date("d-m-Y", strtotime($data['event_date']));?> </td>
 
-                    <td> <?php echo date("d-m-Y", strtotime($data['event_end_date']));  ?> </td>
+                    <td data-order="<?php echo date("U",strtotime($data['event_end_date'])); ?>" > <?php echo date("d-m-Y", strtotime($data['event_end_date']));  ?> </td>
 
 <?php if($_SESSION['role_id'] == 1){  ?>
                     <td>
