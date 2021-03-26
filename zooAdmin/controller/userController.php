@@ -678,6 +678,7 @@ echo  "here";exit; */
     $m->set_data('member_date_of_birth',$member_date_of_birth);
     $m->set_data('whatsapp_number',$whatsapp_number);
     $m->set_data('user_email',$user_email);
+    $m->set_data('country_code',$country_code);
     $m->set_data('alt_mobile',$alt_mobile);
     
     $m->set_data('gender',$gender);
@@ -696,6 +697,7 @@ echo  "here";exit; */
    
     $a =array(
       'salutation'=> $m->get_data('salutation'),
+      'country_code'=> $m->get_data('country_code'),
       'user_first_name'=> $m->get_data('user_first_name'),
       'user_last_name'=> $m->get_data('user_last_name'),
       'user_full_name'=> $m->get_data('user_full_name'),

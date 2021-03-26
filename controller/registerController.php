@@ -17,6 +17,13 @@ exit;*/
 if (isset($_POST) && !empty($_POST)) //it can be $_GET doesn't matter
 
 {
+
+            if(isset($country_code)){
+                $m->set_data('country_code',$country_code);
+            } else {
+                $m->set_data('country_code','+91');
+            }
+
     //3nov 2020
     //3nov 2020
     //  echo "<pre>";print_r($_POST);exit;
@@ -79,6 +86,7 @@ if (isset($_POST) && !empty($_POST)) //it can be $_GET doesn't matter
             $m->set_data('user_last_name', ucfirst($user_last_name));
             $m->set_data('user_full_name', ucfirst($user_first_name) . ' ' . ucfirst($user_last_name));
             $m->set_data('user_mobile', $userMobile);
+            $m->set_data('country_code', $country_code);
             $m->set_data('user_email', $user_email);
             $m->set_data('gender', $gender);
             $m->set_data('plan_id', $plan_id);
@@ -135,6 +143,7 @@ if (isset($_POST) && !empty($_POST)) //it can be $_GET doesn't matter
                 'user_last_name' => $m->get_data('user_last_name') ,
                 'user_full_name' => $m->get_data('user_full_name') ,
                 'user_mobile' => $m->get_data('user_mobile') ,
+                'country_code'=> $m->get_data('country_code') ,
                 'whatsapp_number' => $m->get_data('whatsapp_number') ,
                 'user_email' => $m->get_data('user_email') ,
                 'gender' => $m->get_data('gender') ,
@@ -181,6 +190,7 @@ if (isset($_POST) && !empty($_POST)) //it can be $_GET doesn't matter
         $_SESSION['user_last_name'] = $user_last_name;
         $_SESSION['user_email'] = $user_email;
         $_SESSION['user_mobile'] = $user_mobile;
+        $_SESSION['country_code'] = $country_code;
         $_SESSION['gender'] = $gender;
         $_SESSION['plan_id'] = $plan_id;
         $_SESSION['city_id'] = $city_id;
@@ -322,6 +332,7 @@ if (isset($_POST) && !empty($_POST)) //it can be $_GET doesn't matter
             'user_last_name' => $m->get_data('user_last_name') ,
             'user_full_name' => $m->get_data('user_full_name') ,
             'user_mobile' => $m->get_data('user_mobile') ,
+            'country_code'=> $m->get_data('country_code'),
             'user_email' => $m->get_data('user_email') ,
             'gender' => $m->get_data('gender') ,
             'register_date' => $m->get_data('register_date') ,
@@ -344,6 +355,7 @@ if (isset($_POST) && !empty($_POST)) //it can be $_GET doesn't matter
             'package_name' => $package_name,
             'coupon_id' => $m->get_data('coupon_id') ,
             'user_mobile' => $m->get_data('user_mobile') ,
+
             'payment_mode' => "Coupon Front Web",
             'transection_amount' => $package_amount,
             'transection_date' => date("Y-m-d H:i:s") ,
@@ -926,6 +938,8 @@ if (isset($_POST) && !empty($_POST)) //it can be $_GET doesn't matter
             $m->set_data('user_first_name', ucfirst($user_first_name));
             $m->set_data('user_last_name', ucfirst($user_last_name));
             $m->set_data('user_full_name', ucfirst($user_first_name) . ' ' . ucfirst($user_last_name));
+
+
             $m->set_data('user_mobile', $user_mobile);
             $m->set_data('user_email', $user_email);
             $m->set_data('gender', $gender);
@@ -972,6 +986,7 @@ if (isset($_POST) && !empty($_POST)) //it can be $_GET doesn't matter
                 'user_last_name' => $m->get_data('user_last_name') ,
                 'user_full_name' => $m->get_data('user_full_name') ,
                 'user_mobile' => $m->get_data('user_mobile') ,
+                'country_code'=> $m->get_data('country_code'),
                 'user_email' => $m->get_data('user_email') ,
                 'gender' => $m->get_data('gender') ,
                 'register_date' => $m->get_data('register_date') ,

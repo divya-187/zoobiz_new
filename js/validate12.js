@@ -251,7 +251,7 @@ $("#registerFrm").validate({
         },
         rules: {
             salutation: {
-                required: true 
+                required: false 
             },
             user_first_name:{
                 required:true,
@@ -311,6 +311,9 @@ $("#registerFrm").validate({
             },*/
             //7oct2020
             user_mobile:{
+                required:true,
+            },
+            country_code:{
                 required:true,
             },
             business_category_id:{
@@ -373,8 +376,8 @@ $("#registerFrm").validate({
             plan_id:{
                 required:" Select membership plan"
             },
-            salutation: {
-                required: " Select salutation" 
+            country_code: {
+                required: " Select country code" 
             },
             refer_friend_id:{
                  required: " Select Referred By Member" 

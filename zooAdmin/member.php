@@ -19,7 +19,9 @@
               <form id="memberFrm" action="controller/userController.php" method="post" enctype="multipart/form-data">
                <fieldset class="scheduler-border">
                 <legend  class="scheduler-border">Basic Details</legend>
+              
                 <div class="form-group row">
+                  <?php /* ?> 
                     <label class="col-lg-2 col-form-label form-control-label">Salutation <span class="required">*</span></label>
                       <div class="col-lg-4">
                       <select class="form-control" name="salutation" type="text" required="">
@@ -33,19 +35,26 @@
                             <option value="Other">Other</option>
                         </select>
                       </div>
+                      <?php */ ?> 
                       <label class="col-lg-2 col-form-label form-control-label">First Name <span class="required">*</span></label>
                       <div class="col-lg-4">
                         <input type="hidden" name="addNewMember" value="<?php echo 'addNewMember'; ?>">
                         <input minlength="1" maxlength="50" class="form-control mem-alphanumeric" name="user_first_name" type="text" value="<?php echo $user_first_name ; ?>" required="">
                       </div>
 
-                     
-                    </div>
-                    <div class="form-group row">
-                       <label class="col-lg-2 col-form-label form-control-label">Last Name <span class="required">*</span></label>
+                      <label class="col-lg-2 col-form-label form-control-label">Last Name <span class="required">*</span></label>
                       <div class="col-lg-4">
                         <input minlength="1" maxlength="50"  class="form-control mem-alphanumeric" name="user_last_name" type="text" value="<?php echo $user_last_name; ?>" required="">
                       </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-lg-2 col-form-label form-control-label">Country Code<span class="required">*</span></label>
+                      <div class="col-lg-4">
+                      <select class="form-control single-select" name="country_code" type="text" required="">
+                          <?php include '../common/country_code_option_list.php'; ?>
+                        </select>
+                      </div>
+
                       <label class="col-lg-2 col-form-label form-control-label">Mobile <span class="required">*</span></label>
                       <div class="col-lg-4">
                         <input required="" class="form-control" onblur="checkMobileUser()"  name="user_mobile"  maxlength="10" minlength="10"   type="text" value="<?php echo $user_mobile; ?>" id="userMobile">

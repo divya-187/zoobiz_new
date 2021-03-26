@@ -118,7 +118,7 @@ if (isset($_GET['id'])) {
                                     </div>
                                 </div>
 
-
+                                <?php /*
                                 <div class="col-md-6 col-sm-12">
                                     <div class="form-group">
                                         <label for="salutation" >Salutation <span class="required">*</span></label>
@@ -134,6 +134,7 @@ if (isset($_GET['id'])) {
                                         </select>
                                     </div>
                                 </div>
+                                <?php */ ?> 
                                 <div class="col-md-6 col-sm-12">
                                     <div class="form-group">
                                         <label for="user_first_name" >First name <span class="required">*</span></label>
@@ -147,8 +148,7 @@ if (isset($_GET['id'])) {
                                         <input maxlength="30"  class="form-control text-capitalize mem-alphanumeric" name="user_last_name" id="user_last_name" type="text" value="<?php if(isset($_SESSION['user_last_name'])   ){ echo $_SESSION['user_last_name']; }?>" required="" placeholder="Last Name">
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
+                           
                               
                              
                                 <div class="col-md-6 col-sm-12">
@@ -169,6 +169,20 @@ if (isset($_GET['id'])) {
 
                                     </div>
                                 </div>
+                                 </div>
+                            <div class="row">
+                                 <div class="col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="user_mobile" >Country Code <span class="required">*</span></label>
+                                        <select class="form-control single-select" name="country_code" type="text" required="">
+                                          <?php include 'common/country_code_option_list.php'; ?>
+                                        </select>
+
+
+                                    </div>
+                                </div>
+
+
                                 <div class="col-md-6 col-sm-12">
                                     <div class="form-group">
                                         <label for="user_mobile" >Mobile Number (Login) <span class="required">*</span></label>

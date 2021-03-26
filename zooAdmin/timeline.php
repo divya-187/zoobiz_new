@@ -196,10 +196,11 @@ $admin_data =  $adamin_array[$data_notification['admin_id']];
  <img  onerror="this.src='img/user.png'" class="imgRedonda lazyload"  src="../img/infinity.gif" data-src="../img/fav.png" width="10%">
        <?php  } else {?>
         <img  onerror="this.src='img/user.png'" class="imgRedonda lazyload" src="../img/infinity.gif"  data-src="../img/users/members_profile/<?php echo $userData['user_profile_pic']; ?>" width="10%">
-      <?php } ?> 
+      <?php }     if($userData['user_full_name']=='') { echo 'ZooBiz Admin';//$admin_data['admin_name']; 
+        } else {?> 
         <a class="profileName" href="viewMember?id=<?php echo $data_notification['user_id']; ?>" target="_blank">
-          <?php if($userData['user_full_name']=='') { echo 'Admin';//$admin_data['admin_name']; 
-        } else { echo $userData['salutation'].' '. $userData['user_full_name']; } ?></a>
+         <?php  echo $userData['salutation'].' '. $userData['user_full_name']; ?> </a>
+          <?php } ?>
 
 <!-- <div style="margin-left: 12px;">
 <form   action="controller/newsFeedController.php" method="post">

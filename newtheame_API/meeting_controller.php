@@ -91,9 +91,9 @@ if (isset($_POST) && !empty($_POST)) {
 
 
       if (strtolower($device)=='android') {
-        $nResident->noti("meetup","",0,$user_token," " ,$msg,$notAry,1,$img);
+        $nResident->noti("meetup","",0,$user_token,"Meetup" ,$msg,$notAry,1,$img);
       }  else if(strtolower($device) =='ios') {
-       $nResident->noti_ios("meetup","",0,$user_token," ",$msg,$notAry,1,$img);
+       $nResident->noti_ios("meetup","",0,$user_token,"Meetup",$msg,$notAry,1,$img);
      }
 
 
@@ -122,12 +122,11 @@ if (isset($_POST) && !empty($_POST)) {
    $gu=$d->select("meeting_master","meeting_id ='$meeting_id'");
    $meetingData=mysqli_fetch_array($gu);
 
-   //$q = $d->delete("meeting_master","meeting_id='$meeting_id'");
-   $a = array(
+ //  $q = $d->delete("meeting_master","meeting_id='$meeting_id'");
+$a = array(
     'status' => 'Deleted' 
    );
   $q = $d->update("meeting_master",$a,"meeting_id ='$meeting_id'" );
-
    if($q>0) {
      $d->insert_myactivity($user_id,"0","", "Rejected Meetup Deleted - ".$meetingData['date'].' '.$meetingData['time'],"activity.png");
      $response["message"] = "Meetup Deleted";
@@ -172,9 +171,9 @@ if (isset($_POST) && !empty($_POST)) {
     $device=$userData['device'];
     $feed_user_id=$userData['user_id'];
     if (strtolower($device)=='android') {
-      $nResident->noti("meetup","",0,$user_token,"Let's Meet",$agenda,'');
+      $nResident->noti("meetup","",0,$user_token,"Meetup",$agenda,'');
     }  else if(strtolower($device)=='ios') {
-     $nResident->noti_ios("meetup","",0,$user_token,"Let's Meet",$agenda,'');
+     $nResident->noti_ios("meetup","",0,$user_token,"Meetup",$agenda,'');
    }
    $d->insert_myactivity($user_id,"0","", "You set meeting with ".$userData['user_full_name'],"activity.png");
    $response["message"] = "Updated Successfully";
@@ -292,15 +291,7 @@ if (isset($_POST) && !empty($_POST)) {
      $meetup_date2 =date( "Y-m-d H:i",$newDate); 
 
 
-$date_before_1_day = date("Y-m-d", strtotime($date1."-1 day"));
-$currDate = date("Y-m-d");
-if(strtotime($date_before_1_day) < strtotime($currDate) ){
-  $date_before_1_day =$currDate;
-}
 
-
-$minus1hr = strtotime($date2) - 60*60;
-$meetup_date_minus1hr =date( "Y-m-d H:i",$minus1hr); 
 
      $m->set_data('modify_date',date('Y-m-d H:i:s'));
 
@@ -318,23 +309,9 @@ $meetup_date_minus1hr =date( "Y-m-d H:i",$minus1hr);
 
 
 
-$msgRes1 = "You have meeting with ".$u_data['user_full_name']." on ".date("d F Y h:i A",strtotime($userData['date'] .' '. $userData['time']))." @ ".$userData['place']." for ".$userData['agenda'];
-
-if($u_data['user_profile_pic']!=""){
-        $m_profile = $base_url . "img/users/members_profile/" . $u_data['user_profile_pic'];
-      } else {
-        $m_profile ="https://zoobiz.in/img/user.png";
-      }
-
 
      $notAry = array(
-      'date_before_1_day' => $date_before_1_day,
       'meetup_date' => $meetup_date,
-      'meeting_id' => $meeting_id,
-      'fcm_message' => $msgRes1,
-      'm_date' => date("Y-m-d",  strtotime($userData['date']) ),
-      'm_profile' =>$m_profile ,
-      'm_time' =>date("H:i", strtotime($meetup_date_minus1hr)) ,// $time11,
       'date' => $meetup_date1,
       'end_date' => $meetup_date2,
       'place' => $userData['place'],
@@ -346,33 +323,16 @@ if($u_data['user_profile_pic']!=""){
     );
 
      if (strtolower($device)=='android') {
-      $nResident->noti("meetup","",0,$opp_user_data['user_token']," ",$msg,$notAry,1,$img);
+      $nResident->noti("meetup","",0,$opp_user_data['user_token'],"Meetup",$msg,$notAry,1,$img);
     }  else if(strtolower($device)=='ios') {
-     $nResident->noti_ios("meetup","",0,$opp_user_data['user_token']," ",$msg,$notAry,1,$img);
+     $nResident->noti_ios("meetup","",0,$opp_user_data['user_token'],"Meetup",$msg,$notAry,1,$img);
    }
 
     // echo $q.'test';exit;
    $d->insert_myactivity($user_id,"0","", "You Approved meeting with ".$opp_user_data['user_full_name'],"activity.png");
- 
-if($opp_user_data['user_profile_pic']!=""){
-        $m_profile2 = $base_url . "img/users/members_profile/" . $opp_user_data['user_profile_pic'];
-      } else {
-        $m_profile2 ="https://zoobiz.in/img/user.png";
-      }
- $msgRes = "You have meeting with ".$opp_user_data['user_full_name']." on ".date("d F Y h:i A",strtotime($userData['date'] .' '. $userData['time']))." @ ".$userData['place']." for ".$userData['agenda'];
-
-   $response["date_before_1_day"] = $date_before_1_day; 
-   $response["meeting_id"] = $meeting_id; 
-   $response["fcm_message"] = $msgRes;
+   
    $response["date"] = $meetup_date1;
    $response["end_date"] = $meetup_date2;
-$response["m_profile"] = $m_profile2;
-    $response["m_date"] = date("Y-m-d", strtotime($userData['date']));
-   $response["m_time"] = date("H:i", strtotime($meetup_date_minus1hr)) ;// $time11;
-
-   
-
-
    $response["place"] =$userData['place'];
    $response["meetup_with"] ="Meetup With ". $opp_user_data['user_full_name'];
    $response["agenda"] =$userData['agenda'];
@@ -460,9 +420,9 @@ $response["m_profile"] = $m_profile2;
         'meetup_date' => $meetup_date
       );
       if (strtolower($device)=='android') {
-        $nResident->noti("meetup","",0,$user_token," ",$msg,$notAry,1,$img);
+        $nResident->noti("meetup","",0,$user_token,"Meetup",$msg,$notAry,1,$img);
       }  else if(strtolower($device)=='ios') {
-       $nResident->noti_ios("meetup","",0,$user_token," ",$msg,$notAry,1,$img);
+       $nResident->noti_ios("meetup","",0,$user_token,"Meetup",$msg,$notAry,1,$img);
      }
      $d->insert_myactivity($user_id,"0","", "Meetup Rejected with ".$opp_user_data['user_full_name'],"activity.png");
      $response["message"] = "Meetup Rejected";
@@ -559,9 +519,9 @@ $title ="Meetup";//$u_data['user_full_name']." Rescheduled Meeting";
       );
       
       if (strtolower($device)=='android') {
-        $nResident->noti("meetup",'',0,$user_token," ",$msg,$notAry,1,$img);
+        $nResident->noti("meetup",'',0,$user_token,"Meetup",$msg,$notAry,1,$img);
       }  else if(strtolower($device)=='ios') {
-        $nResident->noti_ios("meetup",'',0,$user_token," ",$msg,$notAry,1,$img);
+        $nResident->noti_ios("meetup",'',0,$user_token,"Meetup",$msg,$notAry,1,$img);
       }
 
 
@@ -695,7 +655,7 @@ else if ($_POST['getMyMeetings'] == "getMyMeetings" && filter_var($user_id, FILT
 
 
 
-  $q3=$d->selectRow("meeting_master.action_user_id, meeting_master.meeting_id ,meeting_master.user_id,meeting_master.member_id,users_master.user_profile_pic,users_master.user_full_name,meeting_master.date,meeting_master.time,meeting_master.place, meeting_master.agenda, meeting_master.status,meeting_master.reason,user_employment_details.company_name,user_employment_details.designation","user_employment_details, users_master,meeting_master","user_employment_details.user_id = users_master.user_id and   meeting_master.user_id = users_master.user_id  AND users_master.active_status=0  and meeting_master.status !='Deleted'    and (  meeting_master.member_id = '$user_id' OR  meeting_master.user_id = '$user_id' ) 
+  $q3=$d->selectRow("meeting_master.action_user_id, meeting_master.meeting_id ,meeting_master.user_id,meeting_master.member_id,users_master.user_profile_pic,users_master.user_full_name,meeting_master.date,meeting_master.time,meeting_master.place, meeting_master.agenda, meeting_master.status,meeting_master.reason,user_employment_details.company_name,user_employment_details.designation","user_employment_details, users_master,meeting_master","user_employment_details.user_id = users_master.user_id and   meeting_master.user_id = users_master.user_id  AND users_master.active_status=0 and meeting_master.status !='Deleted'    and (  meeting_master.member_id = '$user_id' OR  meeting_master.user_id = '$user_id' ) 
     "," group by meeting_master.meeting_id ORDER BY meeting_master.date desc ");
 
 

@@ -31,7 +31,7 @@
                  
                  <th>app ame</th>
                   <th>app package name</th>
-                  <th>Created Ats</th>
+                  <th>Created At</th>
                   <th>Status</th>
                  
                   

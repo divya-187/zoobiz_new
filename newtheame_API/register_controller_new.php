@@ -90,7 +90,7 @@ $lid=$d->select("zoobizlastid","","");
 
 
 
-			$q = $d->selectRow("company_id,city_id","users_master_temp", "user_mobile='$userMobile'");
+			$q = $d->selectRow("*","users_master_temp", "user_mobile='$userMobile'");
 			$dataTemp = mysqli_fetch_array($q);
 
 			// $catArray = explode(":", $business_sub_category_id);
@@ -145,11 +145,20 @@ $lid=$d->select("zoobizlastid","","");
 				$m->set_data('remark','');
 			}
 
+			if(isset($country_code)){
+				$m->set_data('country_code',$country_code);
+			} else {
+				$m->set_data('country_code','+91');
+			}
+
+
+
 $a = array(
 				/*'coupon_id' => $m->get_data('coupon_id'),*/
 				'zoobiz_id' => $m->get_data('zoobiz_id'),
 				/*'salutation' => $m->get_data('salutation'),*/
 				'user_first_name' => $m->get_data('user_first_name'),
+				'country_code' => $m->get_data('country_code'),
 				'user_last_name' => $m->get_data('user_last_name'),
 				'user_full_name' => $m->get_data('user_full_name'),
 				'company_id' => $m->get_data('company_id'),
@@ -546,11 +555,18 @@ $user_id  = $con->insert_id;
 				$m->set_data('tracking_id','');
 			}
 			
+
+			if(isset($country_code)){
+				$m->set_data('country_code',$country_code);
+			} else {
+				$m->set_data('country_code','+91');
+			}
 			//7oct2020
 			$a = array(
 				'coupon_id' => $m->get_data('coupon_id'),
 				'state_id' => $m->get_data('state_id'),
 				/*'salutation' => $m->get_data('salutation'),*/
+				'country_code' => $m->get_data('country_code'),
 				'tracking_id' => $m->get_data('tracking_id'),
 				'user_first_name' => $m->get_data('user_first_name'),
 				'user_last_name' => $m->get_data('user_last_name'),

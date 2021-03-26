@@ -68,7 +68,7 @@
 <script src="js/map.js"></script>
 <!--Form Validatin Script-->
 <script src="js/jquery.validate.min.js"></script>
-<script src="js/validate11.js"></script>
+<script src="js/validate12.js"></script>
 <script src="js/functions3.js"></script>
 <script src="js/custom10.js"></script>
 <script src="assets/plugins/select2/js/select2.min.js"></script>
@@ -87,7 +87,7 @@
     }
     event.preventDefault();
 
-    var salutation = $("#salutation").val();
+   // var salutation = $("#salutation").val();
     var plan_id = $("#plan_id").val();
     var user_first_name = $("#user_first_name").val();
     var user_last_name = $("#user_last_name").val();
@@ -110,7 +110,7 @@
       user_email ='';
       $("#user_email").val('');
     }
-    if( $.trim(salutation) =="" ||   $.trim(plan_id) ==""   || $.trim(user_first_name) =="" || $.trim(user_last_name) =="" || $.trim(user_email) =="" || $.trim(user_mobile) =="" || $.trim(refer_by) ==""     || $.trim(refer_friend_id) =="" || $.trim(refer_friend_id) =="0"  ){
+    if(     $.trim(plan_id) ==""   || $.trim(user_first_name) =="" || $.trim(user_last_name) =="" || $.trim(user_email) =="" || $.trim(user_mobile) =="" || $.trim(refer_by) ==""     || $.trim(refer_friend_id) =="" || $.trim(refer_friend_id) =="0"  ){
 
       if($('#registerFrm').valid() == true){
         $( "#registerFrm" ).submit();
@@ -130,7 +130,7 @@
         url: "controller/registerController.php",
         cache: false,
         type: "POST",
-        data: {city_id : city_id,salutation:salutation,plan_id:plan_id,user_first_name:user_first_name,user_last_name:user_last_name,user_email:user_email,gender:gender,userMobile : user_mobile,checkUserMobileFormSubmit:'checkUserMobileFormSubmit'},
+        data: {city_id : city_id,plan_id:plan_id,user_first_name:user_first_name,user_last_name:user_last_name,user_email:user_email,gender:gender,userMobile : user_mobile,checkUserMobileFormSubmit:'checkUserMobileFormSubmit'},
         success: function(response){
           if (response==1) {
             swal("Error", "This mobile number is Already Registered.", "error");
@@ -157,7 +157,7 @@
 
 
 $('#addNewMemberPayTm').on("click",function(event) {
-  alert('h');
+ 
     $("#registerFrm").attr("action", "controller/pgRedirect.php");
     if($('#coupon_code').val() ==""){
       $("#chkError").html('');
@@ -165,7 +165,7 @@ $('#addNewMemberPayTm').on("click",function(event) {
     }
     event.preventDefault();
 
-    var salutation = $("#salutation").val();
+   
     var plan_id = $("#plan_id").val();
     var user_first_name = $("#user_first_name").val();
     var user_last_name = $("#user_last_name").val();
@@ -188,7 +188,7 @@ $('#addNewMemberPayTm').on("click",function(event) {
       user_email ='';
       $("#user_email").val('');
     }
-    if( $.trim(salutation) =="" ||   $.trim(plan_id) ==""   || $.trim(user_first_name) =="" || $.trim(user_last_name) =="" || $.trim(user_email) =="" || $.trim(user_mobile) =="" || $.trim(refer_by) ==""     || $.trim(refer_friend_id) =="" || $.trim(refer_friend_id) =="0"  ){
+    if(    $.trim(plan_id) ==""   || $.trim(user_first_name) =="" || $.trim(user_last_name) =="" || $.trim(user_email) =="" || $.trim(user_mobile) =="" || $.trim(refer_by) ==""     || $.trim(refer_friend_id) =="" || $.trim(refer_friend_id) =="0"  ){
 
       if($('#registerFrm').valid() == true){
         $( "#registerFrm" ).submit();
@@ -208,7 +208,7 @@ $('#addNewMemberPayTm').on("click",function(event) {
         url: "controller/registerController.php",
         cache: false,
         type: "POST",
-        data: {city_id : city_id,salutation:salutation,plan_id:plan_id,user_first_name:user_first_name,user_last_name:user_last_name,user_email:user_email,gender:gender,userMobile : user_mobile,checkUserMobileFormSubmit:'checkUserMobileFormSubmit'},
+        data: {city_id : city_id,plan_id:plan_id,user_first_name:user_first_name,user_last_name:user_last_name,user_email:user_email,gender:gender,userMobile : user_mobile,checkUserMobileFormSubmit:'checkUserMobileFormSubmit'},
         success: function(response){
           if (response==1) {
             swal("Error", "This mobile number is Already Registered.", "error");
@@ -487,7 +487,7 @@ if($('#coupon_code').val() ==""){
 }
 //30nov2020
 event.preventDefault();
-var salutation = $("#salutation").val();
+
 var plan_id = $("#plan_id").val();
 var user_first_name = $("#user_first_name").val();
 var user_last_name = $("#user_last_name").val();
@@ -527,10 +527,10 @@ if (!testEmail.test(user_email)){
   user_email ='';
   $("#user_email").val('');
 }
-/* alert($.trim(salutation) +'=="" ||'+ $.trim(plan_id) +'=="" ||'+ $.trim(user_first_name) +'=="" ||'+ $.trim(user_last_name) +'=="" ||'+ $.trim(user_email) +'=="" ||'+ $.trim(user_mobile) +'=="" ||'+ $.trim(refer_by) +'=="" ||'+ $.trim(refer_friend_id) +'=="" ||'+ $.trim(refer_friend_id)+'=="0" ' );
+/* alert( $.trim(plan_id) +'=="" ||'+ $.trim(user_first_name) +'=="" ||'+ $.trim(user_last_name) +'=="" ||'+ $.trim(user_email) +'=="" ||'+ $.trim(user_mobile) +'=="" ||'+ $.trim(refer_by) +'=="" ||'+ $.trim(refer_friend_id) +'=="" ||'+ $.trim(refer_friend_id)+'=="0" ' );
 event.preventDefault(); */
 // $.trim(refere_by_phone_number) =="" || refere_by_phone_number.length <10
-if( $.trim(salutation) =="" ||   $.trim(plan_id) ==""   || $.trim(user_first_name) =="" || $.trim(user_last_name) =="" || $.trim(user_email) =="" || $.trim(user_mobile) =="" || $.trim(refer_by) ==""     || $.trim(refer_friend_id) =="" || $.trim(refer_friend_id) =="0"  ){
+if(   $.trim(plan_id) ==""   || $.trim(user_first_name) =="" || $.trim(user_last_name) =="" || $.trim(user_email) =="" || $.trim(user_mobile) =="" || $.trim(refer_by) ==""     || $.trim(refer_friend_id) =="" || $.trim(refer_friend_id) =="0"  ){
   if($('#registerFrm').valid() == true){
     $( "#registerFrm" ).submit();
 }  /*else {
@@ -554,7 +554,7 @@ $.ajax({
   url: "controller/registerController.php",
   cache: false,
   type: "POST",
-  data: {city_id : city_id,salutation:salutation,plan_id:plan_id,user_first_name:user_first_name,user_last_name:user_last_name,user_email:user_email,gender:gender,userMobile : user_mobile,checkUserMobileFormSubmit:'checkUserMobileFormSubmit'},
+  data: {city_id : city_id,plan_id:plan_id,user_first_name:user_first_name,user_last_name:user_last_name,user_email:user_email,gender:gender,userMobile : user_mobile,checkUserMobileFormSubmit:'checkUserMobileFormSubmit'},
   success: function(response){
     if (response==1) {
       swal("Error", "This mobile number is Already Registered.", "error");

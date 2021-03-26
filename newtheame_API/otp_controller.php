@@ -18,10 +18,12 @@ if (isset($_POST) && !empty($_POST)) {
 				exit();
 			}
 
-			
-
+			if(!isset($country_code)){
+				 $country_code ="+91";
+			}  
+			 
 			$q = $d->select("users_master",
-				"user_mobile ='$user_mobile'", "");
+				"user_mobile ='$user_mobile'  and  country_code ='$country_code' ", "");
 
 			$user_data = mysqli_fetch_array($q);
 
@@ -106,13 +108,18 @@ if (isset($_POST) && !empty($_POST)) {
 			}
 
 		} else if (isset($user_verify) && $user_verify == 'user_verify' && filter_var($otp, FILTER_VALIDATE_INT) == true && strlen($otp) == 4) {
-
+if(!isset($country_code)){
+				 $country_code ="+91";
+			}  
 			$user_mobile = mysqli_real_escape_string($con, $user_mobile);
 			$otp = mysqli_real_escape_string($con, $otp);
 			if ($user_mobile == '3213213210') {
-				$q = $d->select("users_master", "user_mobile ='$user_mobile' ");
+
+				
+			 
+				$q = $d->select("users_master", "user_mobile ='$user_mobile' and  country_code ='$country_code' ");
 			} else {
-				$q = $d->select("users_master", "user_mobile ='$user_mobile' AND otp='$otp'");
+				$q = $d->select("users_master", "user_mobile ='$user_mobile' AND otp='$otp'  and  country_code ='$country_code' ");
 			}
 			$user_data = mysqli_fetch_array($q);
 
@@ -221,6 +228,7 @@ if (isset($_POST) && !empty($_POST)) {
 					$response["twitter"] = $user_data['twitter'];
 $response["short_name"] =strtoupper(substr($user_data["user_first_name"], 0, 1).substr($user_data["user_last_name"], 0, 1) );
 					$response["salutation"] = $user_data['salutation'];
+					$response["country_code"] = $user_data['country_code'];
 					$response["user_full_name"] = $user_data['user_full_name'];
 					$response["user_first_name"] = $user_data['user_first_name'];
 					$response["user_last_name"] = $user_data['user_last_name'];
@@ -425,9 +433,14 @@ $approval_pending=$d->select("interest_master","added_by_member_id='$user_data[u
 			if ($user_data == TRUE && mysqli_num_rows($q) == 1) {
  				
  				$m->set_data('user_mobile', $temp_mobile_number);
-
+if(isset($country_code)){
+				$m->set_data('country_code',$country_code);
+			} else {
+				$m->set_data('country_code','+91');
+			}
 				$a = array(
 					 'otp' => '', 
+					 'country_code' => $m->get_data('country_code'),
 					 'user_mobile' => $m->get_data('user_mobile'),
 					 'temp_mobile_number' => '' 
 				);
@@ -469,7 +482,11 @@ $approval_pending=$d->select("interest_master","added_by_member_id='$user_data[u
 			$m->set_data('instagram', $instagram);
 			$m->set_data('linkedin', $linkedin);
 			$m->set_data('twitter', $twitter);
-
+			if(isset($country_code)){
+				$m->set_data('country_code',$country_code);
+			} else {
+				$m->set_data('country_code','+91');
+			}
 			$a = array(
 				'salutation' => $m->get_data('salutation'),
 				'user_first_name' => $m->get_data('user_first_name'),
@@ -478,6 +495,7 @@ $approval_pending=$d->select("interest_master","added_by_member_id='$user_data[u
 				'gender' => $m->get_data('gender'),
 				'member_date_of_birth' => $m->get_data('member_date_of_birth'),
 				'user_email' => $m->get_data('user_email'),
+				'country_code' => $m->get_data('country_code'),
 				'user_mobile' => $m->get_data('user_mobile'),
 				'alt_mobile' => $m->get_data('alt_mobile'),
 				'whatsapp_number' => $m->get_data('whatsapp_number'),

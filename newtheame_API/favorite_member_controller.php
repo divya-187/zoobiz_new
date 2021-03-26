@@ -21,7 +21,7 @@ if (isset($_POST) && !empty($_POST)) {
                     $userData=mysqli_fetch_array($quc);
 
 
-$response["message"] = '"'.$userData['user_full_name'].'" Unliked';
+$response["message"] =  $userData['user_full_name']."'s Profile Unliked";
 $qucn=$d->selectRow("user_full_name,user_token,device,user_id,user_profile_pic","users_master","user_id='$user_id'   AND office_member=0 AND active_status=0  ");
                     $userDataN=mysqli_fetch_array($qucn);
 
@@ -136,7 +136,8 @@ if($users_master_by_data['user_profile_pic']!=""){
 					
 
 					$d->insert_myactivity($user_id,"0","",$userData['user_full_name']." Member Liked.","activity.png");
-					$response["message"] = 'Liked "'.$userData['user_full_name'].'"';
+					$response["message"] = "Liked ".$userData['user_full_name']. "'s Profile";
+
 					$response["status"] = "200";
 					echo json_encode($response);
 				} else {

@@ -130,7 +130,12 @@ $q = $d->insert("seasonal_greeting_share_master",$a);
 				
 				if($users_master_data['user_mobile'] != $user_mobile  ){
 
-					$q11 = $d->select("users_master", "user_mobile='$user_mobile' and user_id !='$user_id' ");
+if(isset($country_code)){
+				$country_code ='+91';
+			}  
+
+
+					$q11 = $d->select("users_master", "user_mobile='$user_mobile' and user_id !='$user_id'  and  country_code ='$country_code' ");
 					$data = mysqli_fetch_array($q11);
 					if ($data > 0) {
 						$response["message"] = "Mobile Number Is Already Registered";

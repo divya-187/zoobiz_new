@@ -1769,11 +1769,14 @@ $("#companyPayFrm").validate({
         },
         rules: {
             salutation:{
-                required: true
+                required: false
             },
             user_first_name:{
                 required: true,
                 noSpace:true
+            },
+            country_code:{
+                required: true,
             },
             user_mobile:{
                 required: true,
@@ -1919,8 +1922,8 @@ $("#companyPayFrm").validate({
             amount_with_gst:{
                 required: "Please enter paid amount"
             },
-            salutation:{
-                required: "Please select salutation"
+            country_code:{
+                required: "Please select country code"
             },
             user_first_name:{
                 required: "Please enter First Name"

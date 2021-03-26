@@ -232,9 +232,9 @@ if(count($user_id_array) >1){
       $img1 ="https://zoobiz.in/img/logo.png";
     $fcmArray = $d->get_android_fcm("users_master", "user_token!='' AND  lower(device)='android' and user_status=0 and user_id in ($user_id_array)      ");
      $fcmArrayIos = $d->get_android_fcm("users_master ", " user_token!='' AND  lower(device) ='ios' and user_status=0 and user_id in ($user_id_array)  ");
-    $nResident->noti("meetup","",0,$fcmArray,"",$title1,$notAry,1,$img1);
+    $nResident->noti("meetup","",0,$fcmArray,"Meetup",$title1,$notAry,1,$img1);
 
-    $nResident->noti_ios("meetup","",0,$fcmArrayIos,"",$title1,$notAry,1,$img1);
+    $nResident->noti_ios("meetup","",0,$fcmArrayIos,"Meetup",$title1,$notAry,1,$img1);
 
 }
 
@@ -286,8 +286,8 @@ $fcmArray = $d->get_android_fcm("users_master", "user_token!='' AND  lower(devic
             'desc' => $description,
             'time' =>date("d M Y h:i A")
           );
- $nResident->noti("custom_notification","",0,$fcmArray,$title,$description,$fcm_data_array);
-         $nResident->noti_ios("custom_notification","",0,$fcmArrayIos,$title,$description,$fcm_data_array);
+ $nResident->noti("custom_notification","Meetup",0,$fcmArray,$title,$description,$fcm_data_array);
+         $nResident->noti_ios("custom_notification","Meetup",0,$fcmArrayIos,$title,$description,$fcm_data_array);
    array_push($response['Success'], "");
   
   $d->insert_cron_log("Cron Run: Meetup Reminder Notification","3");
@@ -315,7 +315,7 @@ $fcmArray = $d->get_android_fcm("users_master", "user_token!='' AND  lower(devic
  $fcmArrayIos = $d->get_android_fcm("users_master ", " user_token!='' AND  lower(device) ='ios' and user_status=0   and user_id not in   ($users_arr) ");
  
    $img= "https://www.zoobiz.in/img/logo.png";
-   $title ="";
+   $title ="Classified";
    $description="All your requirements can be met by Zoobiz members. Post a requirement now in Classified section.
 #iamzoobiz";
           $fcm_data_array = array(
@@ -356,7 +356,7 @@ $fcmArray = $d->get_android_fcm("users_master", "user_token!='' AND  lower(devic
  $fcmArrayIos = $d->get_android_fcm("users_master ", " user_token!='' AND  lower(device) ='ios' and user_status=0   and user_id not in   ($users_arr) ");
  
    $img= "https://www.zoobiz.in/img/logo.png";
-   $title ="";
+   $title ="Timeline";
    $description="Build your reputation and let others see your achievements. Post on Zoobiz timeline now.
 #iamzoobiz";
           $fcm_data_array = array(

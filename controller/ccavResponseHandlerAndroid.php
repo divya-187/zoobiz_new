@@ -144,8 +144,8 @@ $_SESSION['response_status']= $arr_data['order_status'];
 		$dataTemp = mysqli_fetch_array($q);
 
 		$m->set_data('zoobiz_id', ucfirst($zoobiz_id));
-
 		$m->set_data('user_first_name', ucfirst($user_first_name));
+		$m->set_data('country_code', ucfirst($country_code));
 		$m->set_data('user_last_name', ucfirst($user_last_name));
 		$m->set_data('user_full_name', ucfirst($user_first_name) .' '.ucfirst($user_last_name) );
 		$user_full_name = ucfirst($user_first_name) .' '.ucfirst($user_last_name);
@@ -187,6 +187,7 @@ $_SESSION['response_status']= $arr_data['order_status'];
 			/*'coupon_id' => $m->get_data('coupon_id'),*/
 			'zoobiz_id' => $m->get_data('zoobiz_id'),
 			/*'salutation' => $m->get_data('salutation'),*/
+			'country_code' => $m->get_data('country_code'),
 			'user_first_name' => $m->get_data('user_first_name'),
 			'user_last_name' => $m->get_data('user_last_name'),
 			'user_full_name' => $m->get_data('user_full_name'),
