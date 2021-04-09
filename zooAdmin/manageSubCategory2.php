@@ -2,6 +2,18 @@
 <div class="content-wrapper">
   <div class="container-fluid">
     <!-- Breadcrumb-->
+     <div class="row pt-2 pb-2">
+        <div class="col-sm-9">
+          <h4 class="page-title">Bind Main Categories</h4>
+          <ol class="breadcrumb">
+           <li class="breadcrumb-item"><a href="welcome">Home</a></li>
+           <li class="breadcrumb-item"><a href="subCategories">Sub Categories</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Bind Main Categories</li>
+         </ol>
+         
+       </div>
+       
+   </div>
     <!-- End Breadcrumb-->
      
     <div class="row">

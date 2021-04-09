@@ -16,7 +16,15 @@ extract($company_master_data);
         <?php  } else {?>
         <h4 class="page-title">Add Company</h4>
         <?php } ?>
-        
+        <ol class="breadcrumb">
+           <li class="breadcrumb-item"><a href="welcome">Home</a></li>
+           <li class="breadcrumb-item"><a href="companyList">Company List</a></li>
+            <li class="breadcrumb-item active" aria-current="page"> <?php if(isset($company_id)){?>
+         Edit Company 
+        <?php  } else {?>
+        Add Company 
+        <?php } ?></li>
+         </ol>
       </div>
       
     </div>

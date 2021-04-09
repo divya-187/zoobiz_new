@@ -1,10 +1,22 @@
 <?php  //$d->send_sms("7990247516","fffdemo"); 
-//$d->send_sms_multiple("7990247516,7433053030","Zoobiz Dev Test");   ?>
+//$d->send_sms_multiple("7990247516,7433053030","Zoobiz Dev Test");  
+ 
+$accessPage=$d->select("master_menu","status=0 and menu_id in ($accessMenuId) ");
+    $accessPageData=mysqli_fetch_array($accessPage);
+
+
+$allowedMenus = array();
+  while($row1=mysqli_fetch_array($accessPage)){ 
+    $allowedMenus[] = $row1['menu_link'];
+  }
+   
+?>
 <div class="content-wrapper">
     <div class="container-fluid">
 
       
     <div class="row mt-3">
+      <?php if(in_array('mainCategories', $allowedMenus)){ ?>  
         <div class="col-6 col-lg-6 col-xl-3">
           <div class="card gradient-bloody">
             <a href="mainCategories">
@@ -21,6 +33,8 @@
             </a>
           </div>
         </div>
+      <?php } ?> 
+       <?php if(in_array('subCategories', $allowedMenus)){ ?>  
         <div class="col-6 col-lg-6 col-xl-3">
           <div class="card gradient-scooter">
             <a href="subCategories">
@@ -41,6 +55,8 @@
             </a>
           </div>
         </div>
+          <?php } ?> 
+       <?php if(in_array('plans', $allowedMenus)){ ?>  
         <div class="col-6 col-lg-6 col-xl-3">
           <div class="card gradient-blooker">
             <a href="plans">
@@ -57,6 +73,8 @@
             </a>
           </div>
         </div>
+         <?php } ?> 
+       <?php if(in_array('memberList', $allowedMenus)){ ?>  
         <div class="col-6 col-lg-6 col-xl-3">
           <div class="card gradient-ohhappiness">
             <?php //24nov2020 manageMembers to memberList?>
@@ -84,8 +102,12 @@
             </a>
           </div>
         </div>
+         <?php } ?> 
+      
     </div>
     <div class="row ">
+
+       <?php if(in_array('businesHouses', $allowedMenus)){ ?>  
       <div class="col-6 col-lg-6 col-xl-3">
         <div class="card gradient-bloody">
           <a href="businesHouses">
@@ -108,6 +130,8 @@
           </a>
         </div>
       </div>
+    <?php } ?> 
+      <?php if(in_array('payments', $allowedMenus)){ ?>  
       <div class="col-6 col-lg-6 col-xl-3">
         <div class="card gradient-scooter">
           <div class="p-2">
@@ -139,6 +163,7 @@ $asif = 0 ;
           </div>
         </div>
       </div>
+ <?php } ?> 
       <div class="col-6 col-lg-6 col-xl-3">
         <div class="card gradient-blooker">
           <div class="p-2">
@@ -166,6 +191,8 @@ $asif = 0 ;
           </div>
         </div>
       </div>
+       
+      <?php if(in_array('manageCirculars', $allowedMenus)){ ?>  
       <div class="col-6 col-lg-6 col-xl-3">
         <div class="card gradient-ohhappiness">
           <a href="manageCirculars">
@@ -184,8 +211,10 @@ $asif = 0 ;
         </a>
         </div>
       </div>
+       <?php } ?> 
     </div>
     <div class="row ">
+      <?php if(in_array('sliderImages', $allowedMenus)){ ?> 
       <div class="col-6 col-lg-6 col-xl-3">
         <div class="card gradient-bloody">
           <a href="sliderImages">
@@ -202,6 +231,8 @@ $asif = 0 ;
           </a>
         </div>
       </div>
+    <?php } ?> 
+    <?php if(in_array('classifieds', $allowedMenus)){ ?> 
       <div class="col-6 col-lg-6 col-xl-3">
         <div class="card gradient-scooter">
           <a href="classifieds">
@@ -218,6 +249,8 @@ $asif = 0 ;
         </a>
         </div>
       </div>
+       <?php } ?> 
+    <?php if(in_array('timeline', $allowedMenus)){ ?> 
       <div class="col-6 col-lg-6 col-xl-3">
         <div class="card gradient-blooker">
           <a href="timeline">
@@ -234,6 +267,8 @@ $asif = 0 ;
         </a>
         </div>
       </div>
+       <?php } ?> 
+    <?php if(in_array('feedback', $allowedMenus)){ ?> 
       <div class="col-6 col-lg-6 col-xl-3">
         <div class="card gradient-ohhappiness">
           <a href="feedback">
@@ -252,8 +287,10 @@ $asif = 0 ;
         </a>
         </div>
       </div>
+      <?php } ?> 
     </div>
     <div class="row ">
+       <?php if(in_array('areas', $allowedMenus)){ ?> 
       <div class="col-6 col-lg-6 col-xl-3">
         <div class="card gradient-bloody">
           <a href="areas">
@@ -278,6 +315,8 @@ $asif = 0 ;
           </a>
         </div>
       </div>
+        <?php } ?> 
+         <?php if(in_array('countries', $allowedMenus)){ ?> 
       <div class="col-6 col-lg-6 col-xl-3">
         <div class="card gradient-scooter">
           <a href="countries">
@@ -294,6 +333,8 @@ $asif = 0 ;
         </a>
         </div>
       </div>
+        <?php } ?> 
+         <?php if(in_array('states', $allowedMenus)){ ?> 
       <div class="col-6 col-lg-6 col-xl-3">
         <div class="card gradient-blooker">
           <a href="states">
@@ -310,6 +351,8 @@ $asif = 0 ;
           </a>
         </div>
       </div>
+       <?php } ?> 
+         <?php if(in_array('cities', $allowedMenus)){ ?>
       <div class="col-6 col-lg-6 col-xl-3">
         <div class="card gradient-ohhappiness">
           <a href="cities">
@@ -328,6 +371,7 @@ $asif = 0 ;
         </a>
         </div>
       </div>
+       <?php } ?> 
     </div>
 
      <div class="row">

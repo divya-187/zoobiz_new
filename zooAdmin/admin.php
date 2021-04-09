@@ -16,7 +16,15 @@ extract($zoobiz_admin_master_data);
         <?php  } else {?>
         <h4 class="page-title">Add Admin</h4>
         <?php } ?>
-        
+        <ol class="breadcrumb">
+           <li class="breadcrumb-item"><a href="welcome">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="adminList" > Admin List</a></li>
+            <li class="breadcrumb-item active" aria-current="page">  <?php if(isset($zoobiz_admin_id_edit)){?>
+        Edit Admin 
+        <?php  } else {?>
+        Add Admin 
+        <?php } ?></li>
+         </ol>
       </div>
       
     </div>

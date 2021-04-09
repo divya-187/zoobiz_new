@@ -5,7 +5,10 @@
     <div class="row pt-2 pb-2">
       <div class="col-sm-6">
         <h4 class="page-title">App Banner</h4>
-        
+        <ol class="breadcrumb">
+           <li class="breadcrumb-item"><a href="welcome">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">App Banner</li>
+         </ol>
       </div>
       <div class="col-sm-6">
         
@@ -281,10 +284,17 @@
                   while ($sData11 = mysqli_fetch_array($sq)) {
                   ?>
  
-                  <div class="col-md-6 col-lg-3 col-xl-3" style="padding: 10px !important;">
-                     <a target="_blank" href="<?php if ($sData11['slider_url']!='') {  echo $sData11['slider_url']; } else { echo '#';} ?>">
-                      <img src="../img/sliders/<?php echo $sData11['slider_image']; ?>" alt="Slider_Image" class="lightbox-thumb img-thumbnail" style="width:250px;height:150px;">
-                      </a>
+                  <div class="col-md-6 col-lg-4 col-xl-4" style="padding: 10px !important;">
+                    
+
+
+
+                      <a href="../img/sliders/<?php echo $sData11['slider_image']; ?>" data-fancybox="images" data-caption="images">
+                    <img src="../img/sliders/<?php echo $sData11['slider_image']; ?>" alt="images" class="lightbox-thumb img-thumbnail" style="width:250px;height:150px;">
+                  </a>
+
+
+
                       <p><?php if($sData11['slider_mobile']!=0 ) echo $sData11['slider_mobile']; ?>
                         
                         <?php
@@ -297,7 +307,15 @@
                         }
                          ?>
                       </p>
-                      <p><?php echo $sData11['slider_description']; ?></p>
+
+                      <?php if(trim($sData11['slider_description']) !='') {?> 
+                       <div class="card-body" style="max-height: 100px !important; overflow-y: auto;"> 
+                       
+              <p class="card-text"><div class="cls-notice-info"><?php echo stripslashes(htmlspecialchars_decode($sData11['slider_description'])); ?> </div></p>
+            </div>
+          <?php } else {
+            echo '<p></p>';
+          } ?> 
 
                       <?php if($sData11['created_date'] !="0000-00-00 00:00:00"){?> 
                       
@@ -348,7 +366,15 @@
           <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label">Image </label>
             <div class="col-lg-9">
-              <img width="500" height="500" src="../img/sliders/<?php echo $advertisement_url; ?>">
+              
+
+
+                  <a href="../img/sliders/<?php echo $advertisement_url; ?>" data-fancybox="images" data-caption="images">
+                    <img style="width:500px;height:500px;"  src="../img/sliders/<?php echo $advertisement_url; ?>" alt="images" class="lightbox-thumb img-thumbnail"  >
+                  </a>
+
+
+
             </div>
           </div>
           

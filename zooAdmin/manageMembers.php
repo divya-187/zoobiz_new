@@ -32,14 +32,9 @@ if(!isset($_GET['city_id'])){
       <div class="col-sm-6">
         <h4 class="page-title">Members</h4>
         <ol class="breadcrumb">
-        <!--   <li>
-            <span class="badge badge-pill badge-primary m-1">Business Houses</span>
-            <span class="badge badge-pill badge-success m-1">Other</span>
-           
-          
-          </li>
- -->
-        </ol>
+           <li class="breadcrumb-item"><a href="welcome">Home</a></li> 
+            <li class="breadcrumb-item active" aria-current="page">Members</li>
+         </ol>
 
       </div>
       <div class="col-sm-3">

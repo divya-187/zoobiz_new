@@ -4,7 +4,10 @@
       <div class="row pt-2 pb-2">
         <div class="col-sm-9">
           <h4 class="page-title">Members</h4>
-         
+          <ol class="breadcrumb">
+           <li class="breadcrumb-item"><a href="welcome">Home</a></li> 
+            <li class="breadcrumb-item active" aria-current="page">Members</li>
+         </ol>
        </div>
        <div class="col-sm-3">
          <div class="btn-group float-sm-right">
