@@ -807,17 +807,36 @@ if($user_recent_master_data['flag']==0){
 }
 //recent memmber data end
 	
-	$where = "";		
-if(isset($city_id) && $city_id != 0 ){
-	$where = " and users_master.city_id = '$city_id' ";		
-}
+ $zoobiz_settings_master_qry = $d->select("zoobiz_settings_master","","");
+$zoobiz_settings_master_data=mysqli_fetch_array($zoobiz_settings_master_qry);
 
+
+	$where = "";
+	if($zoobiz_settings_master_data['show_member_citywise'] ==1){
+			if(isset($city_id) && $city_id != 0 ){
+				$where = " and users_master.city_id = '$city_id' ";		
+			}
+	}		
+ 
+
+ $blocked_users = array('-2'); 
+$getBLockUserQry = $d->selectRow("user_id, block_by","user_block_master", " block_by='$user_id' or user_id='$user_id'  ", "");
+while($getBLockUserData=mysqli_fetch_array($getBLockUserQry)) {
+	 	 if($user_id != $getBLockUserData['user_id']){
+	 		$blocked_users[] = $getBLockUserData['user_id'];
+	 	}
+       if($user_id != $getBLockUserData['block_by']){
+	 		$blocked_users[] = $getBLockUserData['block_by'];
+	 	}
+ }
+
+             
 			$meq = $d->selectRow("users_master.user_id,business_categories.business_category_id,business_sub_categories.business_sub_category_id,users_master.user_full_name ,users_master.user_first_name,users_master.user_last_name ,users_master.zoobiz_id,users_master.public_mobile,users_master.user_mobile,users_master.user_profile_pic,business_categories.category_name,business_sub_categories.sub_category_name,user_employment_details.company_name, user_employment_details.company_logo, user_employment_details.search_keyword",
 				
 				"users_master,user_employment_details,business_categories,business_sub_categories", 
 				"     business_categories.category_status = 0 and  
 				business_sub_categories.business_sub_category_id=user_employment_details.business_sub_category_id AND   business_categories.business_category_id=user_employment_details.business_category_id AND user_employment_details.user_id=users_master.user_id  and   users_master.user_id != $user_id AND users_master.office_member=0 AND users_master.active_status=0  $where  ", ""); 
-
+       
 			$user_favorite_master_q = $d->selectRow("member_id,flag","user_favorite_master", "user_id='$user_id'  ", "");
 			
 			$user_favorite_master_array_user = array('0');
@@ -862,8 +881,15 @@ if(isset($city_id) && $city_id != 0 ){
 					} else {
 						$follow_status = false;
 					}
-
+//$member["qry"] = $where;
 					$member["is_follow"] = $follow_status;
+
+
+					if(in_array($data["user_id"],$blocked_users)){
+						$member["is_blocked"] =true;
+					} else {
+						$member["is_blocked"] =false;
+					}
 $member["short_name"] =strtoupper(substr($data["user_first_name"], 0, 1).substr($data["user_last_name"], 0, 1) );
 					$member["user_id"] = $data["user_id"];
 					$member["user_name"] = html_entity_decode($data["user_full_name"]);
@@ -955,6 +981,7 @@ if ($city_id != 0) {
 	      //   array_push($response["tagWiseUsers"], $member);
 $arr_key= array();
 
+$tag_array = array();
 		while ($data = mysqli_fetch_array($meq)) {
 			
 
@@ -964,11 +991,11 @@ $arr_key= array();
 
 			for ($g=0; $g < count($search_key_array) ; $g++) { 
 
-				if($search_key_array[$g]!="" && !in_array(strtolower($search_key_array[$g]), $arr_key)){
-					$arr_key[] = strtolower($search_key_array[$g]);
+				if($search_key_array[$g]!="" && !in_array(trim(strtolower($search_key_array[$g])), $arr_key)){
+					$arr_key[] = trim(strtolower($search_key_array[$g]));
 					$member  = array();
 					 $member["user_id"] = $data["user_id"];
-			         $member["search_keyword"] = html_entity_decode($search_key_array[$g]); ;
+			         $member["search_keyword"] = trim(html_entity_decode($search_key_array[$g])) ;
 			         $member["category_id"] =$data["business_category_id"]."-".$data["business_sub_category_id"];
 			         $member["business_category_id"] =$data["business_category_id"];
 			         $member["business_sub_category_id"] =$data["business_sub_category_id"];

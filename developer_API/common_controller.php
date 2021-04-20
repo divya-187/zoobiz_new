@@ -4,7 +4,7 @@ include_once 'lib.php';
 
 
 if (isset($_POST) && !empty($_POST)) {
-
+ 
 	if ($key == $keydb) {
 
 		$response = array();
@@ -130,9 +130,15 @@ $q = $d->insert("seasonal_greeting_share_master",$a);
 				
 				if($users_master_data['user_mobile'] != $user_mobile  ){
 
-					$q11 = $d->select("users_master", "user_mobile='$user_mobile' and user_id !='$user_id' ");
-					$data = mysqli_fetch_array($q11);
-					if ($data > 0) {
+if(!isset($country_code)){
+				$country_code ='+91';
+			}  
+
+
+					$q11 = $d->select("users_master", "user_mobile='$user_mobile' and user_id !='$user_id'  and  country_code ='$country_code' ");
+					
+					if (mysqli_num_rows($q11) > 0  ) {
+						$data = mysqli_fetch_array($q11);
 						$response["message"] = "Mobile Number Is Already Registered";
 						$response["status"] = "201";
 						echo json_encode($response);
@@ -154,7 +160,7 @@ $q = $d->insert("seasonal_greeting_share_master",$a);
 
 					$d->send_otp($user_mobile, $otp);
 					
-					$response["message"] = "OTP Sent to New Mobile Number";
+					$response["message"] = "OTP Sent to New Mobile Number" ;
 					$response["status"] = "200";
 					$response["otp_dialog"] = true;
 					echo json_encode($response);
@@ -514,12 +520,12 @@ $response["short_name"] =strtoupper(substr($data_app["user_first_name"], 0, 1).s
 				}
 
 
-$transection_master_qry_new=$d->select("transection_master","user_id='$user_id'" ,"");
+$transection_master_qry_new=$d->select("transection_master","user_id='$user_id'" ," order by transection_id desc");
     $transection_master_data_new=mysqli_fetch_array($transection_master_qry_new);
     if($transection_master_data_new['is_paid'] == 0){
 
     	if($data_app["invoice_download"]=="1"    ){
-					$response["invoice_download_url"]=$base_url."paymentReceipt.php?user_id=".$data_app["user_id"]."&download=true";
+					$response["invoice_download_url"]=$base_url."paymentReceipt.php?user_id=".$data_app["user_id"]."&download=true&transection_date=".date("Y-m-d", strtotime($transection_master_data_new['transection_date']));
 				} else {
 					$response["invoice_download_url"]="";
 				}
@@ -1275,7 +1281,370 @@ $response["user_profile_pic"] = "";
 				echo json_encode($response);
 			}
 
-		}
+			
+
+		} 
+		//main categorywise users start
+			else if ($_POST['getCategoryUsers'] == "getCategoryUsers" && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($business_category_id, FILTER_VALIDATE_INT) == true  ) {
+
+ 
+	
+ $zoobiz_settings_master_qry = $d->select("zoobiz_settings_master","","");
+$zoobiz_settings_master_data=mysqli_fetch_array($zoobiz_settings_master_qry);
+
+
+	$where = "";
+	if($zoobiz_settings_master_data['show_member_citywise'] ==1){
+			if(isset($city_id) && $city_id != 0 ){
+				$where = " and users_master.city_id = '$city_id' ";		
+			}
+	}		
+ 
+ if(isset($business_category_id) && $business_category_id != 0 ){
+				$where = " and user_employment_details.business_category_id = '$business_category_id' ";		
+			}
+
+ $blocked_users = array('-2'); 
+$getBLockUserQry = $d->selectRow("user_id, block_by","user_block_master", " block_by='$user_id' or user_id='$user_id'  ", "");
+while($getBLockUserData=mysqli_fetch_array($getBLockUserQry)) {
+	 	 if($user_id != $getBLockUserData['user_id']){
+	 		$blocked_users[] = $getBLockUserData['user_id'];
+	 	}
+       if($user_id != $getBLockUserData['block_by']){
+	 		$blocked_users[] = $getBLockUserData['block_by'];
+	 	}
+ }
+
+             
+			$meq = $d->selectRow("users_master.user_id,business_categories.business_category_id,business_sub_categories.business_sub_category_id,users_master.user_full_name ,users_master.user_first_name,users_master.user_last_name ,users_master.zoobiz_id,users_master.public_mobile,users_master.user_mobile,users_master.user_profile_pic,business_categories.category_name,business_sub_categories.sub_category_name,user_employment_details.company_name, user_employment_details.company_logo, user_employment_details.search_keyword",
+				
+				"users_master,user_employment_details,business_categories,business_sub_categories", 
+				"     business_categories.category_status = 0 and  
+				business_sub_categories.business_sub_category_id=user_employment_details.business_sub_category_id AND   business_categories.business_category_id=user_employment_details.business_category_id AND user_employment_details.user_id=users_master.user_id  and   users_master.user_id != $user_id AND users_master.office_member=0 AND users_master.active_status=0  $where  ", ""); 
+       
+			$user_favorite_master_q = $d->selectRow("member_id,flag","user_favorite_master", "user_id='$user_id'  ", "");
+			
+			$user_favorite_master_array_user = array('0');
+			$user_favorite_master_array_company = array('0');
+			while ($user_favorite_master = mysqli_fetch_array($user_favorite_master_q)) {
+
+				if($user_favorite_master['flag'] == 0 ){
+					$user_favorite_master_array_user[] = $user_favorite_master['member_id'];
+				} else {
+					$user_favorite_master_array_company[] = $user_favorite_master['member_id'];
+				}
+				
+			}
+
+
+			$qche_qry = $d->selectRow("follow_id,follow_to","follow_master", "follow_by='$user_id'    ");
+                $FArray = array();
+                $Fcounter = 0 ;
+                foreach ($qche_qry as  $value) {
+                    foreach ($value as $key => $valueNew) {
+                        $FArray[$Fcounter][$key] = $valueNew;
+                    }
+                    $Fcounter++;
+                }
+                $fol_array = array();
+                for ($l=0; $l < count($FArray) ; $l++) {
+                    $fol_array[$FArray[$l]['follow_to']] = $FArray[$l];
+                }
+
+
+			
+			
+			if (mysqli_num_rows($meq) > 0) {
+				
+				$response["AllMembers"] = array();
+				while ($data = mysqli_fetch_array($meq)) {
+					$member  = array();
+
+					 	$qche = $fol_array[$data["user_id"]];//  
+					if (count($qche) > 0) {
+						$follow_status = true;
+					} else {
+						$follow_status = false;
+					}
+//$member["qry"] = $where;
+					$member["is_follow"] = $follow_status;
+
+
+					if(in_array($data["user_id"],$blocked_users)){
+						$member["is_blocked"] =true;
+					} else {
+						$member["is_blocked"] =false;
+					}
+$member["short_name"] =strtoupper(substr($data["user_first_name"], 0, 1).substr($data["user_last_name"], 0, 1) );
+					$member["user_id"] = $data["user_id"];
+					$member["user_name"] = html_entity_decode($data["user_full_name"]);
+					$member["company_name"] = html_entity_decode($data["company_name"]);
+					$member["category_name"] = html_entity_decode($data["category_name"]);
+					$member["sub_category_name"] = html_entity_decode($data["sub_category_name"]);
+					$member["designation"] = html_entity_decode($data["designation"]);
+					if($data['user_profile_pic'] !=""){
+						$member["user_profile_pic"] = $base_url . "img/users/members_profile/" . $data['user_profile_pic'];
+					} else {
+						$member["user_profile_pic"] ="";
+					}
+					
+					if($data['company_logo'] !=""){
+						$member["company_logo"] = $base_url . "img/users/company_logo/" . $data['company_logo'];
+					} else {
+						$member["company_logo"] ="";
+					}
+					$member["search_keyword"] = html_entity_decode($data["search_keyword"]);
+					
+					$member["type"] = "0";
+
+
+if($data['public_mobile'] =="0"){
+						$member["mobile_privacy"]=true;
+					} else {
+						$member["mobile_privacy"]=false;
+					}
+
+					
+					if(in_array($data['user_id'], $user_favorite_master_array_user)){
+						$member["is_fevorite"] = "1";
+					}else {
+						$member["is_fevorite"] = "0";
+					}
+
+					array_push($response["AllMembers"], $member);
+ 
+				}
+ 
+		shuffle($response["AllMembers"]);
+		
+		$response["message"] = "get Success.";
+		$response["status"] = "200";
+		echo json_encode($response);
+
+	}
+	else {
+		$response["message"] = "No Data Found.";
+		$response["status"] = "201";
+		echo json_encode($response);
+	}
+	
+}
+			//main categorywise users end
+
+//main categorywise users start
+			else if ($_POST['getSubCategoryUsers'] == "getSubCategoryUsers" && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($business_category_id, FILTER_VALIDATE_INT) == true  ) {
+
+ 
+	
+ $zoobiz_settings_master_qry = $d->select("zoobiz_settings_master","","");
+$zoobiz_settings_master_data=mysqli_fetch_array($zoobiz_settings_master_qry);
+
+
+	$where = "";
+	if($zoobiz_settings_master_data['show_member_citywise'] ==1){
+			if(isset($city_id) && $city_id != 0 ){
+				$where = " and users_master.city_id = '$city_id' ";		
+			}
+	}		
+ 
+ if(isset($business_sub_category_id) && $business_sub_category_id != 0 ){
+				$where = " and user_employment_details.business_sub_category_id = '$business_sub_category_id' ";		
+			}
+
+ $blocked_users = array('-2'); 
+$getBLockUserQry = $d->selectRow("user_id, block_by","user_block_master", " block_by='$user_id' or user_id='$user_id'  ", "");
+while($getBLockUserData=mysqli_fetch_array($getBLockUserQry)) {
+	 	 if($user_id != $getBLockUserData['user_id']){
+	 		$blocked_users[] = $getBLockUserData['user_id'];
+	 	}
+       if($user_id != $getBLockUserData['block_by']){
+	 		$blocked_users[] = $getBLockUserData['block_by'];
+	 	}
+ }
+
+             
+			$meq = $d->selectRow("users_master.user_id,business_categories.business_category_id,business_sub_categories.business_sub_category_id,users_master.user_full_name ,users_master.user_first_name,users_master.user_last_name ,users_master.zoobiz_id,users_master.public_mobile,users_master.user_mobile,users_master.user_profile_pic,business_categories.category_name,business_sub_categories.sub_category_name,user_employment_details.company_name, user_employment_details.company_logo, user_employment_details.search_keyword",
+				
+				"users_master,user_employment_details,business_categories,business_sub_categories", 
+				"     business_categories.category_status = 0 and  
+				business_sub_categories.business_sub_category_id=user_employment_details.business_sub_category_id AND   business_categories.business_category_id=user_employment_details.business_category_id AND user_employment_details.user_id=users_master.user_id  and   users_master.user_id != $user_id AND users_master.office_member=0 AND users_master.active_status=0  $where  ", ""); 
+       
+			$user_favorite_master_q = $d->selectRow("member_id,flag","user_favorite_master", "user_id='$user_id'  ", "");
+			
+			$user_favorite_master_array_user = array('0');
+			$user_favorite_master_array_company = array('0');
+			while ($user_favorite_master = mysqli_fetch_array($user_favorite_master_q)) {
+
+				if($user_favorite_master['flag'] == 0 ){
+					$user_favorite_master_array_user[] = $user_favorite_master['member_id'];
+				} else {
+					$user_favorite_master_array_company[] = $user_favorite_master['member_id'];
+				}
+				
+			}
+
+
+			$qche_qry = $d->selectRow("follow_id,follow_to","follow_master", "follow_by='$user_id'    ");
+                $FArray = array();
+                $Fcounter = 0 ;
+                foreach ($qche_qry as  $value) {
+                    foreach ($value as $key => $valueNew) {
+                        $FArray[$Fcounter][$key] = $valueNew;
+                    }
+                    $Fcounter++;
+                }
+                $fol_array = array();
+                for ($l=0; $l < count($FArray) ; $l++) {
+                    $fol_array[$FArray[$l]['follow_to']] = $FArray[$l];
+                }
+
+
+			
+			
+			if (mysqli_num_rows($meq) > 0) {
+				
+				$response["AllMembers"] = array();
+				while ($data = mysqli_fetch_array($meq)) {
+					$member  = array();
+
+					 	$qche = $fol_array[$data["user_id"]];//  
+					if (count($qche) > 0) {
+						$follow_status = true;
+					} else {
+						$follow_status = false;
+					}
+//$member["qry"] = $where;
+					$member["is_follow"] = $follow_status;
+
+
+					if(in_array($data["user_id"],$blocked_users)){
+						$member["is_blocked"] =true;
+					} else {
+						$member["is_blocked"] =false;
+					}
+$member["short_name"] =strtoupper(substr($data["user_first_name"], 0, 1).substr($data["user_last_name"], 0, 1) );
+					$member["user_id"] = $data["user_id"];
+					$member["user_name"] = html_entity_decode($data["user_full_name"]);
+					$member["company_name"] = html_entity_decode($data["company_name"]);
+					$member["category_name"] = html_entity_decode($data["category_name"]);
+					$member["sub_category_name"] = html_entity_decode($data["sub_category_name"]);
+					$member["designation"] = html_entity_decode($data["designation"]);
+					if($data['user_profile_pic'] !=""){
+						$member["user_profile_pic"] = $base_url . "img/users/members_profile/" . $data['user_profile_pic'];
+					} else {
+						$member["user_profile_pic"] ="";
+					}
+					
+					if($data['company_logo'] !=""){
+						$member["company_logo"] = $base_url . "img/users/company_logo/" . $data['company_logo'];
+					} else {
+						$member["company_logo"] ="";
+					}
+					$member["search_keyword"] = html_entity_decode($data["search_keyword"]);
+					
+					$member["type"] = "0";
+
+
+if($data['public_mobile'] =="0"){
+						$member["mobile_privacy"]=true;
+					} else {
+						$member["mobile_privacy"]=false;
+					}
+
+					
+					if(in_array($data['user_id'], $user_favorite_master_array_user)){
+						$member["is_fevorite"] = "1";
+					}else {
+						$member["is_fevorite"] = "0";
+					}
+
+					array_push($response["AllMembers"], $member);
+ 
+				}
+ 
+		shuffle($response["AllMembers"]);
+		
+		$response["message"] = "get Success.";
+		$response["status"] = "200";
+		echo json_encode($response);
+
+	}
+	else {
+		$response["message"] = "No Data Found.";
+		$response["status"] = "201";
+		echo json_encode($response);
+	}
+	
+}
+			//main categorywise users end
+//active / inactive users start
+else if ($_POST['InactiveUsers'] == "InactiveUsers" && filter_var($user_id, FILTER_VALIDATE_INT) == true    ) {
+	$gu=$d->select("users_master","user_id='$user_id'  ");
+	$userData=mysqli_fetch_array($gu);
+	 
+	 
+	   $a1= array (
+	      'active_status'=>'1',
+	      'inactive_by' => $user_id,
+	      'user_token' =>'',
+	      'device' =>''
+	    );
+	$q=$d->update("users_master",$a1,"user_id='$user_id' ");
+
+	if($q>0) {
+
+
+      $device=$userData['device'];
+       
+     /* if (strtolower($device) =='android') {
+      $nResident->noti("Logout","",0,$userData['user_token'],"Logout","User Deactivated - Logout Forcefully",'');
+      }  else if(strtolower($device) =='ios') {
+        $nResident->noti_ios("Logout","",0,$userData['user_token'],"Logout","User Deactivated - Logout Forcefully",'');
+      }*/
+
+    $a2= array (
+      'status'=>'1'
+    );
+    $q2=$d->update("slider_master",$a2,"user_id='$user_id' ");
+    $a22= array (
+      'status'=>'Deleted'
+    );
+    $q22=$d->update("user_notification",$a22," user_id='$user_id' or other_user_id='$user_id'  ");
+  
+    //  $d->insert_log("0","0","$user_id",$userData['user_full_name'],"Deactivated - Logout Forcefully");
+       $d->insert_log("","0","$user_id",$userData['user_full_name'],$userData['user_full_name']." Deactivated");
+       $response["message"] = "Deactivated Successfully";
+			$response["status"] = "200";
+			echo json_encode($response);
+    } else {
+     $response["message"] = "Something Went Wrong";
+			$response["status"] = "201";
+			echo json_encode($response);
+    }
+} else if ($_POST['ActiveUsers'] == "ActiveUsers" && filter_var($user_id, FILTER_VALIDATE_INT) == true    ) {
+	$gu=$d->select("users_master","user_id='$user_id'  ");
+	$userData=mysqli_fetch_array($gu);
+	 
+	 
+	   $a1= array (
+	      'active_status'=>'0',
+	      'inactive_by' => $user_id
+	    );
+	$q=$d->update("users_master",$a1,"user_id='$user_id' ");
+
+	if($q>0) {
+       $device=$userData['device'];
+       $d->insert_log("","0","$user_id",$userData['user_full_name'],$userData['user_full_name']." Activated");
+       $response["message"] = "Activated Successfully";
+			$response["status"] = "200";
+			echo json_encode($response);
+    } else {
+     $response["message"] = "Something Went Wrong";
+			$response["status"] = "201";
+			echo json_encode($response);
+    }
+}
+//active / inactive users start
 
 		else {
 			$response["message"] = "wrong tag.";

@@ -213,15 +213,29 @@ if(isset($_POST) && !empty($_POST) )//it can be $_GET doesn't matter
 //16feb21
    if(isset($_POST['approveCustomCat']) && $_POST['approveCustomCat']=='approveCustomCat'){
  
-     $m->set_data('business_category_id',$business_category_id);
+
+ 
+ if(isset($_POST['isExisting']) && $_POST['isExisting'] =="Yes"){
+
+    $m->set_data('business_category_id',$business_category_id);
      $m->set_data('business_sub_category_id',$business_sub_category_id);
+   $a =array(
+      'business_category_id'=> $m->get_data('business_category_id'),
+      'business_sub_category_id'=> $m->get_data('business_sub_category_id'),
+   );
+
+    $q=$d->update("user_employment_details",$a,"user_id='$user_id'");
+
+ } else { 
+     $m->set_data('business_category_id',$business_category_id_old);
+     $m->set_data('business_sub_category_id',$business_sub_category_id_old);
      $m->set_data('sub_category_name',$sub_category_name);
 
 $ac =array(
       'sub_category_name'=> $m->get_data('sub_category_name') ,
       'business_category_id'=> $m->get_data('business_category_id') 
    );
- $q1=$d->update("business_sub_categories",$ac,"business_sub_category_id='$business_sub_category_id'");  
+ $q1=$d->update("business_sub_categories",$ac,"business_sub_category_id='$business_sub_category_id_old'");  
 
 
     $a =array(
@@ -230,6 +244,8 @@ $ac =array(
    );
 
     $q=$d->update("user_employment_details",$a,"user_id='$user_id'");
+  }
+  
     if($q>0) {
 
       $adm_data=$d->selectRow("*","users_master"," user_id='$user_id'");
@@ -355,6 +371,7 @@ $androidLink = 'https://play.google.com/store/apps/details?id=com.silverwing.zoo
           $fcmArrayIos = $d->get_android_fcm("users_master ", " user_token!='' AND  lower(device) ='ios' and user_id in ($user_ids_array)   AND user_id != $user_id ");
 
 
+
           $fcm_data_array = array(
             'img' =>$base_url.'img/logo.png',
             'title' =>$title,
@@ -368,6 +385,9 @@ $androidLink = 'https://play.google.com/store/apps/details?id=com.silverwing.zoo
           } else {
             $profile_u ="https://zoobiz.in/zooAdmin/img/user.png";
           }
+
+            $d->insertAllUserNotificationMemberSpecial($title,$description,"viewMemeber",$profile_u,"active_status=0 and user_id in ($user_ids_array) AND user_id != $user_id",11,$user_id);
+            
            $nResident->noti("viewMemeber","",0,$fcmArray,$title,$description,$user_id,1,$profile_u);
            $nResident->noti_ios("viewMemeber","",0,$fcmArrayIos,$title,$description,$user_id,1,$profile_u);
        }

@@ -59,13 +59,17 @@
                 <?php 
                 $i=1;
                 extract($_REQUEST);
-
+$where12="";
+                   if(isset($_GET['filter_city_id']) && $_GET['filter_city_id'] !=0 ){
+                    $filter_city_id = $_GET['filter_city_id'];
+                    $where12 .=" and  users_master.city_id ='$filter_city_id' ";
+                  }
                 if( !isset($_REQUEST['business_category_id']) ||  $_REQUEST['business_category_id']==0 ){
 
-                    $q=$d->select("users_master,user_employment_details,business_categories,business_sub_categories","   business_sub_categories.business_sub_category_id=user_employment_details.business_sub_category_id AND   business_categories.business_category_id=user_employment_details.business_category_id AND user_employment_details.user_id=users_master.user_id AND users_master.office_member=0 AND users_master.active_status=0    ","");
+                    $q=$d->select("users_master,user_employment_details,business_categories,business_sub_categories","   business_sub_categories.business_sub_category_id=user_employment_details.business_sub_category_id AND   business_categories.business_category_id=user_employment_details.business_category_id AND user_employment_details.user_id=users_master.user_id AND users_master.office_member=0 AND users_master.active_status=0 $where12     ","");
                 } else {
 
-                    $q=$d->select("users_master,user_employment_details,business_categories,business_sub_categories","     business_sub_categories.business_sub_category_id=user_employment_details.business_sub_category_id AND   business_categories.business_category_id=user_employment_details.business_category_id AND user_employment_details.user_id=users_master.user_id  AND user_employment_details.business_category_id='$_REQUEST[business_category_id]'  AND users_master.office_member=0 AND users_master.active_status=0   ","");
+                    $q=$d->select("users_master,user_employment_details,business_categories,business_sub_categories","     business_sub_categories.business_sub_category_id=user_employment_details.business_sub_category_id AND   business_categories.business_category_id=user_employment_details.business_category_id AND user_employment_details.user_id=users_master.user_id  AND user_employment_details.business_category_id='$_REQUEST[business_category_id]'  AND users_master.office_member=0 AND users_master.active_status=0   $where12 ","");
 
 
                   

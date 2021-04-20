@@ -110,7 +110,7 @@ extract($seasonal_greet_master_data);
                     <label class="col-lg-2 col-form-label form-control-label">Event Date 
                   (for sorting) <span class="required">*</span></label>
                 <div class="col-lg-4">
-                  <input  required="" readonly="" type="text" class="form-control  " name="order_date" id="autoclose-datepicker-evt" value="<?php if(isset($seasonal_greet_id)){  echo date("d-m-Y", strtotime($order_date));} ?>"  minlength="5" maxlength="50"  >
+                  <input  required="" readonly="" type="text" class="form-control  " name="order_date" id="autoclose-datepicker-evt" value="<?php if(isset($seasonal_greet_id) && ($order_date !="1970-01-01" && $order_date !="0000-00-00")   ){ echo date("d-m-Y", strtotime($order_date)); }?>"  minlength="5" maxlength="50"  >
                   
                 </div>
                 </div>

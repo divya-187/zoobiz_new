@@ -1230,7 +1230,7 @@ $org_user_id= $user_id;
 					$user_ids_array = implode(",", $user_ids_array);
 
  
- 					$d->insertAllUserNotificationMemberSpecial($title,$description,"viewMemeber",$user_profile_pic,"active_status=0 and user_id in ($user_ids_array) AND user_id != $user_id",11,$user_id);
+ 					
 
 					$fcmArray = $d->get_android_fcm("users_master", "user_token!='' AND  lower(device) ='android' and user_id in ($user_ids_array) AND user_id != $user_id");
 
@@ -1254,10 +1254,13 @@ $org_user_id= $user_id;
 					$u_qry = $d->selectRow("*","users_master", "user_id='$user_id' ");
 					$u_details = mysqli_fetch_array($u_qry);
 //$office_mem_arr = array('7990247516', '8866489158');
-					$office_mem_arr = array( '8866489158');
+					$office_mem_arr = array( '8866489158','7990247516','9099360078','7990032612');
 
 					if($business_category_id !='-1' && $business_sub_category_id !="-1"){
 						if(!in_array($u_details['user_mobile'], $office_mem_arr) ){
+
+							$d->insertAllUserNotificationMemberSpecial($title,$description,"viewMemeber",$user_profile_pic,"active_status=0 and user_id in ($user_ids_array) AND user_id != $user_id",11,$user_id);
+							
 							$nResident->noti("viewMemeber","",0,$fcmArray,$title,$description,$user_id,1,$profile_u);
 							$nResident->noti_ios("viewMemeber","",0,$fcmArrayIos,$title,$description,$user_id,1,$profile_u);
 						}

@@ -124,7 +124,7 @@ echo "<pre>";print_r($blocked_users_new);exit;*/
                     $user_found_arr[$user_found_data['user_id']] = $user_found_data['cnt'];
                 }
 
-                $data_qry = $d->selectRow("users_master.user_id,users_master.user_profile_pic,users_master.user_full_name,user_employment_details.company_name,user_employment_details.company_logo,users_master.user_first_name,users_master.user_last_name,users_master.user_profile_pic","users_master,user_employment_details", "users_master.user_id=user_employment_details.user_id AND users_master.user_id in ($user_id_array) ");
+                $data_qry = $d->selectRow("users_master.user_id,users_master.user_profile_pic,users_master.user_full_name,user_employment_details.company_name,user_employment_details.company_logo,users_master.user_first_name,users_master.user_last_name,users_master.user_profile_pic, users_master.user_mobile, users_master.public_mobile ","users_master,user_employment_details", "users_master.user_id=user_employment_details.user_id AND users_master.user_id in ($user_id_array) ");
  				
 
  				 $DArray = array();
@@ -255,6 +255,15 @@ $data_notification = $dataArray[$tf];
 							}
 
 							$user_full_name = $userData['user_full_name'];
+							//11march
+							$feed["user_mobile"] =  $userData["user_mobile"];
+							if($userData['public_mobile'] =="0"){
+								$feed["mobile_privacy"]=true;
+							} else {
+								$feed["mobile_privacy"]=false;
+							}
+							//11march
+
 							$company_name = html_entity_decode($userData['company_name']);
 							$feed["short_name"] =strtoupper(substr($userData["user_first_name"], 0, 1).substr($userData["user_last_name"], 0, 1) );
 
@@ -263,6 +272,11 @@ $data_notification = $dataArray[$tf];
 							$user_full_name = "ZooBiz";
 							$company_name = "Admin";
 							$feed["short_name"] ="ZB";
+							//11march
+							$feed["user_mobile"] =  "";
+							$feed["mobile_privacy"]=false;
+							//11march
+							 
 						}
 						
 
@@ -284,8 +298,8 @@ $data_notification = $dataArray[$tf];
 						$feed["timeline_text"] = htmlspecialchars_decode (stripslashes(  html_entity_decode($data_notification['timeline_text']. ' ' . $block_status )) );   
 						$feed["timeline_text"] = html_entity_decode($data_notification["timeline_text"] , ENT_QUOTES);
  
-						 
-						
+						 $feed["timeline_text"] = htmlspecialchars_decode($feed["timeline_text"], ENT_QUOTES);
+						$feed["timeline_text"] =html_entity_decode ($feed["timeline_text"]);
 
 
 						$feed["user_name"] = $user_full_name;
@@ -652,7 +666,7 @@ if(isset($debug)){
                     $user_found_arr[$user_found_data['user_id']] = $user_found_data['cnt'];
                 }
 
-                $data_qry = $d->selectRow("users_master.user_first_name,users_master.user_last_name, users_master.user_id,users_master.user_profile_pic,users_master.user_full_name,user_employment_details.company_name,user_employment_details.company_logo,users_master.user_profile_pic","users_master,user_employment_details", "users_master.user_id=user_employment_details.user_id AND users_master.user_id in ($user_id_array) ");
+                $data_qry = $d->selectRow("users_master.user_first_name,users_master.user_last_name, users_master.user_id,users_master.user_profile_pic,users_master.user_full_name,user_employment_details.company_name,user_employment_details.company_logo,users_master.user_profile_pic,users_master.user_mobile, users_master.public_mobile","users_master,user_employment_details", "users_master.user_id=user_employment_details.user_id AND users_master.user_id in ($user_id_array) ");
  				
 
  				 $DArray = array();
@@ -741,9 +755,9 @@ if(isset($debug)){
               //echo "<pre>";print_r($sub_cmt_array);exit;
 //code opt end
 
-if(isset($debug)){
+/*if(isset($debug)){
 	print_r($dataArray);exit;
-}
+}*/
 
 			if (count($dataArray) > 0) {
 				$response["feed"] = array();
@@ -781,6 +795,15 @@ $feed = array();
 
 
 							$user_full_name = $userData['user_full_name'];
+
+							//11march
+							$feed["user_mobile"] =  $userData["user_mobile"];
+							if($userData['public_mobile'] =="0"){
+								$feed["mobile_privacy"]=true;
+							} else {
+								$feed["mobile_privacy"]=false;
+							}
+							//11march
 							$company_name = html_entity_decode($userData['company_name']);
 							$feed["short_name"] =strtoupper(substr($userData["user_first_name"], 0, 1).substr($userData["user_last_name"], 0, 1) );
 $feed["user_name"] = $user_full_name;
@@ -790,6 +813,10 @@ $feed["user_name"] = $user_full_name;
 							$company_name = "Admin";
 							$feed["short_name"] ="ZB";
 $feed["user_name"] = $user_full_name;
+
+$feed["user_mobile"] =  "";
+$feed["mobile_privacy"]=false;
+							 
 						}
 						
 						$feed["timeline_id"] = $data_notification['timeline_id'];
@@ -878,7 +905,8 @@ $feed["user_name"] = $user_full_name;
 						$feed["timeline_text"] =  htmlspecialchars_decode (stripslashes(  html_entity_decode($data_notification['timeline_text']. ' ' . $block_status )) );    
 
 						$feed["timeline_text"] = html_entity_decode($feed["timeline_text"] , ENT_QUOTES);
-
+ $feed["timeline_text"] = htmlspecialchars_decode($feed["timeline_text"], ENT_QUOTES);
+						$feed["timeline_text"] =html_entity_decode ($feed["timeline_text"]);
  
 
 						
@@ -1080,7 +1108,7 @@ $feed["user_name"] = $user_full_name;
 
 		} 
 		else if ($_POST['addFeed'] == "addFeed" && filter_var($user_id, FILTER_VALIDATE_INT) == true) {
-
+ 
 $blocked_users = array('-2'); 
 $getBLockUserQry = $d->selectRow("user_id, block_by","user_block_master", " block_by='$user_id' or user_id='$user_id'  ", "");
 while($getBLockUserData=mysqli_fetch_array($getBLockUserQry)) {
@@ -1096,6 +1124,25 @@ while($getBLockUserData=mysqli_fetch_array($getBLockUserQry)) {
 	  
 }
 $blocked_users = implode(",", $blocked_users); 
+ $timeline_text = stripslashes($timeline_text);
+$timeline_text = htmlentities($timeline_text,ENT_QUOTES);
+/*if(isset($debug)){
+
+	echo $timeline_text;
+	//echo $m->get_data('timeline_text');
+	exit;
+}*/
+
+
+
+$m->set_data('timeline_text',htmlspecialchars($timeline_text));
+
+/*if(isset($debug)){
+
+	echo $timeline_text;
+	//echo $m->get_data('timeline_text');
+	exit;
+}*/
 
 				// $timeline_text = htmlspecialchars($timeline_text, ENT_QUOTES) ;
 				 
@@ -1105,7 +1152,7 @@ $blocked_users = implode(",", $blocked_users);
 
 
 			$user_id_add= $user_id;
-			$timeline_text = addslashes($timeline_text);
+			//$timeline_text = addslashes($timeline_text);
 			if ($feed_type == "2" || $feed_type == "1") {
 				$gb_devider = 1073741824;
 				$timeline_photos_master_det = $d->selectRow("round(sum(size)/".$gb_devider.",1) as used_space","timeline_photos_master", "user_id='$user_id' group by `user_id`  ", "");
@@ -1147,7 +1194,7 @@ $blocked_users = implode(",", $blocked_users);
 				$total = count($_FILES['photo']['tmp_name']);
 				$m->set_data('feed_type', 1);
 				
-				$m->set_data('timeline_text', stripslashes(  html_entity_decode(($timeline_text))));
+			//	$m->set_data('timeline_text', stripslashes(  html_entity_decode(($timeline_text))));
 
 
 				$m->set_data('user_id', $user_id);
@@ -1202,9 +1249,9 @@ $blocked_users = implode(",", $blocked_users);
 								break;
 								case IMAGETYPE_GIF:
 								$imageSrc = imagecreatefromgif($uploadedFile);
-								if($ext==''){
+								/*if($ext==''){
 									$ext ='gif';
-								}
+								}*/
 								$tmp = imageResize($imageSrc, $sourceProperties[0], $sourceProperties[1], $newImageWidth, $newImageHeight);
 								imagegif($tmp, $dirPath . $newFileName . "_feed." . $ext);
 								break;
@@ -1215,12 +1262,14 @@ $blocked_users = implode(",", $blocked_users);
 								exit;
 								break;
 							}
-
+							if($ext==''){
+									$ext ='jpeg';
+							}
 							$myfilesize= filesize($dirPath . $newFileName . "_feed." . $ext); 
 							$feed_img = $newFileName . "_feed." . $ext;
 
 							if($i == 0){
-								$timeleine_photo=$base_url.'../img/timeline/'.$feed_img;
+								$timeleine_photo=$base_url.'../img/timeline/'.$feed_img.'.'. $ext;
 
 							}
 							$a1 = array(
@@ -1246,6 +1295,8 @@ $blocked_users = implode(",", $blocked_users);
 					} else {
 						$description = stripslashes(  html_entity_decode($timeline_text));
 					}
+
+					
 					$d->insertFollowNotification($title, $description, $timeline_id, $user_id, 1, "timeline");
 					$fcmArray = $d->get_android_fcm("users_master,follow_master", "users_master.user_id=follow_master.follow_by AND follow_master.follow_to='$user_id' AND users_master.user_token!='' AND  lower(users_master.device) ='android' and timeline_alert=0  and users_master.user_id not in ($blocked_users) ");
 					$fcmArrayIos = $d->get_android_fcm("users_master,follow_master", "users_master.user_id=follow_master.follow_by AND follow_master.follow_to='$user_id' AND users_master.user_token!='' AND  lower(users_master.device) ='ios' and timeline_alert=0  and users_master.user_id not in ($blocked_users)  ");
@@ -1271,7 +1322,7 @@ $blocked_users = implode(",", $blocked_users);
 
 					$nResident->noti("timeline",$timeleine_photo, 0, $fcmArray, $title, $description, $new_feed_id,0,$profile_u);
 					$nResident->noti_ios("timeline", $timeleine_photo, 0, $fcmArrayIos, $title, $description, $new_feed_id,0,$profile_u);
-					$d->insert_myactivity($user_id,"0","", "Post Added","activity.png");
+					$d->insert_myactivity($user_id,"0","", $timeline_text." Post Added","activity.png");
 					$response["message"] = "Posted Successfully";
 					$response["status"] = "200";
 					echo json_encode($response);
@@ -1286,7 +1337,7 @@ $blocked_users = implode(",", $blocked_users);
 			//17dec2020
 			else if ($feed_type == "2") {
 				$m->set_data('feed_type', 2);
-				$m->set_data('timeline_text', stripslashes(  html_entity_decode(($timeline_text))));
+			//	$m->set_data('timeline_text', stripslashes(  html_entity_decode(($timeline_text))));
 				$m->set_data('user_id', $user_id);
 				$m->set_data('user_name', $user_name);
 				$m->set_data('created_date', $modify_date);
@@ -1321,7 +1372,7 @@ $blocked_users = implode(",", $blocked_users);
 //echo $dirPath . $_FILES["feed_video"]["name"][$i]. $ext;exit;
 							move_uploaded_file($_FILES["feed_video"]["tmp_name"][$i],$dirPath . $newFileName."_feed_video." . $ext);
 							$myfilesize_video= filesize($dirPath . $newFileName . "_feed_video." . $ext);
-							  
+							
 
 							$sourceProperties = getimagesize($_FILES['photo']['tmp_name'][$i]);
 							$imageType = $sourceProperties[2];
@@ -1336,9 +1387,9 @@ $blocked_users = implode(",", $blocked_users);
 								$newImageHeight = $imageHeight;
 							}
 							$ext2 = pathinfo($_FILES['photo']['name'][$i], PATHINFO_EXTENSION);
-
+							 
 							if($ext2==''){
-								$ext2='png';
+								$ext2='jpeg';
 							}
 							move_uploaded_file($_FILES["photo"]["tmp_name"][$i],$dirPath . $newFileName."_feed." . $ext2);
 
@@ -1347,7 +1398,7 @@ $blocked_users = implode(",", $blocked_users);
 
 //"../../img/users/company_logo/".$newFileName. "_logo.". $ext
 
-							
+
 							$feed_img = $newFileName . "_feed." . $ext2;
 
 							if($i == 0){
@@ -1405,7 +1456,7 @@ $blocked_users = implode(",", $blocked_users);
 //23oct2020
 					$nResident->noti("timeline", $timeleine_photo, 0, $fcmArray, $title, $description, $new_feed_id,0, $profile_u);
 					$nResident->noti_ios("timeline", $timeleine_photo, 0, $fcmArrayIos, $title, $description, $new_feed_id,0, $profile_u);
-					$d->insert_myactivity($user_id,"0","", "Post Added","activity.png");
+					$d->insert_myactivity($user_id,"0","",$timeline_text. " Post Added","activity.png");
 					$response["message"] = "Posted successfully";
 					$response["status"] = "200";
 					echo json_encode($response);
@@ -1427,7 +1478,7 @@ $blocked_users = implode(",", $blocked_users);
 					//echo $m->get_data('timeline_text');exit;
 				}
 				$m->set_data('feed_type', 0);
-				$m->set_data('timeline_text', addslashes($timeline_text));
+				//$m->set_data('timeline_text', addslashes($timeline_text));
 
 				
 				$m->set_data('user_id', $user_id);
@@ -1447,9 +1498,9 @@ $blocked_users = implode(",", $blocked_users);
 					$d->insertFollowNotification($title, $description, $timeline_id, $user_id, 1, "timeline");
 					$fcmArray = $d->get_android_fcm("users_master,follow_master", "users_master.user_id=follow_master.follow_by AND follow_master.follow_to='$user_id' AND users_master.user_token!='' AND  lower(users_master.device)='android' and users_master.user_id != '$user_id' and timeline_alert=0  and users_master.user_id not in ($blocked_users) ");
 
-					if(isset($debug)){
+					/*if(isset($debug)){
 						echo "users_master.user_id=follow_master.follow_by AND follow_master.follow_to='$user_id' AND users_master.user_token!='' AND  lower(users_master.device)='android' and users_master.user_id != '$user_id' and timeline_alert=0  and users_master.user_id not in ($blocked_users) ";exit;
-					}
+					}*/
 					$fcmArrayIos = $d->get_android_fcm("users_master,follow_master", "users_master.user_id=follow_master.follow_by AND follow_master.follow_to='$user_id' AND users_master.user_token!='' AND  lower(users_master.device)='ios' and users_master.user_id != '$user_id' and timeline_alert=0  and users_master.user_id not in ($blocked_users)  ");
 					$getCatId = $d->selectRow("business_category_id","user_employment_details", "user_id = '$user_id'");
 					$getCatData = mysqli_fetch_array($getCatId);
@@ -1468,7 +1519,7 @@ $blocked_users = implode(",", $blocked_users);
 //23oct2020
 					$nResident->noti("timeline", "", 0, $fcmArray, $title, $description, $new_feed_id,1, $profile_u );
 					$nResident->noti_ios("timeline", "", 0, $fcmArrayIos, $title, $description, $new_feed_id ,1, $profile_u);
-					$d->insert_myactivity($user_id,"0","", "Post Added","activity.png");
+					$d->insert_myactivity($user_id,"0","", $timeline_text." Post Added","activity.png");
 					
 					$response["message"] = "Posted successfully";
 					$response["status"] = "200";
@@ -1641,7 +1692,7 @@ $blocked_users = implode(",", $blocked_users);
 
 
 				if ($parent_comments_id != 0) {
-					$quc = $d->selectRow("users_master.user_token,users_master.device,users_master.user_id","users_master,timeline_comments", "timeline_comments.user_id=users_master.user_id AND timeline_comments.timeline_id='$timeline_id' AND timeline_comments.user_id!='$user_id' and timeline_alert=0 ");
+					$quc = $d->selectRow("users_master.user_token,users_master.device,users_master.user_id","users_master,timeline_comments", "timeline_comments.user_id=users_master.user_id AND timeline_comments.timeline_id='$timeline_id' AND timeline_comments.user_id!='$user_id' and timeline_alert=0 and timeline_comments.parent_comments_id = '$parent_comments_id' ");
 				} else {
 					$quc = $d->selectRow("users_master.user_token,users_master.device,users_master.user_id","users_master,timeline_master", "timeline_master.user_id=users_master.user_id AND timeline_master.timeline_id='$timeline_id' AND users_master.user_id!='$user_id' and timeline_alert=0 ");
 				}
@@ -1922,7 +1973,7 @@ $NewData=mysqli_fetch_array($gu);
 				$q = $d->delete("timeline_like_master", "timeline_id='$timeline_id'");
 				$q = $d->delete("user_notification", "timeline_id='$timeline_id'");
 				$q = $d->delete("timeline_photos_master", "timeline_id='$timeline_id'");
-				$d->insert_myactivity($user_id,"0","",$NewData['timeline_text']. " News Feed Deleted","activity.png");
+				$d->insert_myactivity($user_id,"0","",$NewData['timeline_text']. " Post Deleted","activity.png");
 				$response["message"] = "Deleted Successfully";
 				$response["status"] = "200";
 				echo json_encode($response);
@@ -1984,11 +2035,11 @@ $blocked_users = implode(",", $blocked_users);
 
 			if(isset($limit_feed)){
 
-				$qnotification = $d->selectRow("users_master.user_first_name,users_master.user_last_name,timeline_master.meetup_user_id2,timeline_master.meetup_user_id1, timeline_master.timeline_id,timeline_master.timeline_text,users_master.user_full_name,user_employment_details.company_name,timeline_master.user_id,company_logo,timeline_master.feed_type,timeline_master.created_date,users_master.user_profile_pic","timeline_master,users_master,user_employment_details", "user_employment_details.user_id=users_master.user_id AND timeline_master.active_status = 0 AND timeline_master.user_id='$user_id' AND users_master.user_id='$user_id'
+				$qnotification = $d->selectRow("users_master.user_first_name,users_master.user_last_name,timeline_master.meetup_user_id2,timeline_master.meetup_user_id1, timeline_master.timeline_id,timeline_master.timeline_text,users_master.user_full_name,user_employment_details.company_name,timeline_master.user_id,company_logo,timeline_master.feed_type,timeline_master.created_date,users_master.user_profile_pic,users_master.user_mobile, users_master.public_mobile","timeline_master,users_master,user_employment_details", "user_employment_details.user_id=users_master.user_id AND timeline_master.active_status = 0 AND timeline_master.user_id='$user_id' AND users_master.user_id='$user_id'
 and timeline_master.user_id not in ($blocked_users) ", "ORDER BY timeline_id DESC LIMIT $limit_feed, 10");
 				
 			} else {
-				$qnotification = $d->selectRow("users_master.user_first_name,users_master.user_last_name, timeline_master.meetup_user_id2,timeline_master.meetup_user_id1,timeline_master.timeline_id,timeline_master.timeline_text,users_master.user_full_name,user_employment_details.company_name,timeline_master.user_id,company_logo,timeline_master.feed_type,timeline_master.created_date,users_master.user_profile_pic","timeline_master,users_master,user_employment_details", "user_employment_details.user_id=users_master.user_id AND timeline_master.active_status = 0 AND timeline_master.user_id='$user_id' AND users_master.user_id='$user_id' 
+				$qnotification = $d->selectRow("users_master.user_first_name,users_master.user_last_name, timeline_master.meetup_user_id2,timeline_master.meetup_user_id1,timeline_master.timeline_id,timeline_master.timeline_text,users_master.user_full_name,user_employment_details.company_name,timeline_master.user_id,company_logo,timeline_master.feed_type,timeline_master.created_date,users_master.user_profile_pic,users_master.user_mobile, users_master.public_mobile","timeline_master,users_master,user_employment_details", "user_employment_details.user_id=users_master.user_id AND timeline_master.active_status = 0 AND timeline_master.user_id='$user_id' AND users_master.user_id='$user_id' 
 and timeline_master.user_id not in ($blocked_users) ", "ORDER BY timeline_id DESC LIMIT 500");
 			}
 			
@@ -2160,6 +2211,17 @@ and timeline_master.user_id not in ($blocked_users) ");
 				 
 					$feed = array();
 
+
+					//11march
+							$feed["user_mobile"] =  $data_notification["user_mobile"];
+							if($data_notification['public_mobile'] =="0"){
+								$feed["mobile_privacy"]=true;
+							} else {
+								$feed["mobile_privacy"]=false;
+							}
+							//11march
+
+
 					$qche = $fol_array[$data_notification[user_id]];//  
 					if (count($qche) > 0) {
 						$follow_status = true;
@@ -2188,6 +2250,11 @@ if(in_array($data_notification['timeline_id'], $saved_timeline_array)){
 					$feed["timeline_text"] =  htmlspecialchars_decode (stripslashes(  html_entity_decode($data_notification['timeline_text'] )) );    
 
 					$feed["timeline_text"] = html_entity_decode($feed["timeline_text"] , ENT_QUOTES);
+
+					 $feed["timeline_text"] = htmlspecialchars_decode($feed["timeline_text"], ENT_QUOTES);
+						$feed["timeline_text"] =html_entity_decode ($feed["timeline_text"]);
+
+
 $feed["short_name"] =strtoupper(substr($data_notification["user_first_name"], 0, 1).substr($data_notification["user_last_name"], 0, 1) );
 					$feed["user_name"] = $data_notification['user_full_name'];
 					$feed["company_name"] = html_entity_decode($data_notification['company_name']);
@@ -2414,14 +2481,14 @@ $blocked_users = implode(",", $blocked_users);
 			if(isset($limit_feed)){
 
 				$qnotification = $d->selectRow("users_master.user_first_name,users_master.user_last_name,
-timeline_master.meetup_user_id2,timeline_master.meetup_user_id1,timeline_master.timeline_id,timeline_master.timeline_text,users_master.user_full_name,users_master.user_id,user_employment_details.company_logo,timeline_master.timeline_id,timeline_master.feed_type,timeline_master.created_date,users_master.user_profile_pic","timeline_master,users_master,user_employment_details", "user_employment_details.user_id = users_master.user_id and   timeline_master.active_status = 0 AND timeline_master.user_id='$user_id' AND users_master.user_id='$user_id' and timeline_master.user_id not in ($blocked_users)
+timeline_master.meetup_user_id2,timeline_master.meetup_user_id1,timeline_master.timeline_id,timeline_master.timeline_text,users_master.user_full_name,users_master.user_id,user_employment_details.company_logo,timeline_master.timeline_id,timeline_master.feed_type,timeline_master.created_date,users_master.user_profile_pic,users_master.user_mobile, users_master.public_mobile","timeline_master,users_master,user_employment_details", "user_employment_details.user_id = users_master.user_id and   timeline_master.active_status = 0 AND timeline_master.user_id='$user_id' AND users_master.user_id='$user_id' and timeline_master.user_id not in ($blocked_users)
  ", "ORDER BY timeline_id DESC LIMIT $limit_feed, 10");
 
 				 
 				
 			} else {
 				$qnotification = $d->selectRow("users_master.user_first_name,users_master.user_last_name,
-timeline_master.meetup_user_id2,timeline_master.meetup_user_id1,timeline_master.timeline_id,timeline_master.timeline_text,users_master.user_full_name,users_master.user_id,user_employment_details.company_logo,timeline_master.timeline_id,timeline_master.feed_type,timeline_master.created_date,users_master.user_profile_pic","timeline_master,users_master,user_employment_details", "user_employment_details.user_id = users_master.user_id and   timeline_master.active_status = 0 AND timeline_master.user_id='$user_id' AND users_master.user_id='$user_id' and timeline_master.user_id not in ($blocked_users)
+timeline_master.meetup_user_id2,timeline_master.meetup_user_id1,timeline_master.timeline_id,timeline_master.timeline_text,users_master.user_full_name,users_master.user_id,user_employment_details.company_logo,timeline_master.timeline_id,timeline_master.feed_type,timeline_master.created_date,users_master.user_profile_pic,users_master.user_mobile, users_master.public_mobile","timeline_master,users_master,user_employment_details", "user_employment_details.user_id = users_master.user_id and   timeline_master.active_status = 0 AND timeline_master.user_id='$user_id' AND users_master.user_id='$user_id' and timeline_master.user_id not in ($blocked_users)
 ", "ORDER BY timeline_id DESC LIMIT 500");
 			}
 
@@ -2580,6 +2647,15 @@ timeline_master.meetup_user_id2,timeline_master.meetup_user_id1,timeline_master.
 				//while ($data_notification = mysqli_fetch_array($qnotification)) {
 					$feed = array();
 
+					//11march
+							$feed["user_mobile"] =  $data_notification["user_mobile"];
+							if($data_notification['public_mobile'] =="0"){
+								$feed["mobile_privacy"]=true;
+							} else {
+								$feed["mobile_privacy"]=false;
+							}
+							//11march
+
 					$qche = $fol_array[$data_notification[user_id]];//  
 					if (count($qche) > 0) {
 						$follow_status = true;
@@ -2605,6 +2681,11 @@ timeline_master.meetup_user_id2,timeline_master.meetup_user_id1,timeline_master.
 					$feed["timeline_text"] = htmlspecialchars_decode (stripslashes(  html_entity_decode($data_notification['timeline_text'] )) );    
 
 					$feed["timeline_text"] = html_entity_decode($feed["timeline_text"] , ENT_QUOTES); 
+
+					 $feed["timeline_text"] = htmlspecialchars_decode($feed["timeline_text"], ENT_QUOTES);
+						$feed["timeline_text"] =html_entity_decode ($feed["timeline_text"]);
+
+
 					$feed["short_name"] =strtoupper(substr($data_notification["user_first_name"], 0, 1).substr($data_notification["user_last_name"], 0, 1) );
 					$feed["user_name"] = $data_notification['user_full_name'];
 					$feed["user_id"] = $data_notification['user_id'];
@@ -2790,7 +2871,7 @@ timeline_master.meetup_user_id2,timeline_master.meetup_user_id1,timeline_master.
 			);
 			$d->update("timeline_master", $a1, "timeline_id='$timeline_id'");
 			if ($d == TRUE) {
-				$d->insert_myactivity($user_id,"0","", "Post Updated","activity.png");
+				$d->insert_myactivity($user_id,"0","", $timeline_text."Post Updated","activity.png");
 				$response["message"] = "Updated Successfully";
 				$response["status"] = "200";
 				echo json_encode($response);
@@ -2941,6 +3022,10 @@ timeline_master.meetup_user_id2,timeline_master.meetup_user_id1,timeline_master.
 					$feed["timeline_text"] = htmlspecialchars_decode (stripslashes(  html_entity_decode($data_notification['timeline_text'] )) );    
 
 					$feed["timeline_text"] = html_entity_decode($feed["timeline_text"] , ENT_QUOTES);
+
+					 $feed["timeline_text"] = htmlspecialchars_decode($feed["timeline_text"], ENT_QUOTES);
+						$feed["timeline_text"] =html_entity_decode ($feed["timeline_text"]);
+						
 					$feed["short_name"] =strtoupper(substr($data_notification["user_first_name"], 0, 1).substr($data_notification["user_last_name"], 0, 1) );
 					$timeline_id = $data_notification['timeline_id'];
 					$feed["feed_type"] = $data_notification['feed_type'];

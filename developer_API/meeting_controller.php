@@ -188,6 +188,8 @@ $a = array(
 } else if ($_POST['approveMeeting'] == "approveMeeting" && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($meeting_id, FILTER_VALIDATE_INT) == true) {
 
 
+
+
   $qUserToken = $d->select("users_master,meeting_master", " users_master.user_id =meeting_master.user_id and   meeting_master.meeting_id='$meeting_id'");
   $userData = mysqli_fetch_array($qUserToken);
   $status  = $userData['status'];
@@ -200,7 +202,7 @@ $a = array(
   $m->set_data('status', "Approve"); 
   $m->set_data('reason', $reason); 
   $m->set_data('action_user_id', $user_id); 
-  
+
   $a = array(
     'status' => $m->get_data('status'),
     'reason' => $m->get_data('reason') ,
@@ -214,7 +216,7 @@ $a = array(
     $uquery5 = $d->select("users_master", "  user_id = '$user_id'");
     $u_data5 = mysqli_fetch_array($uquery5);
 
-    
+
 
     if($status=="Reschedule"){
       $user_id = $userData[member_id]; 
@@ -242,12 +244,12 @@ $a = array(
       $device=$opp_user_data['device'];
       $feed_user_id=$opp_user_data['user_id'];
 
-      
+
       $title ="Meetup" ; 
     //  $msg = $u_data5['user_full_name']. " is Asking, Lets Meet on ". date("d F Y",strtotime($userData['date'])).", ".$userData['time']." @ ".$userData['place'];//$u_data5['user_full_name']. " has accepted your request for meeting on ". date("d F Y",strtotime($userData['date']))." at ".$userData['time'].". Happy Networking";
-      
+
       $msg ="Congratulations! ".$u_data5['user_full_name']." ready for a Meet Up on ".date("d F Y",strtotime($userData['date'])).", ".$userData['time']." @ ".$userData['place']; 
-      
+
       $notiAry = array(
 
         'user_id' => $feed_user_id,
@@ -291,7 +293,15 @@ $a = array(
      $meetup_date2 =date( "Y-m-d H:i",$newDate); 
 
 
+$date_before_1_day = date("Y-m-d", strtotime($date1."-1 day"));
+$currDate = date("Y-m-d");
+if(strtotime($date_before_1_day) < strtotime($currDate) ){
+  $date_before_1_day =$currDate;
+}
 
+
+$minus1hr = strtotime($date2) - 60*60;
+$meetup_date_minus1hr =date( "Y-m-d H:i",$minus1hr); 
 
      $m->set_data('modify_date',date('Y-m-d H:i:s'));
 
@@ -309,9 +319,23 @@ $a = array(
 
 
 
+$msgRes1 = "You have meeting with ".$u_data['user_full_name']." on ".date("d F Y h:i A",strtotime($userData['date'] .' '. $userData['time']))." @ ".$userData['place']." for ".$userData['agenda'];
+
+if($u_data['user_profile_pic']!=""){
+        $m_profile = $base_url . "img/users/members_profile/" . $u_data['user_profile_pic'];
+      } else {
+        $m_profile ="https://zoobiz.in/img/user.png";
+      }
+
 
      $notAry = array(
+      'date_before_1_day' => $date_before_1_day,
       'meetup_date' => $meetup_date,
+      'meeting_id' => $meeting_id,
+      'fcm_message' => $msgRes1,
+      'm_date' => date("Y-m-d",  strtotime($userData['date']) ),
+      'm_profile' =>$m_profile ,
+      'm_time' =>date("H:i", strtotime($meetup_date_minus1hr)) ,// $time11,
       'date' => $meetup_date1,
       'end_date' => $meetup_date2,
       'place' => $userData['place'],
@@ -330,9 +354,26 @@ $a = array(
 
     // echo $q.'test';exit;
    $d->insert_myactivity($user_id,"0","", "You Approved meeting with ".$opp_user_data['user_full_name'],"activity.png");
-   
+
+if($opp_user_data['user_profile_pic']!=""){
+        $m_profile2 = $base_url . "img/users/members_profile/" . $opp_user_data['user_profile_pic'];
+      } else {
+        $m_profile2 ="https://zoobiz.in/img/user.png";
+      }
+ $msgRes = "You have meeting with ".$opp_user_data['user_full_name']." on ".date("d F Y h:i A",strtotime($userData['date'] .' '. $userData['time']))." @ ".$userData['place']." for ".$userData['agenda'];
+
+   $response["date_before_1_day"] = $date_before_1_day; 
+   $response["meeting_id"] = $meeting_id; 
+   $response["fcm_message"] = $msgRes;
    $response["date"] = $meetup_date1;
    $response["end_date"] = $meetup_date2;
+$response["m_profile"] = $m_profile2;
+    $response["m_date"] = date("Y-m-d", strtotime($userData['date']));
+   $response["m_time"] = date("H:i", strtotime($meetup_date_minus1hr)) ;// $time11;
+
+
+
+
    $response["place"] =$userData['place'];
    $response["meetup_with"] ="Meetup With ". $opp_user_data['user_full_name'];
    $response["agenda"] =$userData['agenda'];
@@ -349,6 +390,7 @@ $a = array(
    $response["status"] = "201";
    echo json_encode($response);
  } 
+
 } else if ($_POST['rejectMeeting'] == "rejectMeeting" && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($meeting_id, FILTER_VALIDATE_INT) == true) {
 
   $qUserToken = $d->select("users_master,meeting_master", " users_master.user_id =meeting_master.user_id and   meeting_master.meeting_id='$meeting_id'");
@@ -583,6 +625,8 @@ $title ="Meetup";//$u_data['user_full_name']." Rescheduled Meeting";
 } 
 else if ($_POST['getAprrovedMeetings'] == "getAprrovedMeetings" && filter_var($user_id, FILTER_VALIDATE_INT) == true  ) {
 
+
+
   $active_usr_qry=$d->select("users_master","active_status=0");
   $active_user_arr = array();
   while($active_usr_data=mysqli_fetch_array($active_usr_qry)) { 
@@ -596,6 +640,16 @@ else if ($_POST['getAprrovedMeetings'] == "getAprrovedMeetings" && filter_var($u
   if(mysqli_num_rows($q3)>0){ 
    while ($q3_data=mysqli_fetch_array($q3)) {
 
+if($q3_data['member_id'] == $user_id){
+
+ $member_id = $q3_data['user_id'];
+} else {
+   $member_id = $q3_data['member_id'];
+}
+$ios_op_u_data = $d->select("users_master", "  user_id = '$member_id'");
+$ios_op_u = mysqli_fetch_array($ios_op_u_data);
+
+
       $approvedMeeting = array();
       $meetup_date = $q3_data['date'];
       $time11= date("H:i", strtotime($q3_data['time']));
@@ -607,6 +661,17 @@ else if ($_POST['getAprrovedMeetings'] == "getAprrovedMeetings" && filter_var($u
       $newDate = strtotime($date2) + 60*60;
       $meetup_date1 =date( "Y-m-d H:i",strtotime($date1)); 
       $meetup_date2 =date( "Y-m-d H:i",$newDate); 
+$date_before_1_day = date("Y-m-d", strtotime($date1."-1 day"));
+$currDate = date("Y-m-d");
+if(strtotime($date_before_1_day) < strtotime($currDate) ){
+  $date_before_1_day =$currDate;
+}
+
+
+$minus1hr = strtotime($date2) - 60*60;
+$meetup_date_minus1hr =date( "Y-m-d H:i",$minus1hr); 
+
+
 
       $curr_date = date("Y-m-d H:i");
 
@@ -616,11 +681,16 @@ $member_id = $q3_data['member_id'];
 $opp_user = $d->select("users_master", "  user_id = '$member_id'");
       $opp_user_data = mysqli_fetch_array($opp_user);
 
+
+ 
+
      
       $approvedMeeting["date"] = $meetup_date1;
       $approvedMeeting["end_date"] = $meetup_date2;
       $approvedMeeting["place"] =$q3_data['place'];
       $approvedMeeting["meetup_with"] ="Meetup With ". $opp_user_data['user_full_name'];
+
+      $approvedMeeting["meetup_with_ios"] ="Meetup With ". $ios_op_u['user_full_name'];
       $approvedMeeting["agenda"] =$q3_data['agenda'];
       $approvedMeeting["user_id"] =$q3_data['user_id'];
       $approvedMeeting["member_id"] =$q3_data['member_id'];

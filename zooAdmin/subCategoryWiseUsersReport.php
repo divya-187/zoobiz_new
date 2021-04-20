@@ -150,6 +150,7 @@
                 <td>
    <?php if( mysqli_num_rows($q3) > 0 ){?>  
  <form style="display: inline-block;" action="subCategoryWiseUsersDetails" method="get">    
+     <input type="hidden" name="filter_city_id" value="<?php echo $filter_city_id; ?>">  
                           <input type="hidden" name="business_sub_category_id" value="<?php echo $business_sub_category_id; ?>">    
                           <button type="submit" name="" class="btn btn-info btn-sm "> View Details</button>
                         </form>       

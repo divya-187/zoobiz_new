@@ -113,7 +113,9 @@ extract($userData);
         <li class="nav-item">
           <a href="javascript:void();" data-target="#Professional" data-toggle="pill" class="nav-link  active "><i class="fa fa-pencil"></i> <span class="hidden-xs">Business Category </span></a>
         </li>
-
+ <li class="nav-item">
+          <a href="javascript:void();" data-target="#exProfessional" data-toggle="pill" class="nav-link   "><i class="fa fa-pencil"></i> <span class="hidden-xs">Existing Business Category </span></a>
+        </li>
                 
 
 
@@ -122,18 +124,16 @@ extract($userData);
                 
                
 
- 
-
-    
-    <div class="tab-pane active" id="Professional">
+  <div class="tab-pane " id="exProfessional">
       <form id="approveCustomCatFrm" action="controller/userController.php" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="isExisting" value="Yes">
         <div class="form-group row">
           <?php 
           $q1=$d->select("user_employment_details","user_id='$user_id'");
           $proData=mysqli_fetch_array($q1);
           ?>
         </div>
-        <div class="proExtDiv">
+      
 
            <div class="form-group row">
         <label class="col-lg-3 col-form-label form-control-label">Business Name</label>
@@ -157,6 +157,63 @@ extract($userData);
               </select>
             </div>
           </div>
+           <div class="form-group row">
+          <label class="col-lg-3 col-form-label form-control-label">Business Sub Category <span class="required">*</span></label>
+                        <div class="col-lg-9">
+                          <select id="business_categories_sub" class="form-control single-select" name="business_sub_category_id" type="text"  required="">
+                            <option value="">-- Select --</option>
+                             
+                            </select>
+                          </div>
+</div>
+         
+
+   
+          <div class="form-group row">
+            <div class="col-lg-12 text-center">
+              
+              <input type="hidden" name="user_id" value="<?php echo $user_id;?>">
+              <input type="hidden" name="approveCustomCat" value="approveCustomCat">
+              <input type="submit" id="approveCustomCatBtn" class="btn btn-primary" name=""  value="Submit">
+            </div>
+          </div>
+        </form>
+      </div>
+
+    
+    <div class="tab-pane active" id="Professional">
+      <form id="approveCustomCatFrm" action="controller/userController.php" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="isExisting" value="No">
+        <div class="form-group row">
+          <?php 
+          $q1=$d->select("user_employment_details","user_id='$user_id'");
+          $proData=mysqli_fetch_array($q1);
+          ?>
+        </div>
+        <div class="proExtDiv">
+
+           <div class="form-group row">
+        <label class="col-lg-3 col-form-label form-control-label">Business Name</label>
+        <div class="col-lg-9">
+           
+           <?php echo $company_name; ?>
+        </div>
+      </div>
+
+         
+
+          <div class="form-group row">
+            <label class="col-lg-3 col-form-label form-control-label">Professional Category <span class="required">*</span></label>
+            <div class="col-lg-9">
+              <select id="business_categories"   class="form-control single-select" name="business_category_id_old" type="text"  required="">
+                <option value="">-- Select --</option>
+                <?php $qb=$d->select("business_categories","category_status in (0,2)"," order by category_name asc");
+                while ($bData=mysqli_fetch_array($qb)) {?>
+                  <option <?php if($proData['business_category_id']== $bData['business_category_id']) { echo 'selected';} ?> value="<?php echo $bData['business_category_id']; ?>"><?php echo $bData['category_name']; ?></option>
+                <?php } ?> 
+              </select>
+            </div>
+          </div>
 
           <div class="form-group row">
         <label class="col-lg-3 col-form-label form-control-label">Custom Sub Name <span class="required">*</span></label>
@@ -169,7 +226,7 @@ extract($userData);
    
           <div class="form-group row">
             <div class="col-lg-12 text-center">
-              <input type="hidden" name="business_sub_category_id" value="<?php echo $business_sub_category_id;?>">
+              <input type="hidden" name="business_sub_category_id_old" value="<?php echo $business_sub_category_id;?>">
               <input type="hidden" name="user_id" value="<?php echo $user_id;?>">
               <input type="hidden" name="approveCustomCat" value="approveCustomCat">
               <input type="submit" id="approveCustomCatBtn" class="btn btn-primary" name=""  value="Approve">
@@ -177,6 +234,9 @@ extract($userData);
           </div>
         </form>
       </div>
+
+
+
     </div>
   </div>
 </div>

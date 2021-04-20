@@ -482,7 +482,17 @@ $queryAry = array();
 				}
 				
 			}
-			
+		$blocked_users = array('-2'); 
+$getBLockUserQry = $d->selectRow("user_id, block_by","user_block_master", " block_by='$user_id' or user_id='$user_id'  ", "");
+while($getBLockUserData=mysqli_fetch_array($getBLockUserQry)) {
+	 	 if($user_id != $getBLockUserData['user_id']){
+	 		$blocked_users[] = $getBLockUserData['user_id'];
+	 	}
+       if($user_id != $getBLockUserData['block_by']){
+	 		$blocked_users[] = $getBLockUserData['block_by'];
+	 	}
+ }
+ 	
 			
 			if (mysqli_num_rows($meq) > 0) {
 				
@@ -499,6 +509,14 @@ $queryAry = array();
 					} else {
 						$follow_status = false;
 					}
+
+					if(in_array($data["user_id"],$blocked_users)){
+						$member["is_blocked"] =true;
+					} else {
+						$member["is_blocked"] =false;
+					}
+
+					
 
                         $member["is_follow"] = $follow_status;
 if($data['public_mobile'] =="0"){

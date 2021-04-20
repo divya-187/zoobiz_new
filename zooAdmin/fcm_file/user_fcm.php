@@ -14,14 +14,14 @@ class firebase_resident
             $registrationIds = array_unique($registrationIds);
         }*/
 
-            $is_plan_expired= false;
+        
 
         if (is_array($registrationIds)) {
             $registrationIds=$registrationIds;
             $registrationIds = array_unique($registrationIds);
             $registrationIds = array_values($registrationIds);
 
-              //15february2021
+             /* //15february2021
           $d = new dao();
         $today_date_for_token = date('Y-m-d');
          for ($xd=0; $xd <count($registrationIds) ; $xd++) { 
@@ -37,16 +37,10 @@ class firebase_resident
          $registrationIds = implode(",", $registrationIds);
           $registrationIds = explode(",", $registrationIds);
 
- 
+ */
         
  //$registrationIds = array($registrationIds);
         } else {
-             $users_master_token_qry = $d->select("users_master, user_employment_details"," user_employment_details.user_id =users_master.user_id and   users_master.user_token = '$registrationIds' ");
-             $users_master_token_data = mysqli_fetch_array($users_master_token_qry);
-              
-             if( $today_date_for_token > $users_master_token_data['plan_renewal_date']){
-                        $is_plan_expired= true;
-                 }
             $registrationIds = array($registrationIds);
         }
 
@@ -78,7 +72,6 @@ class firebase_resident
             'sound'=>'iphone_notification',
             'is_profile' =>$is_profile,
             'profile' =>$profile,
-            'is_plan_expired' => $is_plan_expired,
             'short_name' =>$short_name
         );
     
@@ -110,6 +103,9 @@ echo "<pre>";print_r(json_encode($fields));
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
         $result = curl_exec($ch);
         /*if($title=="ZooBiz"){
+              echo "<pre>";print_r($registrationIds);
+ 
+echo "<pre>";print_r(json_encode($fields));
 echo "<pre>";print_r($result);
             exit;
         }*/
@@ -140,7 +136,7 @@ echo "<pre>";print_r($result);
           //   $registrationIds = array_values($registrationIds);
 
                //15february2021
-          $d = new dao();
+         /* $d = new dao();
         $today_date_for_token = date('Y-m-d');
          for ($xd=0; $xd <count($registrationIds) ; $xd++) { 
              $users_master_token_qry = $d->select("users_master, user_employment_details"," user_employment_details.user_id =users_master.user_id and   users_master.user_token = '$registrationIds[$xd]' ");
@@ -155,7 +151,7 @@ echo "<pre>";print_r($result);
          }
         //15february2021
 $registrationIds = implode(",", $registrationIds);
-          $registrationIds = explode(",", $registrationIds);
+          $registrationIds = explode(",", $registrationIds);*/
 //$registrationIds = array($registrationIds);
         } else {
             $registrationIds = array($registrationIds);

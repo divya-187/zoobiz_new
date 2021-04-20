@@ -114,7 +114,9 @@
                  </td>
                  <td>
    <?php if( mysqli_num_rows($q3) > 0 ){?>  
- <form style="display: inline-block;" action="categoryWiseUsersReportDetails" method="get">    
+ <form style="display: inline-block;" action="categoryWiseUsersReportDetails" method="get">   
+
+    <input type="hidden" name="filter_city_id" value="<?php echo $filter_city_id; ?>"> 
                           <input type="hidden" name="business_category_id" value="<?php echo $business_category_id; ?>">    
                           <button type="submit" name="" class="btn btn-info btn-sm "> View Details</button>
                         </form>       

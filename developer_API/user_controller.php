@@ -652,8 +652,14 @@ $response["member_added_details"] = array();
 			$q = $d->select("users_master", "user_id ='$user_id' AND otp='$otp'");
 			if (mysqli_num_rows($q) > 0) {
 				$m->set_data('user_mobile', $user_mobile);
-
+				
+				if(isset($country_code)){
+					$m->set_data('country_code',$country_code);
+				} else {
+					$m->set_data('country_code','+91');
+				}
 				$a = array(
+					'country_code' => $m->get_data('country_code'),
 					'user_mobile' => $m->get_data('user_mobile'),
 					'otp' => "",
 				);

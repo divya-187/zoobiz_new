@@ -90,7 +90,7 @@ if(isset($_POST) && !empty($_POST)){
                 echo json_encode($response);
                 exit();
             }
-            $maxsize    = 5097152;
+            $maxsize    =50000000;
             $file11=$_FILES["attachment"]["tmp_name"];
             if (file_exists($file11)) {
                 if(($_FILES['attachment']['size'] >= $maxsize) || ($_FILES["attachment"]["size"] == 0)) {

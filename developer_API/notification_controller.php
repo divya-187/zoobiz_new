@@ -123,7 +123,7 @@ $response["max_notification_line"] = $zoobiz_settings_master_data['max_api_notif
                             }
 
 
-                        }else{
+                        } else{
                             $notification["notification_img_url"] =$base_url.'img/logo.png';
                             $notification["notification_logo"] = $base_url.'img/logo.png';
                         }
@@ -244,7 +244,12 @@ $response["max_notification_line"] = $zoobiz_settings_master_data['max_api_notif
                                 $notification["notification_img_url"] =$base_url.'img/deals/'.$data_app["notification_logo"];
                                 $notification["notification_logo"] = $base_url.'img/deals/'.$data_app["notification_logo"];
                             } 
-                        }else{
+                        }  else if($data_app["notification_type"]==11){
+                                $notification["notification_logo"] = $base_url.'img/users/members_profile/'.$data_app["notification_logo"];
+                                $notification["notification_img_url"] =$base_url.'img/users/members_profile/'.$data_app["notification_logo"];
+                                 
+                           
+                        } else{
                             $notification["notification_img_url"] =$base_url.'img/logo.png';
                             $notification["notification_logo"] = $base_url.'img/logo.png';
                         } 
@@ -372,7 +377,12 @@ if ( $data_app['notification_action']=="custom_notification") {
         }
 
 
-    }else{
+    }  else if($data_app["notification_type"]==11){
+                                $notification["notification_logo"] = $base_url.'img/users/members_profile/'.$data_app["notification_logo"];
+                                $notification["notification_img_url"] =$base_url.'img/users/members_profile/'.$data_app["notification_logo"];
+                                 
+                           
+                        } else{
         $notification["notification_img_url"] =$base_url.'img/logo.png';
         $notification["notification_logo"] = $base_url.'img/logo.png';
     }

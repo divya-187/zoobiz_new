@@ -686,7 +686,10 @@ $blocked_users = implode(",", $blocked_users);
                     'notification_action' => 'classified',
                     'notification_logo' => 'menu_fourm.png'
                 );
-                $d->insert("user_notification", $notiAry);
+                if($classified_user_id !=$user_id){
+                    $d->insert("user_notification", $notiAry);
+                }
+                
                 $muteArray = array();
                 $qc11      = $d->select("cllassified_mute", "cllassified_id='$cllassified_id'");
                 while ($muteData = mysqli_fetch_array($qc11)) {
@@ -737,6 +740,7 @@ $blocked_users = implode(",", $blocked_users);
            /* $last_auto_id     = $d->last_auto_id("cllassified_comment");
             $res              = mysqli_fetch_array($last_auto_id);
             $comment_id11     = $res['Auto_increment'];*/
+
             $q1               = $d->insert("cllassified_comment", $a);
             $comment_id11 = $con->insert_id;
             $comment_messaage = html_entity_decode($comment_messaage);
@@ -759,7 +763,14 @@ $blocked_users = implode(",", $blocked_users);
                     'notification_action' => 'classified',
                     'notification_logo' => 'menu_fourm.png'
                 );
-                $d->insert("user_notification", $notiAry);
+
+
+                $cllassifieds_master2      = $d->select("cllassifieds_master", "cllassified_id='$cllassified_id'");
+                $cllassifieds_master_data2 = mysqli_fetch_array($cllassifieds_master2);
+                $classified_user_id2       = $cllassifieds_master_data2['user_id'];
+                 if($classified_user_id2 !=$user_id){
+                        $d->insert("user_notification", $notiAry);
+                 }
                 $muteArray = array();
                 $qc11      = $d->select("cllassified_mute", "cllassified_id='$cllassified_id'");
                 while ($muteData = mysqli_fetch_array($qc11)) {

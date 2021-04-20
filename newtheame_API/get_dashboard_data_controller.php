@@ -335,7 +335,7 @@ if ($user_token == '') {
 if ($user_token != '') {
     $msg = "";
     if ($data['user_token'] == '') {
-        $msg = "Login authentication faild, please try again";
+        $msg = "Login authentication failed, please try again";
     }
     if ($data['user_token'] != $user_token && $data['user_token'] !='') {
         $msg = "Detected login already with other device please try login again";

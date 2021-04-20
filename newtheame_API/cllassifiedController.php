@@ -428,7 +428,7 @@ $blocked_users = implode(",", $blocked_users);
             $subCatSearch ='';
             if (trim($search) != '') {
                 $search = trim($search);
-                $query2 .= " and  ( c.cllassified_title LIKE '%$search%'    or c.cllassified_description LIKE '%$search%'  ) ";
+                $query2 .= " and  ( c.cllassified_title LIKE '%$search%'    or c.cllassified_description LIKE '%$search%' or (business_categories.business_category_id = c.business_category_id  or  business_sub_categories.business_sub_category_id = c.business_sub_category_id) ) ";
 
                  $catSearch =" and  (  business_categories.category_name LIKE '%$search%'  ) ";
                  $subCatSearch =" and  (  business_sub_categories.sub_category_name LIKE '%$search%'  ) ";
@@ -437,9 +437,15 @@ $blocked_users = implode(",", $blocked_users);
             $appendQuery    = implode(" AND ", $queryAry);
              
 
-               $q              = $d->selectRow("cllassifieds_city_master.*, c.*","cllassifieds_city_master, cllassifieds_master as c  left join business_categories on  business_categories.business_category_id = c.business_category_id $catSearch   left join business_sub_categories on  business_sub_categories.business_sub_category_id = c.business_sub_category_id  $subCatSearch  ", "  
+               $q              = $d->selectRow("cllassifieds_city_master.*, c.*,business_categories.category_name , business_sub_categories.sub_category_name","cllassifieds_city_master, cllassifieds_master as c  left join business_categories on  business_categories.business_category_id = c.business_category_id $catSearch   left join business_sub_categories on  business_sub_categories.business_sub_category_id = c.business_sub_category_id  $subCatSearch  ", "  
                    c.active_status=0  AND c.cllassified_id=cllassifieds_city_master.cllassified_id and c.user_id not in ($blocked_users)   $query2  ", "GROUP BY c.cllassified_id ORDER BY c.cllassified_id DESC ");
 
+if(isset($debug)){
+    echo "cllassifieds_city_master, cllassifieds_master as c  left join business_categories on  business_categories.business_category_id = c.business_category_id $catSearch   left join business_sub_categories on  business_sub_categories.business_sub_category_id = c.business_sub_category_id  $subCatSearch  ";
+
+    echo  "  
+                   c.active_status=0  AND c.cllassified_id=cllassifieds_city_master.cllassified_id and c.user_id not in ($blocked_users)   $query2 GROUP BY c.cllassified_id ORDER BY c.cllassified_id DESC ";exit;
+}
            
             
             $qchekc         = $d->selectRow("cllassified_mute", "users_master", "user_id='$user_id' ");
@@ -449,7 +455,7 @@ $blocked_users = implode(",", $blocked_users);
                 while ($data = mysqli_fetch_array($q)) {
                     $qch22                                  = $d->select("user_block_master", "user_id='$user_id' AND block_by='$data[user_id]' ");
                     $discussion                             = array();
-                   /* if(!is_null($data['category_name'])){
+                    if(!is_null($data['category_name'])){
                         $discussion["category_name"]           = $data['category_name'];
                     } else {
                         $discussion["category_name"]           = "All";
@@ -459,7 +465,7 @@ $blocked_users = implode(",", $blocked_users);
                         $discussion["sub_category_name"]           = $data['sub_category_name'];
                     } else {
                         $discussion["sub_category_name"]           = "All";
-                    }*/
+                    }
 
                     if(!is_null($data['business_category_id'])){
                         $discussion["business_category_id"]           = $data['business_category_id'];

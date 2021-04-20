@@ -10,22 +10,15 @@ if (isset($_POST) && !empty($_POST)) {
 
 
 		if (isset($renew_package) && $renew_package == 'renew_package' && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($plan_id, FILTER_VALIDATE_INT) == true ) {
-
-			$q_user = $d->selectRow("*","users_master", "user_id='$user_id'", "");
-			$user_data = mysqli_fetch_array($q_user);
-			$org_plan_renewal_date = $user_data['plan_renewal_date'];
- 
 			$con->autocommit(FALSE);
 			$q = $d->selectRow("*","package_master", "package_id='$plan_id'", "");
 			$row1 = mysqli_fetch_array($q);
 			$no_month=$row1['no_of_month'];
 			if($row1["time_slab"] == 1){
-				$plan_renewal_date=date('Y-m-d', strtotime($org_plan_renewal_date. ' + '.$no_month.' days'));
+				$plan_renewal_date=date('Y-m-d', strtotime(' +'.$no_month.' days'));
 			} else {
-				$plan_renewal_date=date('Y-m-d', strtotime($org_plan_renewal_date. ' + '.$no_month.' months'));  
+				$plan_renewal_date=date('Y-m-d', strtotime(' +'.$no_month.' months'));
 			}
-
- 
 
 		 
 			$package_name = $row1['package_name'];
@@ -44,8 +37,8 @@ if (isset($_POST) && !empty($_POST)) {
 
 	
 			$package_amount_new= $row1['package_amount'];
-			
-			$refere_by_phone_number = $user_data['refere_by_phone_number'];
+			$q_user = $d->selectRow("*","users_master", "user_id='$user_id'", "");
+			$user_data = mysqli_fetch_array($q_user);
 
 			$m->set_data('company_id', $user_data['company_id']);
 			$m->set_data('user_mobile', $user_data['user_mobile']);
@@ -56,71 +49,6 @@ if (isset($_POST) && !empty($_POST)) {
 			$m->set_data('razorpay_payment_id', $razorpay_payment_id);
 			$m->set_data('razorpay_signature', $razorpay_signature);
 			$m->set_data('plan_id', $plan_id);
-
-
-
-			 $tran_qry = $d->selectRow("*","transection_master", " user_id='$user_id'", "order by transection_id desc");
-   				 $tran_data=mysqli_fetch_array($tran_qry); 
-   			
-				 if($tran_data['coupon_id'] != 0 ){
-				 	$ref_users_master = $d->selectRow("*","users_master", "user_mobile = '$refere_by_phone_number'    ");
-
-				  	
-
-				 	if (mysqli_num_rows($ref_users_master) > 0) {
-							$ref_users_master_data = mysqli_fetch_array($ref_users_master);
-
-
-							if($ref_users_master_data['user_token'] !=''){
-
-								if($user_data['user_profile_pic']!=""){
-									$img = $base_url . "img/users/members_profile/" . $user_data['user_profile_pic'];
-								} else {
-									$img ="";
-								}
-
-
-								$title=$user_data['user_full_name'].' become a permanent member of Zoobiz';
-
-								$msg3="Big Thank you from Zoobiz. ".ucfirst($user_data['user_full_name'])." incepted by you has opted to become a permanent member of Zoobiz. We sincerely appreciate your efforts. Keep promoting!";
-								  
-								$notiAry = array(
-									'user_id' => $ref_users_master_data['user_id'],
-									'notification_title' => $title,
-									'notification_desc' => $msg3,
-									'notification_date' => date('Y-m-d H:i'),
-									'notification_action' => 'profile',
-									'notification_logo' => 'profile.png',
-									'notification_type' => '12',
-									'other_user_id' => $user_data['user_id'] 
-								);
-								 $d->insert("user_notification", $notiAry);
-
-
-								if (strtolower($ref_users_master_data['device']) =='android') {
-
-									     
-
-
-								$nResident->noti("viewMemeber","",0,$ref_users_master_data['user_token'],$title,$msg3,$user_id,1,$img);
-
- 
-
-								}  else if(strtolower($ref_users_master_data['device']) =='ios') {
-
-									 $nResident->noti_ios("viewMemeber","",0,$ref_users_master_data['user_token'],$title,$msg3,$user_id,1,$img);
-
-						 
-
-								}
-
-
-							}
-
-							 
-						}
-				 }
-
 			if(isset($amount)){
 				$ios_transection_amount = $amount;
 			} else {
@@ -177,13 +105,9 @@ if (isset($_POST) && !empty($_POST)) {
 					'plan_renewal_date_old'=> $m->get_data('plan_renewal_date_old') 
 				);
 				$q=$d->update("users_master",$user_array," user_id='$user_id'"); 
-
-
-				
-
 				$con->commit();
-				$response["message"] = "Payment Successfull.";
-				$d->insert_myactivity($user_id,"0","", "Payment Successfull","activity.png");
+				$response["message"] = "Payment Successful";
+				$d->insert_myactivity($user_id,"0","", "Payment Successful","activity.png");
 				$response["status"] = "200";
 				echo json_encode($response);
 			}

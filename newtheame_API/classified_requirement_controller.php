@@ -5,7 +5,7 @@ if (isset($_POST) && !empty($_POST)) {
         $response = array();
         extract(array_map("test_input", $_POST));
         $today = date("Y-m-d");
-          if ($_POST['getCllassified'] == "getCllassified" && filter_var($user_id, FILTER_VALIDATE_INT) == true) {
+          if ($_POST['getCllassifiedNew'] == "getCllassifiedNew" && filter_var($user_id, FILTER_VALIDATE_INT) == true) {
 
 
                 $blocked_users = array('0'); 
@@ -25,18 +25,7 @@ while($getBLockUserData=mysqli_fetch_array($getBLockUserQry)) {
 $blocked_users = implode(",", $blocked_users); 
 
 
-            if ($filter_date_from != '') {
-                $from       = date("Y-m-d", strtotime($filter_date_from));
-                $toDate     = date("Y-m-d", strtotime($filter_date_to));
-                // $from = date('Y-m-d', strtotime($filter_date_from . ' -1 day'));
-                // $toDate = date('Y-m-d', strtotime($filter_date_to . ' +1 day'));
-                $date       = date_create($from);
-                $dateTo     = date_create($toDate);
-                $nFrom      = date_format($date, "Y-m-d 00:00:01");
-                $nTo        = date_format($dateTo, "Y-m-d 23:59:59");
-                $dateFilter = "cllassifieds_master.created_date BETWEEN '$nFrom' AND '$nTo'";
-                array_push($queryAry, $dateFilter);
-            }
+            
             $queryAry = array();
             if ($state_id != 0) {
                 $atchQueryCity = "cllassifieds_city_master.state_id ='$state_id'";
@@ -48,64 +37,187 @@ $blocked_users = implode(",", $blocked_users);
                 $atchQueryCity = "cllassifieds_city_master.city_id IN ('$ids')";
                 array_push($queryAry, $atchQueryCity);
             }
-            if ($business_category_id != 0) {
-                $query = "cllassifieds_master.business_category_id='$business_category_id'";
-                array_push($queryAry, $query);
-            }
-            /*if ($business_sub_category_id != 0) {
-            $atchQuery = "cllassifieds_master.business_sub_category_id='$business_sub_category_id'";
-            array_push($queryAry, $atchQuery);
-            }*/
+            
+             
             $query2 = "";
-            if ($business_category_id != 0) {
-                $query2 .= " and cllassifieds_master.business_category_id='$business_category_id'";
-            } 
-if ($business_category_id == 0) {
-                $query2 .= " and cllassifieds_master.business_category_id=0 ";
-            }
+             
 
-            /*else {
-                 $query2 .= " and cllassifieds_master.business_category_id=0 ";
-            }*/
-            if ($business_sub_category_id != 0) {
-                $query2 .= " and cllassifieds_master.business_sub_category_id='$business_sub_category_id'";
-            }
-
-            if ($business_sub_category_id == 0) {
-                $query2 .= " and cllassifieds_master.business_sub_category_id=0 ";
-            }
-
-            /* else {
-                $query2 .= " and cllassifieds_master.business_sub_category_id=0 ";
-            }*/
+             
+            
             if ($city_id != 0) {
                 $query2 .= " and  cllassifieds_city_master.city_id IN ('$ids')";
             }
             $appendQuery    = implode(" AND ", $queryAry);
-            // if ($filter_date_from!='') {
-            //   $q=$d->select("cllassifieds_master,cllassifieds_city_master","cllassifieds_master.active_status=0  AND cllassifieds_master.cllassified_id=cllassifieds_city_master.cllassified_id AND cllassifieds_city_master.city_id='$city_id' AND  cllassifieds_master.created_date BETWEEN '$nFrom' AND '$nTo' ","ORDER BY cllassifieds_master.cllassified_id DESC");
-            // }else {
+            
             $q              = $d->select("cllassifieds_master,cllassifieds_city_master", "cllassifieds_master.active_status=0  AND cllassifieds_master.cllassified_id=cllassifieds_city_master.cllassified_id and cllassifieds_master.user_id not in ($blocked_users)   $query2  /*$appendQuery*/", "GROUP BY cllassifieds_master.cllassified_id ORDER BY cllassifieds_master.cllassified_id DESC ");
+ 
+           
+           $dataArray = array();
+                $counter = 0 ;
+                foreach ($q as  $value) {
+                    foreach ($value as $key => $valueNew) {
+                        $dataArray[$counter][$key] = $valueNew;
+                    }
+                    $counter++;
+                }
 
-            if(isset($debug)){
-                echo "cllassifieds_master.active_status=0  AND cllassifieds_master.cllassified_id=cllassifieds_city_master.cllassified_id  $query2  /*$appendQuery*/";exit;
-            }
-            // }
             $qchekc         = $d->selectRow("cllassified_mute", "users_master", "user_id='$user_id' ");
             $muteDataCommon = mysqli_fetch_array($qchekc);
-            if (mysqli_num_rows($q) > 0) {
+
+            $user_id_array = array('0');
+             $classified_id_array = array('0');
+                for ($l=0; $l < count($dataArray) ; $l++) {
+                    $user_id_array[] = $dataArray[$l]['user_id'];
+                    $classified_id_array[] = $dataArray[$l]['cllassified_id'];
+                }
+
+                 $classified_id_array = implode(",", $classified_id_array);
+                 $user_id_array = implode(",", $user_id_array);
+             $photo_qry = $d->selectRow("*","classified_photos_master", "classified_id in ($classified_id_array)   AND user_id in ($user_id_array) ");
+                 $PArray = array();
+                $Pcounter = 0 ;
+                foreach ($photo_qry as  $value) {
+                    foreach ($value as $key => $valueNew) {
+                        $PArray[$Pcounter][$key] = $valueNew;
+                    }
+                    $Pcounter++;
+                }
+                $photo_array = array();
+                for ($pd=0; $pd < count($PArray) ; $pd++) {
+                    $photo_array[$PArray[$pd]['classified_id']."__".$PArray[$pd]['user_id']][] = $PArray[$pd]; 
+                }
+
+
+                $doc_qry = $d->selectRow("*","classified_document_master", "classified_id in ($classified_id_array)   AND user_id in ($user_id_array) ");
+                 $DArray = array();
+                $Dcounter = 0 ;
+                foreach ($doc_qry as  $value) {
+                    foreach ($value as $key => $valueNew) {
+                        $DArray[$Dcounter][$key] = $valueNew;
+                    }
+                    $Dcounter++;
+                }
+                $doc_array = array();
+                for ($pd=0; $pd < count($DArray) ; $pd++) {
+                    $doc_array[$DArray[$pd]['classified_id']."__".$DArray[$pd]['user_id']][] = $DArray[$pd]; 
+                }
+
+
+                 $user_qry = $d->selectRow("*","users_master", " user_id in ($user_id_array) ");
+                 $UArray = array();
+                $Ucounter = 0 ;
+                foreach ($user_qry as  $value) {
+                    foreach ($value as $key => $valueNew) {
+                        $UArray[$Ucounter][$key] = $valueNew;
+                    }
+                    $Ucounter++;
+                }
+
+                $user_array = array();
+                $city_id_array = array('0');
+                for ($pd=0; $pd < count($UArray) ; $pd++) {
+                    $user_array[$UArray[$pd]['user_id']] = $UArray[$pd]; 
+                     $city_id_array[] =$UArray[$pd]['city_id'];
+                }
+
+                $city_id_array = implode(",", $city_id_array);
+                 
+                $city_qry = $d->selectRow("city_name,city_id","cities", " city_id in ($city_id_array) ");
+                $city_array = array('0');
+                while ($city_data = mysqli_fetch_array($city_qry)) {
+                $city_array[$city_data['city_id']] =$city_data['city_name'];
+               }
+
+                $classified_user_save_master = $d->selectRow("classified_id","classified_user_save_master", "user_id='$user_id'  ", ""); 
+            $classified_timeline_array = array('0');
+            while ($tclassified_user_save_master_data = mysqli_fetch_array($classified_user_save_master)) {
+                $classified_timeline_array[] = $tclassified_user_save_master_data['classified_id'];
+            }
+
+            if (count($dataArray) > 0) {
                 $response["discussion"] = array();
-                while ($data = mysqli_fetch_array($q)) {
+                /*while ($data = mysqli_fetch_array($q)) {*/
+for ($l=0; $l < count($dataArray) ; $l++) {
+                    $data =$dataArray[$l];
+                      $discussion                             = array();
+
+                      if(in_array($data[cllassified_id], $classified_timeline_array)){
+                            $discussion["is_saved"] = true;
+                        }else {
+                            $discussion["is_saved"] = false;
+                        }
+
+                    $discussion["classified_photos"] = array();
+
+                    $p_data_arr = $photo_array[$data[cllassified_id]."__".$data['user_id']]; 
+                    for ($pda=0; $pda < count($p_data_arr) ; $pda++) { 
+                        $ClsData = $p_data_arr[$pda];
+                     
+                        $classified_photos = array();
+                        if($ClsData['photo_name']!=""){
+                            $classified_photos["photo_name"] = $base_url . "img/cllassified/" . $ClsData['photo_name'];
+                        } else {
+                            $classified_photos["photo_name"] ="";
+                        }
+                        
+                        $classified_photos["classified_img_height"] = $ClsData['classified_img_height'];
+                        $classified_photos["classified_img_width"] = $ClsData['classified_img_width'];
+                        array_push($discussion["classified_photos"], $classified_photos);
+                    }
+
+                     $discussion["classified_docs"] = array();
+
+                    $d_data_arr = $doc_array[$data[cllassified_id]."__".$data['user_id']]; 
+                    for ($pda=0; $pda < count($d_data_arr) ; $pda++) { 
+                        $ClsDData = $d_data_arr[$pda];
+                     
+                        $classified_docs = array();
+                        if($ClsDData['document_name']!=""){
+                            $classified_docs["document_name"] = $base_url . "img/cllassified/docs/" . $ClsDData['document_name'];
+                        } else {
+                            $classified_docs["document_name"] ="";
+                        }
+                        
+                        
+                        array_push($discussion["classified_docs"], $classified_docs);
+                    }
+
                     $qch22                                  = $d->select("user_block_master", "user_id='$user_id' AND block_by='$data[user_id]' ");
-                    $discussion                             = array();
-                   // $discussion["appendQuery"]              = $query2;
+                  
+                   
+
+                    if($data['classified_audio']!=""){
+                            $discussion["classified_audio"] = $base_url . "img/cllassified/audio/" . $data['classified_audio'];
+                        } else {
+                            $discussion["classified_audio"] ="";
+                        }
+
+                    $user_data_arr = $user_array[$data['user_id']]; 
+                     if($user_data_arr['user_profile_pic']!=""){
+                            $discussion["user_profile_pic"] = $base_url . "img/users/members_profile/" . $user_data_arr['user_profile_pic'];
+                        } else {
+                            $discussion["user_profile_pic"] ="";
+                        }
+                        $discussion["user_full_name"] =$user_data_arr['user_full_name'];
+                    $discussion["user_mobile"] =$user_data_arr['user_mobile'];
+                    $discussion["user_city"] =$city_array[$user_data_arr['city_id']];
+
+
                     $discussion["cllassified_id"]           = $data['cllassified_id'];
                     $discussion["business_category_id"]     = $data['business_category_id'];
                     $discussion["business_sub_category_id"] = $data['business_sub_category_id'];
                     $discussion["cllassified_title"]        = html_entity_decode($data['cllassified_title']);
                     $discussion["cllassified_description"]  = html_entity_decode($data['cllassified_description']);
                     $discussion["user_id"]                  = html_entity_decode($data['user_id']);
-                    $discussion["created_date"]             = date('d M Y', strtotime($data['created_date']));
+                    //$discussion["created_date"]             = date('d M Y', strtotime($data['created_date']));
+
+                    if(strtotime($data['created_date']) < strtotime('-30 days')) {
+                        $discussion["created_date"] = date("j M Y", strtotime($data['created_date']));
+                    } else {
+                        $discussion["created_date"]= time_elapsed_string($data['created_date']);
+                    }
+
+
                     if ($data['cllassified_photo'] != '') {
                         $discussion["cllassified_photo"] = $base_url . 'img/cllassified/' . $data['cllassified_photo'];
                     } else {
@@ -135,6 +247,9 @@ if ($business_category_id == 0) {
                         $discussion["user_profile"] = $user_profile;
                     }
                     
+
+                    
+
                     $discussion["created_by"]   = html_entity_decode($created_by);
                     $qc11                       = $d->select("cllassified_mute", "user_id='$user_id' AND cllassified_id='$data[cllassified_id]'");
                     if (mysqli_num_rows($qc11) > 0) {
@@ -214,117 +329,7 @@ if ($business_category_id == 0) {
 
             }
 
-        }  else if ($_POST['getCllassifiedDetails'] == "getCllassifiedDetails" && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($cllassified_id, FILTER_VALIDATE_INT) == true) {
-            $q = $d->select("cllassifieds_master", "active_status=0 AND  cllassified_id='$cllassified_id'  ", "ORDER BY cllassified_id DESC");
-            if (mysqli_num_rows($q) > 0) {
-                $response["discussion"] = array();
-                while ($data = mysqli_fetch_array($q)) {
-                    $discussion                             = array();
-                    $discussion["cllassified_id"]           = $data['cllassified_id'];
-                    $discussion["business_category_id"]     = $data['business_category_id'];
-                    $discussion["business_sub_category_id"] = $data['business_sub_category_id'];
-                    $discussion["cllassified_title"]        = html_entity_decode($data['cllassified_title']);
-                    $discussion["cllassified_description"]  = html_entity_decode($data['cllassified_description']);
-                    $discussion["user_id"]                  = html_entity_decode($data['user_id']);
-                    $discussion["created_date"]             = date('d M Y', strtotime($data['created_date']));
-                    if ($data['cllassified_photo'] != '') {
-                        $discussion["cllassified_photo"] = $base_url . 'img/cllassified/' . $data['cllassified_photo'];
-                    } else {
-                        $discussion["cllassified_photo"] = "";
-                    }
-                    if ($data['cllassified_file'] != '') {
-                        $discussion["cllassified_file"] = $base_url . 'img/cllassified/' . $data['cllassified_file'];
-                    } else {
-                        $discussion["cllassified_file"] = "";
-                    }
-                    $qc11 = $d->select("cllassified_mute", "user_id='$user_id' AND cllassified_id='$cllassified_id'");
-                    if (mysqli_num_rows($qc11) > 0) {
-                        $discussion["mute_status"] = true;
-                    } else {
-                        $discussion["mute_status"] = false;
-                    }
-                    $discussion["city"] = array();
-                    $fi                 = $d->select("cllassifieds_city_master,cities", "cities.city_id=cllassifieds_city_master.city_id AND  cllassifieds_city_master.cllassified_id='$cllassified_id' ");
-                    while ($feeData = mysqli_fetch_array($fi)) {
-                        $city              = array();
-                        $city["city_id"]   = $feeData['city_id'];
-                        $city["city_name"] = $feeData['city_name'];
-                        array_push($discussion["city"], $city);
-                    }
-                    $q111                        = $d->select("users_master", "user_id='$data[user_id]'", "");
-                    $userdata                    = mysqli_fetch_array($q111);
-                    $created_by                  = $userdata['user_full_name'];
-                    $user_profile                = $base_url . "img/users/members_profile/" . $userdata['user_profile_pic'];
-
-                     if($userdata['user_profile_pic'] ==""){
-                        $discussion["user_profile"] ="";
-                    } else {
-                        $discussion["user_profile"] = $user_profile;
-                    }
-
-                    $discussion["created_by"]    = html_entity_decode($created_by);
-                    $discussion["total_coments"] = $d->count_data_direct("comment_id", "cllassified_comment", "prent_comment_id=0 AND cllassified_id='$data[cllassified_id]'") . '';
-                    $discussion["comment"]       = array();
-                    $q3                          = $d->select("cllassified_comment", "cllassified_id='$data[cllassified_id]' AND prent_comment_id=0", "ORDER BY comment_id   DESC");
-                    while ($subData = mysqli_fetch_array($q3)) {
-                        $comment                         = array();
-                        $comment["comment_id"]           = $subData['comment_id'];
-                        $comment["user_id"]              = $subData['user_id'];
-                        $comment["comment_messaage"]     = html_entity_decode($subData['comment_messaage']);
-                        $comment["comment_created_date"] = time_elapsed_string($subData['created_date']);
-                        $q111                            = $d->select("users_master", "user_id='$subData[user_id]'", "");
-                        $userdataComment                 = mysqli_fetch_array($q111);
-                        $created_by                      = $userdataComment['user_full_name'];
-                        $user_profile                    = $base_url . "img/users/members_profile/" . $userdataComment['user_profile_pic'];
-                        $comment["user_profile"]         = $user_profile . '';
-
-                         if($userdataComment['user_profile_pic'] ==""){
-                        $comment["user_profile"] ="";
-                    } else {
-                        $comment["user_profile"] = $user_profile. '';
-                    }
-
-
-                        $comment["created_by"]           = $created_by;
-                        $comment["sub_comment"]          = array();
-                        $q4                              = $d->select("cllassified_comment", "cllassified_id='$subData[cllassified_id]' AND prent_comment_id='$subData[comment_id]'", "ORDER BY comment_id   DESC");
-                        while ($subCommentData = mysqli_fetch_array($q4)) {
-                            $sub_comment                         = array();
-                            $sub_comment["comment_id"]           = $subCommentData['comment_id'];
-                            $sub_comment["prent_comment_id"]     = $subCommentData['prent_comment_id'];
-                            $sub_comment["user_id"]              = $subCommentData['user_id'];
-                            $sub_comment["comment_messaage"]     = html_entity_decode($subCommentData['comment_messaage']);
-                            $sub_comment["comment_created_date"] = time_elapsed_string($subCommentData['created_date']);
-                            $q111                                = $d->select("users_master", "user_id='$subCommentData[user_id]'", "");
-                            $userdataComment                     = mysqli_fetch_array($q111);
-                            $created_by                          = $userdataComment['user_full_name'];
-                            $user_profile                        = $base_url . "img/users/members_profile/" . $userdataComment['user_profile_pic'];
-                            $sub_comment["created_by"]           = $created_by;
-                            $sub_comment["user_profile"]         = $user_profile . '';
-
-                              if($userdataComment['user_profile_pic'] ==""){
-                        $sub_comment["user_profile"] ="";
-                    } else {
-                        $sub_comment["user_profile"] = $user_profile. '';
-                    }
-
-                    
-                            array_push($comment["sub_comment"], $sub_comment);
-                        }
-                        array_push($discussion["comment"], $comment);
-                    }
-                    array_push($response["discussion"], $discussion);
-                }
-                $response["message"] = "Get Successfully!";
-                $response["status"]  = "200";
-                echo json_encode($response);
-            } else {
-                $response["message"] = "Classified Removed";
-                $response["status"]  = "201";
-                echo json_encode($response);
-            }
-        } else if (isset($_POST['addCllassifiedNew']) && filter_var($user_id, FILTER_VALIDATE_INT) == true) {
-//echo "<pre>";print_r($_POST);print_r($_FILES);exit;
+        }    else if (isset($_POST['addCllassifiedNew']) && filter_var($user_id, FILTER_VALIDATE_INT) == true) { 
             $blocked_users = array('0'); 
 $getBLockUserQry = $d->selectRow("user_id, block_by","user_block_master", " block_by='$user_id' or user_id='$user_id'  ", "");
 while($getBLockUserData=mysqli_fetch_array($getBLockUserQry)) {

@@ -160,46 +160,24 @@ if (isset($_POST) && !empty($_POST)) {
 
 
 		} else if (isset($edit_company_broucher) && $edit_company_broucher == 'edit_company_broucher' && filter_var($user_id, FILTER_VALIDATE_INT) == true) {
-			$file = $_FILES['company_broucher']['tmp_name'];
-			if(file_exists($file)) {
-				$extensionResume=array("pdf","doc","docx","png","jpg","jpeg","PNG","JPG","JPEG");
-				$extId = pathinfo($_FILES['company_broucher']['name'], PATHINFO_EXTENSION);
-
-				$errors     = array();
-				$maxsize    = 10097152;
-
-				if(($_FILES['company_broucher']['size'] >= $maxsize) || ($_FILES["company_broucher"]["size"] == 0)) {
+			  
 
 
-					$response["message"] = "Company Broucher too large. Must be less than 10 MB.";
-					$response["status"] = "201";
-					echo json_encode($response);
+$file11=$_FILES["company_broucher"]["tmp_name"];
+            $extId = pathinfo($_FILES['company_broucher']['name'], PATHINFO_EXTENSION);
+            $extAllow=array("pdf","doc","docx","png","jpg","jpeg","PNG","JPG","JPEG");
 
+              if(in_array($extId,$extAllow)) {
+                 $temp = explode(".", $_FILES["company_broucher"]["name"]);
+                  $company_broucher = "company_broucher_".$user_id.round(microtime(true)) . '.' . end($temp);
+                  move_uploaded_file($_FILES["company_broucher"]["tmp_name"], "../img/users/company_broucher/".$company_broucher);
 
-				}
-				if(!in_array($extId, $extensionResume) && (!empty($_FILES["company_broucher"]["type"]))) {
-
-					$response["message"] = "Invalid Company Broucher File format, Only  JPG,PDF, PNG,Doc are allowed.";
-					$response["status"] = "201";
-					echo json_encode($response);
-
-
-				}
-
-				$image_Arr = $_FILES['company_broucher'];   
-				$temp = explode(".", $_FILES["company_broucher"]["name"]);
-
-
-				$users_master = $d->selectRow("user_mobile","users_master", "user_id ='$user_id'");
-				$users_master_data = mysqli_fetch_array($users_master);
-				$company_broucher = $users_master_data['user_mobile'].'_company_broucher_'.round(microtime(true)) . '.' . end($temp);
-
-				move_uploaded_file($_FILES["company_broucher"]["tmp_name"], "../img/users/company_broucher/".$company_broucher);
-				$m->set_data('company_broucher', $company_broucher);
+                  $m->set_data('company_broucher', $company_broucher);
 				$a = array(
 					'company_broucher' => $m->get_data('company_broucher')
 				);
 				$q = $d->update("user_employment_details", $a, "user_id='$user_id'");
+
 				if ($q == true) {
 					$d->insert_myactivity($user_id,"0","", "Company Broucher Updated","activity.png");
 					$response["message"] = "Company Broucher Updated";
@@ -213,12 +191,18 @@ if (isset($_POST) && !empty($_POST)) {
 					$response["status"] = "201";
 					echo json_encode($response);
 				}
-			} else {
-				$response["message"] = "Please Provide File";
-				$response["status"] = "201";
-				echo json_encode($response);
-			}
 
+
+              } else {
+                
+                $response["message"]="Invalid Document only JPG,PNG,Doc & PDF are allowed.";
+                $response["status"]="201";
+                echo json_encode($response);
+                exit();
+              }
+
+ 
+			 
 
 
 		}  else if (isset($edit_company_profile) && $edit_company_profile == 'edit_company_profile' && filter_var($user_id, FILTER_VALIDATE_INT) == true) {
@@ -230,7 +214,7 @@ if (isset($_POST) && !empty($_POST)) {
 				$errors     = array();
 				$maxsize    = 10097152;
 
-				if(($_FILES['company_profile']['size'] >= $maxsize) || ($_FILES["company_profile"]["size"] == 0)) {
+				/*if(($_FILES['company_profile']['size'] >= $maxsize) || ($_FILES["company_profile"]["size"] == 0)) {
 
 
 					$response["message"] = "Company profile too large. Must be less than 10 MB.";
@@ -246,14 +230,21 @@ if (isset($_POST) && !empty($_POST)) {
 					echo json_encode($response);
 
 
-				}
+				}*/
 
 				$image_Arr = $_FILES['company_profile'];   
 				$temp = explode(".", $_FILES["company_profile"]["name"]);
 				$users_master = $d->selectRow("user_mobile","users_master", "user_id ='$user_id'");
 				$users_master_data = mysqli_fetch_array($users_master);
 				$company_profile = $users_master_data['user_mobile'].'_company_profile'.round(microtime(true)) . '.' . end($temp);
-				move_uploaded_file($_FILES["company_profile"]["tmp_name"], "../img/users/comapany_profile/".$company_profile);
+				//move_uploaded_file($_FILES["company_profile"]["tmp_name"], "../img/users/comapany_profile/".$company_profile);
+
+				$temp = explode(".", $_FILES["company_profile"]["name"]);
+                  $company_broucher = "company_broucher_".$user_id.round(microtime(true)) . '.' . end($temp);
+                  move_uploaded_file($_FILES["company_profile"]["tmp_name"], "../img/users/comapany_profile/".$company_profile);
+
+
+
 				$m->set_data('company_profile', $company_profile);
 				$a = array(
 					'company_profile' => $m->get_data('company_profile')

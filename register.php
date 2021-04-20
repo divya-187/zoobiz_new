@@ -208,7 +208,7 @@ if (isset($_GET['id'])) {
                                     <input type="hidden" name="plan_id_temp" id="plan_id_temp" value="">
                                     <select id="plan_id" required="" class="form-control " name="plan_id" type="text"   >
                                         <option value="">-- Select --</option>
-                                        <?php $qb=$d->select("package_master","","");
+                                        <?php $qb=$d->select("package_master"," is_cpn_package= 0","");
                                         while ($bData=mysqli_fetch_array($qb)) {
 
                                             if($bData['gst_slab_id'] !="0"){
