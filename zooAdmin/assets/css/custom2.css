@@ -4,24 +4,24 @@
 
 
 @font-face {font-family: "gotham_bold";
-    src: url("assets/fonts/gotham_bold.ttf"); /* IE9*/
+    src: url("../fonts/gotham_bold.ttf"); /* IE9*/
 }
 @font-face {font-family: "gotham_book";
-    src: url("assets/fonts/gotham_book.ttf"); /* IE9*/
+    src: url("../fonts/gotham_book.ttf"); /* IE9*/
 }
 @font-face {font-family: "gotham_black";
-    src: url("assets/fonts/gotham_black.ttf"); /* IE9*/
+    src: url("../fonts/gotham_black.ttf"); /* IE9*/
 }
 @font-face {font-family: "great_Vibes";
-    src: url("assets/fonts/great_Vibes.ttf"); /* IE9*/
+    src: url("../fonts/great_Vibes.ttf"); /* IE9*/
 }
 
 @font-face {font-family: "montserrat_semi_bold";
-    src: url("assets/fonts/montserrat_semi_bold.ttf"); /* IE9*/
+    src: url("../fonts/montserrat_semi_bold.ttf"); /* IE9*/
 }
 
 @font-face {font-family: "montserrat_regular";
-    src: url("assets/fonts/montserrat_regular.ttf"); /* IE9*/
+    src: url("../fonts/montserrat_regular.ttf"); /* IE9*/
 }
 .swal-button--danger{
   background-color: green !important;

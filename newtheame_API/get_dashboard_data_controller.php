@@ -9,6 +9,23 @@ if (isset($_POST) && !empty($_POST)) {
             if(isset($app_version_code)){
                 $response["app_version_code"] =$app_version_code;
             }
+
+ $zoobiz_settings_master = $d->select("zoobiz_settings_master","","");
+  $zoobiz_settings_masterData2 = mysqli_fetch_array($zoobiz_settings_master);
+
+  if($zoobiz_settings_masterData2['show_youtube_video_poup'] ==1){
+    $response["show_youtube_video_poup"] =true;
+
+} else {
+    $response["show_youtube_video_poup"] =false;
+}
+
+$response["youtube_video_poup_link"] =$zoobiz_settings_masterData2['youtube_video_poup_link'];
+
+if(trim($zoobiz_settings_masterData2['youtube_video_poup_link']) ==""){
+    $response["show_youtube_video_poup"] =false;
+}
+
             $blocked_users = array('0');
             $getBLockUserQry = $d->selectRow("user_id, block_by","user_block_master", " block_by='$user_id' or user_id='$user_id'  ", "");
             while($getBLockUserData=mysqli_fetch_array($getBLockUserQry)) {
@@ -50,7 +67,7 @@ $dayCnt = $difference_days;
 
 $response["message"]="success.";
 if($tran_data['coupon_id'] != 0 ){
-    $btn_caption = "Subscribe";
+    $btn_caption = "Activate";
 } else {
     $btn_caption = "Renew";
 }

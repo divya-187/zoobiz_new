@@ -15,6 +15,10 @@ if (isset($_POST) && !empty($_POST)) {
 			$user_data = mysqli_fetch_array($q_user);
 			$org_plan_renewal_date = $user_data['plan_renewal_date'];
  
+
+  if (strtotime($today)>strtotime($plan_expire_date)) {
+		$org_plan_renewal_date = $today;
+  }
 			$con->autocommit(FALSE);
 			$q = $d->selectRow("*","package_master", "package_id='$plan_id'", "");
 			$row1 = mysqli_fetch_array($q);
@@ -173,12 +177,50 @@ if (isset($_POST) && !empty($_POST)) {
                 $m->set_data('plan_renewal_date',$plan_renewal_date);
 				$m->set_data('plan_renewal_date_old',$plan_renewal_date_old);
 				$user_array =array(
+					'plan_id' => $m->get_data('plan_id'),
 					'plan_renewal_date'=> $m->get_data('plan_renewal_date'),
 					'plan_renewal_date_old'=> $m->get_data('plan_renewal_date_old') 
 				);
 				$q=$d->update("users_master",$user_array," user_id='$user_id'"); 
 
 
+				//if promotion package renew then send message to reffered user
+
+
+					$package_id = $user_data['plan_id'];
+					$package_master_qry = $d->select("package_master", " package_id='$package_id'", "");
+					$uspackage_master_data = mysqli_fetch_array($package_master_qry);
+
+					if($uspackage_master_data['is_cpn_package'] == 1){
+
+						$main_users_master = $d->selectRow("*","users_master", " user_id='$user_id'   ");
+                    $main_users_master_data = mysqli_fetch_array($main_users_master);
+
+					if($main_users_master_data['refer_by']==2){ 
+						$refere_by_phone_number = $main_users_master_data['refere_by_phone_number'];
+						$ref_users_master = $d->selectRow("*","users_master", "user_mobile = '$refere_by_phone_number'    ");
+
+						$cities = $d->selectRow("city_name","cities", "city_id = '$city_id'    ");
+						$cities_data = mysqli_fetch_array($cities);
+                       if (mysqli_num_rows($ref_users_master) > 0) {
+							$ref_users_master_data = mysqli_fetch_array($ref_users_master);
+ 
+							 
+							$d->sms_member_refferal($main_users_master_data['refere_by_phone_number'], ucfirst($main_users_master_data['user_full_name']),$cities_data['city_name'], ucfirst($ref_users_master_data['user_full_name']) );
+							 
+						} else {
+
+							 
+							 	$d->sms_member_refferal($main_users_master_data['refere_by_phone_number'], ucfirst($main_users_master_data['user_full_name']),$cities_data['city_name'], ucfirst($main_users_master_data['refere_by_name']) );
+							 
+						}
+
+					}
+					}
+				 
+					
+
+				   
 				
 
 				$con->commit();

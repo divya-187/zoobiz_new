@@ -793,6 +793,10 @@ $zoobiz_settings_master_data=mysqli_fetch_array($zoobiz_settings_master_qry);
 			$con->autocommit(FALSE);
 
 $org_user_id= $user_id;
+
+ $org_users_master_qry = $d->selectRow("*","users_master", "user_id = '$org_user_id' ");
+ $org_users_master_data = mysqli_fetch_array($org_users_master_qry);
+
 //add custom business category
 			if(isset($custom_category_name) && $custom_category_name!='' && $business_category_id =='-1' && $business_sub_category_id =="-1"){
 				$custom_category_name_new = strtolower($custom_category_name);
@@ -1059,6 +1063,9 @@ $org_user_id= $user_id;
 				$users_master_data = mysqli_fetch_array($users_master_qry);
 				$user_mobile = $users_master_data['user_mobile'];
 
+				$package_id = $users_master_data['plan_id'];
+				$package_master_qry = $d->select("package_master", "package_id='$package_id'", "");
+				$uspackage_master_data = mysqli_fetch_array($package_master_qry);
 
 				if($business_category_id =='-1' && $business_sub_category_id =="-1"){
 					$ref_by_data ="";
@@ -1079,17 +1086,21 @@ $org_user_id= $user_id;
 						if (mysqli_num_rows($ref_users_master) > 0) {
 							$ref_users_master_data = mysqli_fetch_array($ref_users_master);
 
+							//if not promotion package then send message
+							if($uspackage_master_data['is_cpn_package'] == 0){
+								$d->sms_member_refferal($main_users_master_data['refere_by_phone_number'], ucfirst($main_users_master_data['user_full_name']),$cities_data['city_name'], ucfirst($ref_users_master_data['user_full_name']) );
 
-
-							$d->sms_member_refferal($main_users_master_data['refere_by_phone_number'], ucfirst($main_users_master_data['user_full_name']),$cities_data['city_name'], ucfirst($ref_users_master_data['user_full_name']) );
-
+							}
+							
 
 
 						} else {
 
 							$ref_by_data = ucfirst($main_users_master_data['refere_by_name']);
-
+							//if not promotion package then send message
+							if($uspackage_master_data['is_cpn_package'] == 0){
 							$d->sms_member_refferal($main_users_master_data['refere_by_phone_number'], ucfirst($main_users_master_data['user_full_name']),$cities_data['city_name'], ucfirst($main_users_master_data['refere_by_name']) );
+							}
 						}
 
 					}
@@ -1098,11 +1109,11 @@ $org_user_id= $user_id;
 					 
 					$ref_by_data ="";
 				//refer by user start
-					$main_users_master = $d->selectRow("*","users_master", "user_mobile = '$user_mobile' OR user_mobile ='$userMobile' or user_id='$user_id'   ");
+					$main_users_master = $d->selectRow("*","users_master", "user_id='$user_id'   ");
 
 
 					$main_users_master_data = mysqli_fetch_array($main_users_master);
-
+ 
 					if($main_users_master_data['refer_by']==2){ 
 						$refere_by_phone_number = $main_users_master_data['refere_by_phone_number'];
 						$ref_users_master = $d->selectRow("*","users_master", "user_mobile = '$refere_by_phone_number'    ");
@@ -1159,15 +1170,20 @@ $org_user_id= $user_id;
 
 							}
 
+							//if not promotion package then send message
+							if($uspackage_master_data['is_cpn_package'] == 0){
 							$d->sms_member_refferal($main_users_master_data['refere_by_phone_number'], ucfirst($main_users_master_data['user_full_name']),$cities_data['city_name'], ucfirst($ref_users_master_data['user_full_name']) );
+							}
 						} else {
 
 							$ref_by_data = ucfirst($main_users_master_data['refere_by_name']);
 
 							$msg3=ucfirst($main_users_master_data['user_full_name'])." Has Joined Zoobiz ".$cities_data['city_name'].". Big Thank you from Zoobiz. Keep Referring!"; 
 
-
-							$d->sms_member_refferal($main_users_master_data['refere_by_phone_number'], ucfirst($main_users_master_data['user_full_name']),$cities_data['city_name'], ucfirst($main_users_master_data['refere_by_name']) );
+							//if not promotion package then send message
+							if($uspackage_master_data['is_cpn_package'] == 0){
+								$d->sms_member_refferal($main_users_master_data['refere_by_phone_number'], ucfirst($main_users_master_data['user_full_name']),$cities_data['city_name'], ucfirst($main_users_master_data['refere_by_name']) );
+							}
 						}
 
 					}
@@ -1258,7 +1274,8 @@ $org_user_id= $user_id;
 					$u_qry = $d->selectRow("*","users_master", "user_id='$user_id' ");
 					$u_details = mysqli_fetch_array($u_qry);
 //$office_mem_arr = array('7990247516', '8866489158');
-					$office_mem_arr = array( '8866489158','7990247516','9099360078','7990032612');
+					//,'7990247516'
+					$office_mem_arr = array( '8866489158','9099360078','7990032612');
 
 					if($business_category_id !='-1' && $business_sub_category_id !="-1"){
 						if(!in_array($u_details['user_mobile'], $office_mem_arr) ){
@@ -1347,6 +1364,43 @@ $org_user_id= $user_id;
 						include('../mail/memberApprovalEmailToAdmin.php');
 						include '../mail_front.php';
 
+
+					//23april21
+					$adminArray = array(1,7,115);
+					$adminArray2 = implode(",", $adminArray);
+					$fcmArrayAdmins = $d->get_android_fcm("users_master", "user_token!='' AND  lower(device) ='android' and user_id in ($adminArray2) AND user_id != $user_id");
+
+					$fcmArrayAdmins1 = $d->get_android_fcm("users_master ", " user_token!='' AND  lower(device) ='ios' and user_id in ($adminArray2)   AND user_id != $user_id ");
+				 
+					  if($org_users_master_data['user_profile_pic']!=""){
+	               		 $profile_uN = $base_url . "img/users/members_profile/" . $org_users_master_data['user_profile_pic'];
+	                  } else {
+	                    $profile_uN ="https://zoobiz.in/zooAdmin/img/user.png";
+	                  }
+					$fcm_data_array = array(
+			            'img' =>$profile_uN,
+			            'title' =>ucfirst($org_users_master_data['user_full_name']),
+			            'desc' =>"Category Approval Required",
+			            'time' =>date("d M Y h:i A")
+			         );
+ 					$nResident->noti("custom_notification","",0,$fcmArrayAdmins,ucfirst($org_users_master_data['user_full_name']),"Category Approval Required",$fcm_data_array);
+         			$nResident->noti_ios("custom_notification","",0,$fcmArrayAdmins1,ucfirst($org_users_master_data['user_full_name']),"Category Approval Required",$fcm_data_array);
+
+         			 for ($p=0; $p < count($adminArray) ; $p++) { 
+	         			 	$notiAry = array(
+							'user_id' => $adminArray[$p],
+							'notification_title' => ucfirst($org_users_master_data['user_full_name']),
+							'notification_desc' => "Category Approval Required",
+							'notification_date' => date('Y-m-d H:i'),
+							'notification_action' => 'profile',
+							'notification_logo' => 'profile.png',
+							'notification_type' => '12',
+							'other_user_id' => $org_users_master_data['user_id'] 
+							);
+							$d->insert("user_notification", $notiAry);
+         			 }
+					
+         			//23april21
 
 
 						$d->sms_to_admin_on_new_user_registration($zoobiz_admin_master_data['admin_mobile'], $user_full_name,$company_name_c,$ref_by_data );

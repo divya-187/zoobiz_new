@@ -514,6 +514,46 @@
 </fieldset>
 
 
+
+<fieldset class="scheduler-border">
+  <?php 
+
+  ?>
+                <legend  class="scheduler-border">App Popup Settings</legend>  
+                 <form id="customClassifieds" action="controller/customController.php" method="POST" enctype="multipart/form-data">
+                <div class="form-group row">
+                <label for="input-10" class="col-sm-2 col-form-label">show youtube video poup?<span class="text-danger">*</span></label>
+                <div class="col-sm-10">
+                   <select id="show_youtube_video_poup" required="" class="form-control single-select" name="show_youtube_video_poup" type="text" >
+                            <option value="">-- Select --</option>
+                            <option  <?php   if(   $show_youtube_video_poup=="1"){  ?>selected <?php }?> value="1">Yes</option>
+                            <option <?php   if(  $show_youtube_video_poup=="0"){  ?>selected <?php }?> value="0">No</option>
+                             
+                           
+                          </select>
+                </div>
+              </div>
+ 
+              
+
+               <div class="form-group row">
+                       <label class="col-lg-2 col-form-label form-control-label">youtube video poup link <span class="required">*</span></label>
+                      <div class="col-lg-10">
+                        <input minlength="5" maxlength="255"   class="form-control  " name="youtube_video_poup_link" type="text" value="<?php echo $youtube_video_poup_link; ?>" required="">
+                      </div>
+                    </div>
+
+                       
+
+  <div class="form-footer text-center">
+    <input type="hidden" name="setting_id" value="<?php echo $setting_id;?>">
+                     <button name="updateAppPop" type="submit" class="btn btn-success"><i class="fa fa-check-square-o"></i> Update</button>
+                   </div>
+
+  </form>
+     
+</fieldset>
+
 <?php /* 
 //31dec2020 ?>
 <fieldset class="scheduler-border">

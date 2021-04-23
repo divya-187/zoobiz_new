@@ -50,13 +50,20 @@ error_reporting(0);
                   <th class="text-right">#</th>
                  
                   
+                  
                   <th>Name</th>
+                  <th>Payment Details</th>
+                   <th>refer by</th>
+                    <th>Refer Person Name</th>
+                   <th>Refer Person Phone No.</th>
+               
                   <th>City</th>
                   <th>Email</th>
                   <th>Mobile</th>
                     <th>Company Name</th>
+
                    <th>Date</th>
-                    
+                     <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -98,14 +105,44 @@ $company_master_qry=$d->select("company_master","  company_id = '$company_id'   
                 <tr>
                   
                   <td class="text-right"><?php echo $i++; ?></td>
-                   
+                  
                   <td><?php echo  $salutation.' '.$user_full_name; ?></td>
+                  <?php
+                   $transection_master=$d->select("transection_master","user_id = '$user_id'  "," order by transection_id desc"); 
+                   $transection_master_data=mysqli_fetch_array($transection_master);
+                  ?>
+                  <td><?php echo 'Plan: '.$transection_master_data['package_name'] ;
+                  echo '<br>Payment Mode: '.$transection_master_data['payment_mode'] ;
+                   
+                  if($transection_master_data['coupon_id'] !=0){
+                    $coupon_master=$d->select("coupon_master","coupon_id = '$transection_master_data[coupon_id]'  ",""); 
+                   $coupon_master_data=mysqli_fetch_array($coupon_master);
+                   echo '<br>Coupon Name: '.$coupon_master_data['coupon_name'] ;
+                   echo '<br>Coupon Code: '.$coupon_master_data['coupon_code'] ;
+                   
+                  }
+                  
+                   ?></td>
+                     <td><?php if($refer_by=="1") {echo "Social Media";} 
+                  else if($refer_by=="2") {echo "Member / Friend";}
+                  else if($refer_by=="3") {echo "Other";}
+                   ?></td>
+                 
+                  <td><?php echo wordwrap($refere_by_name,20,"<br>\n"); ?></td>
+                  <td><?php echo  $refere_by_phone_number ; ?></td> 
+            
+
                    <td><?php echo $city_name ; ?></td>
                   <td><?php echo $user_email ; ?></td>
                   <td><?php echo $user_mobile; ?>
                     
-                     <?php if(in_array($user_mobile, array('7990032612','8866489158','9913393220','7984119359','9687271071','7990247516'))){
-                      ?>
+                    
+                  </td>
+                  <td><?php  echo $companyName; ?></td>
+                  <td data-order="<?php echo date("U",strtotime($register_date)); ?>"><?php echo date("d-m-Y h:i:s A",strtotime($register_date));  ?></td>
+                    
+                
+                 <td>
                       <form action="controller/userController.php" method="post">
       <input type="hidden" name="incomp_delete_user_id" value="<?php echo $user_id; ?>"> 
       <input type="hidden" name="from" value="<?php echo $_GET['from']; ?>"> 
@@ -113,14 +150,7 @@ $company_master_qry=$d->select("company_master","  company_id = '$company_id'   
 
       <button type="submit" class="btn form-btn btn-danger" >Delete</button>
     </form>
-                      <?php
-                     } ?> 
-                  </td>
-                  <td><?php  echo $companyName; ?></td>
-                  <td data-order="<?php echo date("U",strtotime($register_date)); ?>"><?php echo date("d-m-Y h:i:s A",strtotime($register_date));  ?></td>
-                    
-                
-                
+                   </td>
 
                </tr>
 

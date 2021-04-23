@@ -107,7 +107,7 @@ if(!isset($_GET['map_view_filter_city_id'])){
 
   <link href="assets/plugins/bootstrap-switch/bootstrap-switch.min.css" rel="stylesheet">
 
-   
+   <link href="assets/css/custom2.css" rel="stylesheet" />
  
   
 </head>

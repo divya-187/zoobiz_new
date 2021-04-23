@@ -66,7 +66,7 @@ $response["max_notification_line"] = $zoobiz_settings_master_data['max_api_notif
                     $notification["user_notification_id"]=$data_app["user_notification_id"];
                     $notification["user_id"]=$data_app["user_id"];
                     $notification["notification_title"]=ucwords($data_app["notification_title"]);
-                    $notification["notification_desc"]=$data_app["notification_desc"];
+                    $notification["notification_desc"]=html_entity_decode($data_app["notification_desc"] , ENT_QUOTES);
                     if($data_app["other_user_id"] !=0){
                         $other_user_id = $data_app["other_user_id"];
 
@@ -129,7 +129,7 @@ $response["max_notification_line"] = $zoobiz_settings_master_data['max_api_notif
                         }
 
                         $notification["notification_title"] = ucwords($data_app['notification_title']) ;
-                        $notification["notification_desc"] = $data_app['notification_desc'];
+                        $notification["notification_desc"] = html_entity_decode($data_app["notification_desc"] , ENT_QUOTES); 
 
                     } else {
                         if($data_app['notification_action']=='circulars'){
@@ -205,7 +205,7 @@ $response["max_notification_line"] = $zoobiz_settings_master_data['max_api_notif
                     $notification["user_notification_id"]=$data_app["user_notification_id"];
                     $notification["user_id"]=$data_app["user_id"];
                     $notification["notification_title"]=ucwords($data_app['notification_title']) ;  
-                    $notification["notification_desc"]=$data_app["notification_desc"];
+                    $notification["notification_desc"]=html_entity_decode($data_app["notification_desc"] , ENT_QUOTES);
                     if($data_app["other_user_id"] !=0){
                         $other_user_id = $data_app["other_user_id"];
 
@@ -254,7 +254,7 @@ $response["max_notification_line"] = $zoobiz_settings_master_data['max_api_notif
                             $notification["notification_logo"] = $base_url.'img/logo.png';
                         } 
                         $notification["notification_title"] =ucwords($data_app['notification_title']) ;  
-                        $notification["notification_desc"] = $data_app['notification_desc'];
+                        $notification["notification_desc"] = html_entity_decode($data_app["notification_desc"] , ENT_QUOTES);
 
                     } else {
                         if($data_app['notification_action']=='circulars'){
@@ -332,7 +332,7 @@ $response["max_notification_line"] = $zoobiz_settings_master_data['max_api_notif
                     $notification["user_notification_id"]=$data_app["user_notification_id"];
                     $notification["user_id"]=$data_app["user_id"];
                     $notification["notification_title"]= ucwords($data_app['notification_title']) ;  
-                    $notification["notification_desc"]=$data_app["notification_desc"];
+                    $notification["notification_desc"]=html_entity_decode($data_app["notification_desc"] , ENT_QUOTES);
                     if($data_app["other_user_id"] !=0){
                         $other_user_id = $data_app["other_user_id"];
 /*$users_master_fo = $d->select("users_master", " user_id='$other_user_id'");
@@ -388,7 +388,7 @@ if ( $data_app['notification_action']=="custom_notification") {
     }
 
     $notification["notification_title"] =ucwords($data_app['notification_title']) ;  
-    $notification["notification_desc"] = $data_app['notification_desc'];
+    $notification["notification_desc"] = html_entity_decode($data_app["notification_desc"] , ENT_QUOTES);
 
 } else {
     if($data_app['notification_action']=='circulars'){
@@ -464,7 +464,7 @@ echo json_encode($response);
                     }
                 $notification["user_id"]=$data_app["user_id"];
                 $notification["notification_title"]=ucwords($data_app['notification_title']) ;  
-                $notification["notification_desc"]=$data_app["notification_desc"];
+                $notification["notification_desc"]=html_entity_decode($data_app["notification_desc"] , ENT_QUOTES);
 
                 if($user_arr[$data_app['other_user_id']] !="") {
                     $user_profile_pic =$user_arr[$data_app['other_user_id']];

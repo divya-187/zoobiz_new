@@ -241,5 +241,31 @@ if(isset($_POST) && !empty($_POST) )//it can be $_GET doesn't matter
 		}
 	}
 	//14april2021
+
+
+	//23april21
+	else if (isset($_POST['updateAppPop'])) {
+
+		 $org_qry = $d->select("zoobiz_settings_master","setting_id ='$setting_id'");
+		 $org_data=mysqli_fetch_array($org_qry);
+
+         $m->set_data('show_youtube_video_poup',$show_youtube_video_poup);
+         $m->set_data('youtube_video_poup_link',$youtube_video_poup_link); 
+		 $a = array(
+		 	'show_youtube_video_poup'=>$m->get_data('show_youtube_video_poup'),
+		 	'youtube_video_poup_link'=>$m->get_data('youtube_video_poup_link') 
+		 	 );
+		 $q = $d->update("zoobiz_settings_master",$a,"setting_id ='$setting_id'");
+
+		if($q==TRUE) {
+            $_SESSION['msg']="App Pop Up Settings Updated";
+             $d->insert_log("","0","$_SESSION[zoobiz_admin_id]","$created_by",ucwords('GLOBAL: '.$_SESSION['msg']));
+			header('location:../customSettings');
+		} else {
+			$_SESSION['msg1']="Something went wrong.";
+			header('location:../customSettings');
+		}
+	}
+	//23april21
 }
 ?>

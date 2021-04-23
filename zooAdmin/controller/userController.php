@@ -397,11 +397,13 @@ $androidLink = 'https://play.google.com/store/apps/details?id=com.silverwing.zoo
       $_SESSION['msg']=$data_q['user_full_name']."'s Custom Sub Category Approved";
 
       $d->insert_log("","0","$_SESSION[zoobiz_admin_id]","$created_by",$_SESSION['msg']);
-      header("location:../viewMember?id=$user_id");
-    } else {
-      $_SESSION['msg1']="Something Wrong";
-      header("location:../viewMember?id=$user_id");
-    }
+      // header("location:../viewMember?id=$user_id");
+       header("location:../memberApp?id=$user_id");
+      } else {
+        $_SESSION['msg1']="Something Wrong";
+        //header("location:../viewMember?id=$user_id");
+        header("location:../memberApp?id=$user_id");
+      }
    }
 //16feb21
    if(isset($_POST['billingUpdate'])){

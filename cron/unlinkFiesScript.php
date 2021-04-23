@@ -3,7 +3,7 @@ include '../zooAdmin/lib/model.php';
 include '../zooAdmin/fcm_file/user_fcm.php';
 $d = new dao();
 $m = new model();
-
+http://localhost/zoobiz_new/cron/unlinkFiesScript.php
 $con = $d->dbCon();
 extract(array_map("test_input", $_POST));
 

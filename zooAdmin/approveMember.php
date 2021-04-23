@@ -143,7 +143,31 @@ extract($userData);
         </div>
       </div>
 
+  <div class="form-group row">
+        <label class="col-lg-3 col-form-label form-control-label">Business Website</label>
+        <div class="col-lg-9">
+           
+         <?php if(trim($company_website) !=''){ echo $company_website;} else { echo "Not Priovided";}  ?>
+        </div>
+      </div>
          
+<div class="form-group row">
+        <label class="col-lg-3 col-form-label form-control-label">Business Keywords</label>
+        <div class="col-lg-9">
+           
+           <?php if(trim($search_keyword) !=''){ echo $search_keyword;} else { echo "Not Priovided";}  ?>
+        </div>
+      </div>
+
+
+      <div class="form-group row">
+        <label class="col-lg-3 col-form-label form-control-label">Products And Services</label>
+        <div class="col-lg-9">
+           <?php if(trim($products_servicess) !=''){ echo $products_servicess;} else { echo "Not Priovided";}  ?>
+      
+        </div>
+      </div>
+
 
           <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label">Professional Category <span class="required">*</span></label>
@@ -200,7 +224,30 @@ extract($userData);
         </div>
       </div>
 
+         <div class="form-group row">
+        <label class="col-lg-3 col-form-label form-control-label">Business Website</label>
+        <div class="col-lg-9">
+           
+         <?php if(trim($company_website) !=''){ echo $company_website;} else { echo "Not Priovided";}  ?>
+        </div>
+      </div>
          
+<div class="form-group row">
+        <label class="col-lg-3 col-form-label form-control-label">Business Keywords</label>
+        <div class="col-lg-9">
+           
+           <?php if(trim($search_keyword) !=''){ echo $search_keyword;} else { echo "Not Priovided";}  ?>
+        </div>
+      </div>
+
+
+      <div class="form-group row">
+        <label class="col-lg-3 col-form-label form-control-label">Products And Services</label>
+        <div class="col-lg-9">
+           <?php if(trim($products_servicess) !=''){ echo $products_servicess;} else { echo "Not Priovided";}  ?>
+      
+        </div>
+      </div>
 
           <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label">Professional Category <span class="required">*</span></label>

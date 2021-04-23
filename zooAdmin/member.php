@@ -7,7 +7,7 @@
         <h4 class="page-title">Add Member</h4>
        <ol class="breadcrumb">
            <li class="breadcrumb-item"><a href="welcome">Home</a></li> 
-           <li class="breadcrumb-item"><a href="memberList">Members</a></li> 
+           <li class="breadcrumb-item"><a href="memberList">Member List</a></li> 
             <li class="breadcrumb-item active" aria-current="page">Add Member</li>
          </ol>
      </div>

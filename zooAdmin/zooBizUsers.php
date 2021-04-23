@@ -16,7 +16,7 @@
       <form action="" method="get">
       <div class="row pt-2 pb-2">
          
-         <div class="col-sm-4">
+         <div class="col-sm-3">
           <div class="">
             <?php //echo "<pre>"; print_r($_GET); echo "</pre>";?>
 
@@ -50,6 +50,18 @@
                             </select>
           </div>
         </div>
+
+
+        <div class="col-sm-3">
+          <div class="">
+             <select id="device"  class="form-control single-select" name="device" type="text"   >
+                            <option value="">All</option>
+                            <option <?php if( isset($_GET['device']) &&   $_GET['device'] == 0 ) { echo 'selected';} ?>  value="0">Android</option>
+                             <option <?php if( isset($_GET['device']) &&   $_GET['device'] == 0 ) { echo 'selected';} ?>  value="1">iOS</option>
+                        </select>  
+          </div>
+        </div>
+      
 
          <div class="col-lg-2 col-3">
             <label  class="form-control-label"> </label>
@@ -116,6 +128,17 @@ while($business_sub_categories_data=mysqli_fetch_array($business_sub_categories_
                     $where .=" and user_employment_details.business_sub_category_id ='$filter_business_sub_category_id' ";
                   } 
 //24nov2020
+
+             if(isset($_GET['device']) && $_GET['device'] != '' ){
+                    $device = $_GET['device'];
+                    if($device==0){
+                      $where .=" and lower(users_master.device) ='android' ";
+                    } else {
+                      $where .=" and lower(users_master.device) ='ios' ";
+                    }
+                    
+                  } 
+                  
 
 
                  $q3=$d->select("users_master,user_employment_details,business_categories,business_sub_categories"," business_sub_categories.business_sub_category_id=user_employment_details.business_sub_category_id AND   business_categories.business_category_id=user_employment_details.business_category_id AND user_employment_details.user_id=users_master.user_id and users_master.office_member = 0 AND users_master.active_status=0  $where  ","");
