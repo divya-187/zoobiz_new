@@ -1543,6 +1543,12 @@ function editCategory(local_service_provider_id,service_provider_category_name,s
 }
 
 
+function editHideNumber(id,mobile_number) {
+   $("#id").val(id);
+   $("#hide_mobile_number").val(mobile_number); 
+}
+
+
 //16feb21
 function editInterest(interest_id,interest_name) {
   

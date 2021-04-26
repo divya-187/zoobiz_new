@@ -49,6 +49,9 @@
                   
                   <th>Name</th>
                   <th>City</th>
+                   <th>refer by</th>
+                    <th>Refer Person Name</th>
+                   <th>Refer Person Phone No.</th>
                   <th>Mobile Number</th>
                   <th>Email</th>
                  
@@ -90,6 +93,13 @@ $where="";
                     <td class="text-right"><?php echo $i++; ?></td>
                     <td><?php echo  $salutation.' '.$user_full_name; ?></td>
                     <td><?php echo  $city_name; ?></td>
+                      <td><?php if($refer_by=="1") {echo "Social Media";} 
+                  else if($refer_by=="2") {echo "Member / Friend";}
+                  else if($refer_by=="3") {echo "Other";}
+                   ?></td>
+                 
+                  <td><?php echo wordwrap($refere_by_name,20,"<br>\n"); ?></td>
+                  <td><?php echo  $refere_by_phone_number ; ?></td> 
                     <td><?php echo  $user_mobile; ?></td>
                     <td><?php echo  $user_email; ?></td>
                      <td data-order="<?php echo date("U",strtotime($register_date)); ?>" ><?php echo date("d-m-Y", strtotime($register_date)); ?></td>

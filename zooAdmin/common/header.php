@@ -75,7 +75,7 @@ if(!isset($_GET['map_view_filter_city_id'])){
   <link href="assets/css/sidebar-menu3.css" rel="stylesheet"/>
   <!-- Custom Style-->
   <link href="assets/css/app-style13.css" rel="stylesheet"/>
-  <link href="assets/css/custom1.css" rel="stylesheet"/>
+  <link href="assets/css/custom2.css" rel="stylesheet"/>
   <link href="assets/plugins/bootstrap-datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
   <link href="assets/plugins/bootstrap-datatable/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css">
   <!--Lightbox Css-->

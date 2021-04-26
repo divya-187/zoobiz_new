@@ -51,13 +51,22 @@
           </div>
         </div>
 
+        <div class="col-sm-2">
+          <div class="">
+             <select id="view_otp"  class="form-control single-select" name="view_otp" type="text"   >  <option <?php if( isset($_GET['view_otp']) &&   $_GET['view_otp'] == 0 ) { echo 'selected';} ?>  value="0">Hide OTP</option>
+              <option <?php if( isset($_GET['view_otp']) &&   $_GET['view_otp'] ==1 ) { echo 'selected';} ?>  value="1">View OTP</option>
+                            
+                            </select>
+          </div>
+        </div>
 
-        <div class="col-sm-3">
+
+        <div class="col-sm-2">
           <div class="">
              <select id="device"  class="form-control single-select" name="device" type="text"   >
                             <option value="">All</option>
-                            <option <?php if( isset($_GET['device']) &&   $_GET['device'] == 0 ) { echo 'selected';} ?>  value="0">Android</option>
-                             <option <?php if( isset($_GET['device']) &&   $_GET['device'] == 0 ) { echo 'selected';} ?>  value="1">iOS</option>
+                            <option <?php if( isset($_GET['device']) &&   $_GET['device'] == 0 ) { echo 'selected';} ?>  value="0">Android Users</option>
+                             <option <?php if( isset($_GET['device']) &&   $_GET['device'] == 0 ) { echo 'selected';} ?>  value="1">iOS Users</option>
                         </select>  
           </div>
         </div>
@@ -87,7 +96,10 @@
                  <th>ZOOBIZ ID</th>
                   <th>Name</th>
                    <th>Mobile Number</th>
-                    <th>Email</th>
+                  <?php if(isset($_GET['view_otp']) && $_GET['view_otp']==1 ){?>
+                  <th>OTP</th>
+                  <?php }?>
+                  <th>EMail</th>
                   <th>Category</th>
                   <th>Sub Category</th>
                    <th>Device</th>
@@ -158,6 +170,9 @@ while($business_sub_categories_data=mysqli_fetch_array($business_sub_categories_
                    
                   <td><a  target="_blank"  title="View Profile"  href="viewMember?id=<?php echo $user_id; ?>" ><?php echo  $salutation.' '.$user_full_name; ?></a></td>
                   <td><?php echo  $user_mobile; ?></td>
+                   <?php if(isset($_GET['view_otp']) && $_GET['view_otp']==1 ){?>
+                  <td><?php echo  $otp; ?></td>
+                  <?php } ?>
                     <td><?php echo  $user_email; ?></td>
                   <td><?php $cat_array = $business_categories_array[$business_category_id];
                       echo $cat_array; ?></td>

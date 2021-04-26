@@ -89,7 +89,7 @@ $allowedMenus = array();
 
 
               //  echo $d->count_data_direct("user_id","users_master, user_employment_details","users_master.active_status  = 0  AND user_employment_details.user_id=users_master.user_id ");
-                  $q=$d->select("users_master,user_employment_details,business_categories,business_sub_categories"," business_sub_categories.business_sub_category_id=user_employment_details.business_sub_category_id AND   business_categories.business_category_id=user_employment_details.business_category_id AND user_employment_details.user_id=users_master.user_id AND users_master.active_status=0    ","ORDER BY users_master.user_id DESC");
+                  $q=$d->select("users_master,user_employment_details,business_categories,business_sub_categories"," business_sub_categories.business_sub_category_id=user_employment_details.business_sub_category_id AND   business_categories.business_category_id=user_employment_details.business_category_id AND user_employment_details.user_id=users_master.user_id AND users_master.active_status=0 AND users_master.office_member=0   ","ORDER BY users_master.user_id DESC");
               echo   mysqli_num_rows($q);
                  ?></h4>
 

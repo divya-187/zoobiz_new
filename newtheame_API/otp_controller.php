@@ -395,6 +395,19 @@ $approval_pending=$d->select("interest_master","added_by_member_id='$user_data[u
 
 					$checkEcom = $d->select("user_employment_details", "user_id='$user_data[user_id]'");
 					if (mysqli_num_rows($checkEcom) == 0) {
+
+
+						$userDQuery = $d->select("cities,states,countries,users_master", " users_master.city_id = cities.city_id and users_master.user_id='$user_data[user_id]' AND cities.country_id = countries.country_id  AND cities.state_id = states.state_id  AND cities.city_id = cities.city_id ", "");
+					    $userDData = mysqli_fetch_array($userDQuery);
+
+
+						$response["selected_country_name"] = $userDData['country_name'] . '';
+						$response["selected_country_id"] = $userDData['country_id'];
+						$response["selected_state_name"] = $userDData['state_name'] . '';
+						$response["selected_state_id"] = $userDData['state_id'];
+						$response["selected_city_name"] = $userDData['city_name'] . '';
+						$response["selected_city_id"] = $userDData['city_id'];
+
 						$response["message"] = "Please Complete Your Profile";
 						$response["status"] = "203";
 						echo json_encode($response);

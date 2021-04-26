@@ -52,14 +52,22 @@ $response["message"] = 'Success';
 
                //  $difference_days= $d->plan_days_left($plan_expire_date);
 $currDate = date("Y-m-d");
+
+$plan_expire_dateNew = date('"Y-m-d',strtotime($plan_expire_date . "+1 days"));
+
+
 $startTimeStamp = strtotime($plan_expire_date);
 $endTimeStamp = strtotime($currDate);
 $timeDiff = abs($endTimeStamp - $startTimeStamp);
 $numberDays = $timeDiff/86400;  // 86400 seconds in one day
 $difference_days = intval($numberDays);
+
+ 
+
+
  if($difference_days == 0){
         $difference_days = 1;
-    }
+    } 
 $dayCnt = $difference_days;
    
     $tran_qry = $d->selectRow("*","transection_master", " user_id='$user_id'", "order by transection_id desc");
@@ -82,13 +90,13 @@ if($difference_days < 0 || $difference_days==0 ){
 } else  if ($difference_days <= 30) {
     $response["difference_days"] =$difference_days;
 
- if($dayCnt == 1){
+ if($startTimeStamp  == $endTimeStamp ){
         $response["renew_message"] ="Your subscription is going to expire today. Please $btn_caption soon!";
          $msg = "Your subscription is going to expire today. Please $btn_caption soon!";
 
     } else {
-         $response["renew_message"] ="Your subscription is expiring in ".($dayCnt+1)." days. Please $btn_caption soon!" ;
-          $msg = "Your subscription is expiring in ".($dayCnt+1)." days, Choose to $btn_caption from below options.";
+         $response["renew_message"] ="Your subscription is expiring in ".($difference_days)." day(s). Please $btn_caption soon!" ;
+          $msg = "Your subscription is expiring in ".($difference_days)." day(s), Choose to $btn_caption from below options.";
     }
    
     $response["show_renew"] =true;

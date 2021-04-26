@@ -7,9 +7,9 @@ $message= "<html>
 
 
             </head>
-            <body style='-webkit-text-size-adjust: none; box-sizing: border-box; color: #74787E; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; height: 100%; line-height: 1.4; margin: 0; width: 100% !important;' bgcolor='#F2F4F6'><style type='text/css'>
+            <body style='-webkit-text-size-adjust: none; box-sizing: border-box; color: #000; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; height: 100%; line-height: 1.4; margin: 0; width: 100% !important;' bgcolor='#F2F4F6'><style type='text/css'>
             body {
-              width: 100% !important; height: 100%; margin: 0; line-height: 1.4; background-color: #F2F4F6; color: #74787E; -webkit-text-size-adjust: none;
+              width: 100% !important; height: 100%; margin: 0; line-height: 1.4; background-color: #F2F4F6; color: #000; -webkit-text-size-adjust: none;
             }
 
             @media only screen and (max-width: 600px) {
@@ -42,29 +42,30 @@ $message= "<html>
             <tr>
             <td class='content-cell' style='box-sizing: border-box; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; padding: 35px; word-break: break-word;'>
 
-            <h1 style='box-sizing: border-box; color: #2F3133; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 19px; font-weight: bold; margin-top: 0;' >Hello <span style='color:red;'>$user_full_name</span> !</h1>
-            <p style='box-sizing: border-box; color: #74787E; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 16px; line-height: 1.5em; margin-top: 0;' >Welcome to ZooBiz ! We're excited to provide you our ZooBiz services, and hopefully you're excited too. Let come & enjoy the world of Digital</p>
-            <p style='box-sizing: border-box; color: #74787E; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 16px; line-height: 1.5em; margin-top: 0;' >Your account has been created successfully.  </p>
+            <h3 style='box-sizing: border-box; color: #000; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 19px; font-weight: bold; margin-top: 0;' >Hello <span style='color:red;'>$user_full_name</span> !</h3>
+            <p style='box-sizing: border-box; color: #000; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 16px; line-height: 1.5em; margin-top: 0;' >Welcome to ZooBiz ! </p>
+
+              <p style='box-sizing: border-box; color: #000; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 16px; line-height: 1.5em; margin-top: 0;' >We are excited to have you join this awesome business platform. And we are sure you are excited to get started too. Your account has been created. In case you haven't already downloaded the app, you can download it from the links below:</p>
+
+
+
+               <p style='box-sizing: border-box; color: #000; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 16px; line-height: 1.5em; margin-top: 0;' >Android: <a target='_blank' href='https://bit.ly/3r1jipR' >https://bit.ly/3r1jipR</a></p>
+
+                <p style='box-sizing: border-box; color: #000; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 16px; line-height: 1.5em; margin-top: 0;' >iOS: <a target='_blank' href='https://apple.co/2RTIy4R' >https://apple.co/2RTIy4R</a></p>
+ 
+                <p style='box-sizing: border-box; color: #000; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 16px; line-height: 1.5em; margin-top: 0;' >Since this is a new digital platform and a new way of doing business, it might take some getting used to. Here's a short video to get you started on how to use the app <<a target='_blank' href='https://www.youtube.com/watch?v=b2pE6YnkIHY' >Click Here</a>></p>
+
+                <p style='box-sizing: border-box; color: #000; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 16px; line-height: 1.5em; margin-top: 0;' >In the rare case, where you did not request for an account to be created, please ignore this email or <a href='mailto:contact@zoobiz.in' style='box-sizing: border-box; color: #3869D4; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;'>contact support</a> if you have questions.</p>
+
+
+ <p style='box-sizing: border-box; color: #000; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 16px; line-height: 1.5em; margin-top: 0;' >See you on ZooBiz!</p>
+
+
            
-            <table class='body-action'  width='100%' cellpadding='0' cellspacing='0' style='box-sizing: border-box; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; margin: 30px auto; padding: 0; text-align: center; width: 100%;'>
-            <tr>
-            <td  style='box-sizing: border-box; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; word-break: break-word;'>
-            <table width='100%' border='0' cellspacing='0' cellpadding='0' style='box-sizing: border-box; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;'>
-            <tr>
-            <td  style='box-sizing: border-box; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; word-break: break-word;'>
-            <table border='0' cellspacing='0' cellpadding='0' style='box-sizing: border-box; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;'>
-            <tr>
-            <td style='box-sizing: border-box; font-family: Arial,; border: 1px solid;padding: 10px;; word-break: break-word;' >
-            	<p style='box-sizing: border-box; color: #74787E; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 16px; line-height: 1.5em; margin-top: 0;' >Please download the Zoobiz App from Play store/App store or click on below link <br> </p>";
-
-               /* $message.= "
-            	<a href='$androidLink' style='text-decoration: none;border: 1px solid;padding: 5px;background: red;color: white;border-radius: 10px;'>Download Android App</a>  <a href='$iosLink' style='text-decoration: none;border: 1px solid;padding: 5px;background: red;color: white;border-radius: 10px;'>Download IOS App</a>";*/
-
-            $message.= "</td>
-            </tr>
-            </table>
-            <p style='box-sizing: border-box; color: #74787E; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 16px; line-height: 1.5em; margin-top: 0;' >If you did not request a for account create, please ignore this email or <a href='mailto:contact@zoobiz.in' style='box-sizing: border-box; color: #3869D4; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;'>contact support</a> if you have questions.</p>
-            <p style='box-sizing: border-box; color: #74787E; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 16px; line-height: 1.5em; margin-top: 0;' >Thank You,
+           
+       
+         
+            <p style='box-sizing: border-box; color: #000; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 16px; line-height: 1.5em; margin-top: 0;' >Thank You,
             <br/>The ZooBiz Team</p>
              
             </td>

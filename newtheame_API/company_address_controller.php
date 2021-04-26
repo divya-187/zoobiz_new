@@ -30,6 +30,20 @@ if (isset($_POST) && !empty($_POST)) {
 
 				while ($data_app = mysqli_fetch_array($qA2)) {
 					$company_address = array();
+
+
+					$userDQuery = $d->select("cities,states,countries,users_master", " users_master.city_id = cities.city_id and users_master.user_id='$user_id' AND cities.country_id = countries.country_id  AND cities.state_id = states.state_id  AND cities.city_id = cities.city_id ", "");
+					    $userDData = mysqli_fetch_array($userDQuery);
+
+
+						$response["selected_country_name"] = $userDData['country_name'] . '';
+						$response["selected_country_id"] = $userDData['country_id'];
+						$response["selected_state_name"] = $userDData['state_name'] . '';
+						$response["selected_state_id"] = $userDData['state_id'];
+						$response["selected_city_name"] = $userDData['city_name'] . '';
+						$response["selected_city_id"] = $userDData['city_id'];
+
+
 					$company_address["adress_id"] = $data_app["adress_id"];
 					$company_address["city_name"] = "" . $data_app["city_name"];
 					$company_address["state_name"] = $data_app["state_name"];

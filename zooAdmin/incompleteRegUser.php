@@ -16,7 +16,7 @@ error_reporting(0);
        </div>
      </div>
      <div class="row pt-2 pb-2">
-      <div class="col-sm-4"></div>
+      <div class="col-sm-2"></div>
         <div class="col-sm-6">
             <div class="input-daterange input-group">
                 <input readonly="" type="text" class="form-control" autocomplete="off"   placeholder="Start Date" id="FromDate" name="from" value="<?php if ( !isset($_GET['from'])) { echo date('Y-m-01');} else {  echo $_GET['from']; } ?>"  />
@@ -25,6 +25,15 @@ error_reporting(0);
                 </div>
                 <input readonly="" type="text" class="form-control" autocomplete="off"   placeholder="End Date" id="ToDate" name="toDate" value="<?php if ( !isset($_GET['toDate'])) { echo date('Y-m-t');} else { echo $_GET['toDate'];  } ?>" />
                </div>
+        </div>
+
+         <div class="col-sm-2">
+          <div class="">
+             <select id="view_otp"  class="form-control single-select" name="view_otp" type="text"   >  <option <?php if( isset($_GET['view_otp']) &&   $_GET['view_otp'] == 0 ) { echo 'selected';} ?>  value="0">Hide OTP</option>
+              <option <?php if( isset($_GET['view_otp']) &&   $_GET['view_otp'] ==1 ) { echo 'selected';} ?>  value="1">View OTP</option>
+                            
+                            </select>
+          </div>
         </div>
          <div class="col-lg-2 col-3">
             <label  class="form-control-label"> </label>
@@ -52,6 +61,10 @@ error_reporting(0);
                   
                   
                   <th>Name</th>
+                   <th>Mobile</th>
+                  <?php if(isset($_GET['view_otp']) && $_GET['view_otp']==1 ){?>
+                  <th>OTP</th>
+                  <?php }?>
                   <th>Payment Details</th>
                    <th>refer by</th>
                     <th>Refer Person Name</th>
@@ -59,7 +72,7 @@ error_reporting(0);
                
                   <th>City</th>
                   <th>Email</th>
-                  <th>Mobile</th>
+                 
                     <th>Company Name</th>
 
                    <th>Date</th>
@@ -107,6 +120,14 @@ $company_master_qry=$d->select("company_master","  company_id = '$company_id'   
                   <td class="text-right"><?php echo $i++; ?></td>
                   
                   <td><?php echo  $salutation.' '.$user_full_name; ?></td>
+ <td><?php echo $user_mobile; ?>
+                    
+                    
+                  </td>
+                   <?php if(isset($_GET['view_otp']) && $_GET['view_otp']==1 ){?>
+                  <td><?php echo  $otp; ?></td>
+                  <?php } ?>
+                  
                   <?php
                    $transection_master=$d->select("transection_master","user_id = '$user_id'  "," order by transection_id desc"); 
                    $transection_master_data=mysqli_fetch_array($transection_master);
@@ -134,10 +155,7 @@ $company_master_qry=$d->select("company_master","  company_id = '$company_id'   
 
                    <td><?php echo $city_name ; ?></td>
                   <td><?php echo $user_email ; ?></td>
-                  <td><?php echo $user_mobile; ?>
-                    
-                    
-                  </td>
+                 
                   <td><?php  echo $companyName; ?></td>
                   <td data-order="<?php echo date("U",strtotime($register_date)); ?>"><?php echo date("d-m-Y h:i:s A",strtotime($register_date));  ?></td>
                     

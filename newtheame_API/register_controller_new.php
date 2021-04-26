@@ -1273,9 +1273,18 @@ $org_user_id= $user_id;
 
 					$u_qry = $d->selectRow("*","users_master", "user_id='$user_id' ");
 					$u_details = mysqli_fetch_array($u_qry);
+
+
+					$office_mem_arr = array( '8866489158','9099360078','7990032612');
+					$hide_number_master_qry = $d->selectRow("*","hide_number_master", "status=0");
+					while ($hide_number_master_data=mysqli_fetch_array($hide_number_master_qry)) {
+						$office_mem_arr[] = $hide_number_master_data['mobile_number'];
+					}
+
+
 //$office_mem_arr = array('7990247516', '8866489158');
 					//,'7990247516'
-					$office_mem_arr = array( '8866489158','9099360078','7990032612');
+					
 
 					if($business_category_id !='-1' && $business_sub_category_id !="-1"){
 						if(!in_array($u_details['user_mobile'], $office_mem_arr) ){

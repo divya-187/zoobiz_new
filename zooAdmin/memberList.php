@@ -14,8 +14,8 @@
           <select type="text"  onchange="this.form.submit();"  required="" class="form-control single-select" id="showOfficeMember" name="showOfficeMember">
 
             <option <?php if( isset($_GET['showOfficeMember']) && $_GET['showOfficeMember']=="0") {echo "selected";} ?> value="0">All Members</option>
-                 <option <?php if( isset($_GET['showOfficeMember']) && $_GET['showOfficeMember']=="No") {echo "selected";} ?> value="No">Hide Office Member</option>
-               <option <?php if( isset($_GET['showOfficeMember']) && $_GET['showOfficeMember']=="Yes") {echo "selected";} ?> value="Yes">Show Office Member</option>
+                 <option <?php if( isset($_GET['showOfficeMember']) && $_GET['showOfficeMember']=="No") {echo "selected";} ?> value="No">Only Genuine Member</option>
+               <option <?php if( isset($_GET['showOfficeMember']) && $_GET['showOfficeMember']=="Yes") {echo "selected";} ?> value="Yes">Only Office Member</option>
                
                
           </select>

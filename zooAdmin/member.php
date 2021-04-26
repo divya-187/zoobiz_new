@@ -411,14 +411,14 @@
                   </div>
                   <label for="secretary_mobile" class="col-sm-2 col-form-label"> Type <span class="required">*</span></label>
                   <div class="col-sm-4">
-                    <select required="" class="form-control" name="adress_type">
+                    <select disabled="" required="" class="form-control" name="adress_type">
                       <option value=""> -- Select Type -- </option>
                       <option <?php if($data['adress_type']==0) {echo "selected";} ?>  value="0">Main Office</option>
                       <option  <?php if($data['adress_type']==1) {echo "selected";} ?> value="1">Sub Office</option>
                     </select>
                   </div>
                 </div>
-
+ <input type="hidden"  value="0"   name="adress_type" id="adress_type">
                 
               
                 <div class="form-group">

@@ -651,6 +651,13 @@ if (isset($_SESSION['zoobiz_admin_id'])) { ?>
                 } //2nov2020 ?>
 
 
+               <?php //26april21
+                 if ($_SESSION['role_id'] ==1 ) { ?>
+                    <li class="nav-item">
+                      <a href="javascript:void();" data-target="#superTab" data-toggle="pill" class="nav-link "><i class="fa fa-pencil"></i> <span class="hidden-xs">User Mobile </span></a>
+                    </li>
+                  <?php } //26april21  ?>
+
               </ul>
               <div class="tab-content p-3">
                 <div class="tab-pane " id="messages">
@@ -903,6 +910,34 @@ if($userData['active_status']=="0"){
         <?php 
       }
     } //2nov2020?> 
+
+
+
+ <div class="tab-pane  " id="superTab">
+    <form id="editPrimaryNumberFrm" action="controller/commonController.php" method="post" enctype="multipart/form-data">
+      <input type="hidden" id="primary_user_id" name="primary_user_id" value="<?php echo $user_id;?>">
+
+
+       <div class="form-group row">
+          <label class="col-lg-3 col-form-label form-control-label">Mobile Number <span class="required">*</span></label>
+          <div class="col-lg-9">
+            <input required="" class="form-control onlyNumber"  name="primary_user_mobile"  maxlength="10"  type="text" value="<?php echo $user_mobile; ?>" id="primary_user_mobile">
+         
+            
+          </div>
+        </div>
+
+
+      <div class="form-group row">
+                  <div class="col-lg-12 text-center">
+                    <input type="submit" id="editPrimaryNumberBtn" class="btn btn-primary " name=""  value="Update Primary Number">
+                  </div>
+                </div>
+
+</form>
+</div>
+
+
 
     <div class="tab-pane active" id="edit">
       <form id="memberBasicFrm" action="controller/userController.php" method="post" enctype="multipart/form-data">

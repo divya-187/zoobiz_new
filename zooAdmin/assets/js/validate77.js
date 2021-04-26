@@ -332,6 +332,82 @@ $().ready(function() {
 });
 
 
+//26april21
+$("#editPrimaryNumberFrm").validate({
+    errorPlacement: function (error, element) {
+        if (element.parent('.input-group').length) { 
+            error.insertAfter(element.parent());      // radio/checkbox?
+        } else if (element.hasClass('select2-hidden-accessible')) {     
+                error.insertAfter(element.next('span'));  // select2
+                element.next('span').addClass('error').removeClass('valid');
+            } else {                                      
+                error.insertAfter(element);               // default
+            }
+        },
+        rules: {
+            primary_user_mobile:
+            {
+                required: true,
+                noSpace: true,
+                remote:
+                {
+                    url: 'commonAjax.php',
+                    type: "post",
+                    data:
+                    {
+                        primary_user_mobile: function()
+                        {
+                            return $('#editPrimaryNumberFrm :input[name="primary_user_mobile"]').val();
+                        },
+                         primary_user_id: function()
+                        {
+                            return $('#editPrimaryNumberFrm :input[name="primary_user_id"]').val();
+                        }
+                    } 
+                }
+            }
+        },
+        messages: {
+            primary_user_mobile: { 
+            required: "Please enter primary user mobile number", 
+            remote: "Mobile number alerady registered in Zoobiz"
+        },
+        submitHandler: function(form) {
+            $(':input[type="submit"]').prop('disabled', true);
+            form.submit(); 
+        }
+    }
+   
+});
+
+
+ $("#addNumberForm").validate({
+        errorPlacement: function (error, element) {
+            if (element.parent('.input-group').length) { 
+            error.insertAfter(element.parent());      // radio/checkbox?
+        } else if (element.hasClass('select2-hidden-accessible')) {     
+                error.insertAfter(element.next('span'));  // select2
+                element.next('span').addClass('error').removeClass('valid');
+            } else {                                      
+                error.insertAfter(element);               // default
+            }
+        },
+        rules: {
+            hide_mobile_number: {
+                required: true,
+             }  
+        },
+        messages: {
+            hide_mobile_number: {
+                required : "Please enter mobile number"
+            } 
+        }
+        , submitHandler: function(form) {
+            form.submit();
+        }
+    });
+//26april21
+
 //17march21
 $("#addUpiFrm").validate({
     errorPlacement: function (error, element) {

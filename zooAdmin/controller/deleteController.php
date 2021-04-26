@@ -38,7 +38,28 @@ if($_POST['deleteValue']=="deleteSubscribe") {
       }
   }
 
+//26april21
+if($_POST['deleteValue']=="deleteHideNumber") {
+     
+    $idCount = count($ids);
+    for ($i=0; $i <$idCount ; $i++) { 
+     $a = array(
+            'status' => 1,
+          );
+       $q=$d->update("hide_number_master",$a,"id ='$ids[$i]'");
+    }
+      if($q>0) {
+        echo 1;
+        $d->insert_log("","$society_id","$_SESSION[zoobiz_admin_id]","$created_by"," Hide Registration Number Deleted");
+        $_SESSION['msg']="Hide Registration Number Deleted"; 
 
+      } else {
+        echo 0;
+        $_SESSION['msg1']="Something Wrong"; 
+      }
+  
+  }
+//26april21
 //16feb21
   if($_POST['deleteValue']=="deleteInterest") {
     $idCount = count($ids);
