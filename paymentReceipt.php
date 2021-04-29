@@ -60,27 +60,52 @@ $where=" and users_master.invoice_download=1  ";
         $where="";
     }
 
+     
+
+
     if(isset($_GET['transection_date']) && $_GET['transection_date']!= '' ){
       $transection_date = date("Y-m-d", strtotime($_GET['transection_date'])); 
-      $where .=" and ( DATE(transection_master.transection_date) ='$transection_date' OR  DATE(user_employment_details.complete_profile_date) ='$transection_date' )   ";
+ 
+
+
+       
+       $where .=" and ( DATE(transection_master.transection_date) ='$transection_date'  )   ";
+       
+      //$where .=" and ( DATE(transection_master.transection_date) ='$transection_date' OR  DATE(user_employment_details.complete_profile_date) ='$transection_date' )   ";
+      
+
+       
     }
    $qry =  $qp=$d->select("transection_master, user_employment_details ,business_adress_master,users_master,states,countries","countries.country_id=business_adress_master.country_id AND transection_master.user_id = users_master.user_id and
       user_employment_details.user_id = users_master.user_id and
       business_adress_master.user_id = users_master.user_id and
       states.state_id = business_adress_master.state_id and
-      users_master.user_id='$user_id'  and transection_master.is_paid = 0  $where order by transection_master.transection_id desc ");
+      users_master.user_id='$user_id'  and transection_master.is_paid = 0  $where group by DATE(transection_master.transection_date)  order by transection_master.transection_id desc ");
+
+
+  
+
+
  if(mysqli_num_rows($qp)  > 0 ){
     $mData=mysqli_fetch_array($qp);
   }   else {
     $mData = array();
   }
+
+
+  
+
+
     if(mysqli_num_rows($qp) == 0 ){
       echo "No User Found, Invalid Request!!!";
     } else  if($mData['is_paid'] == 1 ){
       echo "This is free registration, invoice can not be generated...!!!";
     }  else {
  
- 
+  $qryNew =$d->select("  transection_master, package_master,users_master,user_employment_details ","   user_employment_details.user_id = users_master.user_id and
+      users_master.user_id = transection_master.user_id and
+      package_master.package_id = transection_master.package_id and
+      users_master.user_id='$user_id'  and transection_master.transection_id='$mData[transection_id]'    and (transection_master.is_paid = 0 and   transection_master.coupon_id  =0 )  $where   group by transection_master.user_id  ");
 
 //9oct2020
       $plan_id= $mData['package_id'];
@@ -341,10 +366,10 @@ $whereMode ="";
       business_adress_master.user_id = users_master.user_id and
       states.state_id = business_adress_master.state_id and
       users_master.user_id='$user_id' $where group by transection_master.user_id ");*/
-$qryNew =$d->select("  transection_master, package_master,users_master,user_employment_details ","   user_employment_details.user_id = users_master.user_id and
+/*$qryNew =$d->select("  transection_master, package_master,users_master,user_employment_details ","   user_employment_details.user_id = users_master.user_id and
       users_master.user_id = transection_master.user_id and
       package_master.package_id = transection_master.package_id and
-      users_master.user_id='$user_id'     and (transection_master.is_paid = 0 and   transection_master.coupon_id  =0 )  $where   group by transection_master.user_id  ");
+      users_master.user_id='$user_id'     and (transection_master.is_paid = 0 and   transection_master.coupon_id  =0 )  $where   group by transection_master.user_id  ");*/
 
 $final_total_amount = 0 ; 
 $total_gst_amount = 0 ;
@@ -474,8 +499,9 @@ if($data456['paid_amount_with_gst'] > 0 ){
       package_master.package_id = transection_master.package_id and
       package_master.is_cpn_package = 0 and 
       users_master.user_id='$user_id' and (transection_master.is_paid = 1 OR   transection_master.coupon_id !=0 )    group by transection_master.user_id    ");
-                           if(mysqli_num_rows($cpn_qry)  > 0 ){
-                          $cpn_data=mysqli_fetch_array($cpn_qry )
+                           if(mysqli_num_rows($cpn_qry)  > 0  ){
+                          $cpn_data=mysqli_fetch_array($cpn_qry );
+                          if($cpn_data['coupon_per'] != 100){ 
                           ?>
                           
                           <tr>
@@ -484,7 +510,8 @@ if($data456['paid_amount_with_gst'] > 0 ){
                               <td class="text-right">₹ <?php
                               echo sprintf("%.2f",($cpn_data['transection_amount'])); ?></td>
                             </tr>
-                          <?php } ?> 
+                          <?php }
+                          } ?> 
 
 
                               <tr>
