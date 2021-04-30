@@ -123,8 +123,13 @@ if (isset($_POST) && !empty($_POST)) {
      if ($data['cllassified_photo'] != '') {
       $classified_photos1 = array();
       $classified_photos1["photo_name"] = $base_url . 'img/cllassified/' . $data['cllassified_photo'];
-      $classified_photos1["classified_img_height"] = "";
-      $classified_photos1["classified_img_width"] = "";
+
+       list($width1, $height1) = getimagesize($base_url . 'img/cllassified/' . $data['cllassified_photo']);
+ $classified_photos1["classified_img_height"] = (string)$width1;
+      $classified_photos1["classified_img_width"] = (string)$height1;
+
+    /*  $classified_photos1["classified_img_height"] = "";
+      $classified_photos1["classified_img_width"] = "";*/
       array_push($discussion["classified_photos"], $classified_photos1);
      }
      $p_data_arr = $photo_array[$data[cllassified_id] . "__" . $data['user_id']];
@@ -132,7 +137,13 @@ if (isset($_POST) && !empty($_POST)) {
       $ClsData = $p_data_arr[$pda];
       $classified_photos = array();
       if ($ClsData['photo_name'] != "") {
+
+       
+
+
        $classified_photos["photo_name"] = $base_url . "img/cllassified/" . $ClsData['photo_name'];
+      
+
       } else {
        $classified_photos["photo_name"] = "";
       }
@@ -141,7 +152,7 @@ if (isset($_POST) && !empty($_POST)) {
       array_push($discussion["classified_photos"], $classified_photos);
      }
      $discussion["classified_docs"] = array();
-     if ($data['cllassified_photo'] != '') {
+     if ($data['cllassified_file'] != '') {
       $classified_docs1 = array();
       $classified_docs1["document_name"] = $base_url . 'img/cllassified/' . $data['cllassified_file'];
       array_push($discussion["classified_docs"], $classified_docs1);
@@ -401,8 +412,9 @@ if (isset($_POST) && !empty($_POST)) {
      if ($data['cllassified_photo'] != '') {
       $classified_photos1 = array();
       $classified_photos1["photo_name"] = $base_url . 'img/cllassified/' . $data['cllassified_photo'];
-      $classified_photos1["classified_img_height"] = "";
-      $classified_photos1["classified_img_width"] = "";
+       list($width1, $height1) = getimagesize($base_url . 'img/cllassified/' . $data['cllassified_photo']);
+ $classified_photos1["classified_img_height"] = (string)$width1;
+      $classified_photos1["classified_img_width"] = (string)$height1;
       array_push($discussion["classified_photos"], $classified_photos1);
      }
      $p_data_arr = $photo_array[$data[cllassified_id] . "__" . $data['user_id']];
@@ -419,7 +431,7 @@ if (isset($_POST) && !empty($_POST)) {
       array_push($discussion["classified_photos"], $classified_photos);
      }
      $discussion["classified_docs"] = array();
-     if ($data['cllassified_photo'] != '') {
+     if ($data['cllassified_file'] != '') {
       $classified_docs1 = array();
       $classified_docs1["document_name"] = $base_url . 'img/cllassified/' . $data['cllassified_file'];
       array_push($discussion["classified_docs"], $classified_docs1);
@@ -676,8 +688,9 @@ $city_id = implode(",", $city_id);
      if ($data['cllassified_photo'] != '') {
       $classified_photos1 = array();
       $classified_photos1["photo_name"] = $base_url . 'img/cllassified/' . $data['cllassified_photo'];
-      $classified_photos1["classified_img_height"] = "";
-      $classified_photos1["classified_img_width"] = "";
+       list($width1, $height1) = getimagesize($base_url . 'img/cllassified/' . $data['cllassified_photo']);
+ $classified_photos1["classified_img_height"] = (string)$width1;
+      $classified_photos1["classified_img_width"] = (string)$height1;
       array_push($discussion["classified_photos"], $classified_photos1);
      }
      $p_data_arr = $photo_array[$data[cllassified_id] . "__" . $data['user_id']];
@@ -694,7 +707,7 @@ $city_id = implode(",", $city_id);
       array_push($discussion["classified_photos"], $classified_photos);
      }
      $discussion["classified_docs"] = array();
-     if ($data['cllassified_photo'] != '') {
+     if ($data['cllassified_file'] != '') {
       $classified_docs1 = array();
       $classified_docs1["document_name"] = $base_url . 'img/cllassified/' . $data['cllassified_file'];
       array_push($discussion["classified_docs"], $classified_docs1);
@@ -973,8 +986,9 @@ $business_sub_category_id = implode(",", $business_sub_category_id);
      if ($data['cllassified_photo'] != '') {
       $classified_photos1 = array();
       $classified_photos1["photo_name"] = $base_url . 'img/cllassified/' . $data['cllassified_photo'];
-      $classified_photos1["classified_img_height"] = "";
-      $classified_photos1["classified_img_width"] = "";
+       list($width1, $height1) = getimagesize($base_url . 'img/cllassified/' . $data['cllassified_photo']);
+ $classified_photos1["classified_img_height"] = (string)$width1;
+      $classified_photos1["classified_img_width"] = (string)$height1;
       array_push($discussion["classified_photos"], $classified_photos1);
      }
      $p_data_arr = $photo_array[$data[cllassified_id] . "__" . $data['user_id']];
@@ -991,7 +1005,7 @@ $business_sub_category_id = implode(",", $business_sub_category_id);
       array_push($discussion["classified_photos"], $classified_photos);
      }
      $discussion["classified_docs"] = array();
-     if ($data['cllassified_photo'] != '') {
+     if ($data['cllassified_file'] != '') {
       $classified_docs1 = array();
       $classified_docs1["document_name"] = $base_url . 'img/cllassified/' . $data['cllassified_file'];
       array_push($discussion["classified_docs"], $classified_docs1);
@@ -1244,8 +1258,9 @@ $business_sub_category_id = implode(",", $business_sub_category_id);
      if ($data['cllassified_photo'] != '') {
       $classified_photos1 = array();
       $classified_photos1["photo_name"] = $base_url . 'img/cllassified/' . $data['cllassified_photo'];
-      $classified_photos1["classified_img_height"] = "";
-      $classified_photos1["classified_img_width"] = "";
+       list($width1, $height1) = getimagesize($base_url . 'img/cllassified/' . $data['cllassified_photo']);
+ $classified_photos1["classified_img_height"] = (string)$width1;
+      $classified_photos1["classified_img_width"] = (string)$height1;
       array_push($discussion["classified_photos"], $classified_photos1);
      }
      $p_data_arr = $photo_array[$data[cllassified_id] . "__" . $data['user_id']];
@@ -1262,7 +1277,7 @@ $business_sub_category_id = implode(",", $business_sub_category_id);
       array_push($discussion["classified_photos"], $classified_photos);
      }
      $discussion["classified_docs"] = array();
-     if ($data['cllassified_photo'] != '') {
+     if ($data['cllassified_file'] != '') {
       $classified_docs1 = array();
       $classified_docs1["document_name"] = $base_url . 'img/cllassified/' . $data['cllassified_file'];
       array_push($discussion["classified_docs"], $classified_docs1);
@@ -1514,8 +1529,9 @@ $business_sub_category_id = implode(",", $business_sub_category_id);
      if ($data['cllassified_photo'] != '') {
       $classified_photos1 = array();
       $classified_photos1["photo_name"] = $base_url . 'img/cllassified/' . $data['cllassified_photo'];
-      $classified_photos1["classified_img_height"] = "";
-      $classified_photos1["classified_img_width"] = "";
+      list($width1, $height1) = getimagesize($base_url . 'img/cllassified/' . $data['cllassified_photo']);
+ $classified_photos1["classified_img_height"] = (string)$width1;
+      $classified_photos1["classified_img_width"] = (string)$height1;
       array_push($discussion["classified_photos"], $classified_photos1);
      }
      $p_data_arr = $photo_array[$data[cllassified_id] . "__" . $data['user_id']];
@@ -1532,7 +1548,7 @@ $business_sub_category_id = implode(",", $business_sub_category_id);
       array_push($discussion["classified_photos"], $classified_photos);
      }
      $discussion["classified_docs"] = array();
-     if ($data['cllassified_photo'] != '') {
+     if ($data['cllassified_file'] != '') {
       $classified_docs1 = array();
       $classified_docs1["document_name"] = $base_url . 'img/cllassified/' . $data['cllassified_file'];
       array_push($discussion["classified_docs"], $classified_docs1);
@@ -2001,7 +2017,7 @@ $business_sub_category_id = implode(",", $business_sub_category_id);
     $response["status"] = '201';
     echo json_encode($response);
    }
-  } else if (isset($_POST['addCllassifiedComment']) && filter_var($user_id, FILTER_VALIDATE_INT) == true) {
+  } else if (isset($_POST['addCllassifiedCommentNew']) && filter_var($user_id, FILTER_VALIDATE_INT) == true) {
    $m->set_data('cllassified_id', $cllassified_id);
    $m->set_data('comment_messaage', $comment_messaage);
    $m->set_data('created_date', date("Y-m-d H:i:s"));
@@ -2022,7 +2038,7 @@ $business_sub_category_id = implode(",", $business_sub_category_id);
     $notiAry = array(
      'user_id' => $classified_user_id, 'other_user_id' => $user_id, 'timeline_id' => $cllassified_id, 'notification_type' => 4,
      'notification_title' => "Comment On Classified By $user_name", 'notification_desc' => "Comment: $comment_messaage",
-     'notification_date' => date('Y-m-d H:i'), 'notification_action' => 'classified', 'notification_logo' => 'menu_fourm.png'
+     'notification_date' => date('Y-m-d H:i'), 'notification_action' => 'view_classified_new_comment', 'notification_logo' => 'menu_fourm.png'
     );
     if ($classified_user_id != $user_id) {
      $d->insert("user_notification", $notiAry);
@@ -2052,7 +2068,7 @@ $business_sub_category_id = implode(",", $business_sub_category_id);
     /*$nResident->noti("classified", "", 0, $fcmArray, "$comment_messaage", "Comment On Classified By $user_name", 'classified');
                         $nResident->noti_ios("ClassifiedVC", "", 0, $fcmArrayIos, "$comment_messaage", "Comment On Classified By $user_name", 'classified');*/
                                                                                     $nResident->noti(
-     "view_classified_new",
+     "view_classified_new_comment",
      "",
      0,
      $fcmArray,
@@ -2061,7 +2077,7 @@ $business_sub_category_id = implode(",", $business_sub_category_id);
      $cllassified_id
     );
     $nResident->noti_ios(
-     "view_classified_new",
+     "view_classified_new_comment",
      "",
      0,
      $fcmArrayIos,
@@ -2079,7 +2095,7 @@ $business_sub_category_id = implode(",", $business_sub_category_id);
     $response["status"] = '201';
     echo json_encode($response);
    }
-  } else if (isset($_POST['addReplyComment']) && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($comment_id, FILTER_VALIDATE_INT) == true) {
+  } else if (isset($_POST['addReplyCommentNew']) && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($comment_id, FILTER_VALIDATE_INT) == true) {
    $m->set_data('prent_comment_id', $comment_id);
    $m->set_data('cllassified_id', $cllassified_id);
    $m->set_data('comment_messaage', $comment_messaage);
@@ -2107,7 +2123,7 @@ $business_sub_category_id = implode(",", $business_sub_category_id);
     $notiAry = array(
      'user_id' => $comment_user_id, 'other_user_id' => $user_id, 'timeline_id' => $cllassified_id, 'notification_type' => 4,
      'notification_title' => "Comment Reply By $user_name", 'notification_desc' => "Comment: $comment_messaage",
-     'notification_date' => date('Y-m-d H:i'), 'notification_action' => 'classified', 'notification_logo' => 'menu_fourm.png'
+     'notification_date' => date('Y-m-d H:i'), 'notification_action' => 'view_classified_new_comment', 'notification_logo' => 'menu_fourm.png'
     );
     $cllassifieds_master2 = $d->select("cllassifieds_master", "cllassified_id='$cllassified_id'");
     $cllassifieds_master_data2 = mysqli_fetch_array($cllassifieds_master2);
@@ -2136,7 +2152,7 @@ $business_sub_category_id = implode(",", $business_sub_category_id);
     /*$nResident->noti("classified", "", $society_id, $fcmArray, "$comment_messaage", "Comment Reply By $user_name", 'classified');
                         $nResident->noti_ios("ClassifiedVC", "", $society_id, $fcmArrayIos, "$comment_messaage", "Comment Reply By $user_name", 'classified');*/
                                                                                     $nResident->noti(
-     "view_classified_new",
+     "view_classified_new_comment",
      "",
      $society_id,
      $fcmArray,
@@ -2145,7 +2161,7 @@ $business_sub_category_id = implode(",", $business_sub_category_id);
      $cllassified_id
     );
     $nResident->noti_ios(
-     "view_classified_new",
+     "view_classified_new_comment",
      "",
      $society_id,
      $fcmArrayIos,
@@ -2163,7 +2179,7 @@ $business_sub_category_id = implode(",", $business_sub_category_id);
     $response["status"] = '201';
     echo json_encode($response);
    }
-  } else if (isset($_POST['addMute']) && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($cllassified_id, FILTER_VALIDATE_INT) == true) {
+  } else if (isset($_POST['addMuteNew']) && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($cllassified_id, FILTER_VALIDATE_INT) == true) {
    $m->set_data('cllassified_id', $cllassified_id);
    $m->set_data('user_id', $user_id);
    $a = array('cllassified_id' => $m->get_data('cllassified_id'), 'user_id' => $m->get_data('user_id'));
@@ -2205,7 +2221,7 @@ $business_sub_category_id = implode(",", $business_sub_category_id);
     $response["status"] = "201";
     echo json_encode($response);
    }
-  } else if (isset($_POST['deleteCllassified']) && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($cllassified_id, FILTER_VALIDATE_INT) == true) {
+  } else if (isset($_POST['deleteCllassifiedNew']) && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($cllassified_id, FILTER_VALIDATE_INT) == true) {
    $q1 = $d->delete("cllassifieds_master", "cllassified_id='$cllassified_id' AND user_id='$user_id'");
    if ($q1 > 0) {
     $d->delete("cllassified_comment", "cllassified_id='$cllassified_id' ");
@@ -2218,7 +2234,7 @@ $business_sub_category_id = implode(",", $business_sub_category_id);
     $response["status"] = '201';
     echo json_encode($response);
    }
-  } else if (isset($_POST['deleteComment']) && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($comment_id, FILTER_VALIDATE_INT) == true) {
+  } else if (isset($_POST['deleteCommentNew']) && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($comment_id, FILTER_VALIDATE_INT) == true) {
    $q1 = $d->delete("cllassified_comment", "comment_id='$comment_id' AND user_id='$user_id'");
    if ($q1 > 0) {
     $q1 = $d->delete("cllassified_comment", "prent_comment_id='$comment_id' AND user_id='$user_id'");

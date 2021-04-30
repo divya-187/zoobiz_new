@@ -40,6 +40,20 @@ class firebase_resident
  */
         
  //$registrationIds = array($registrationIds);
+
+
+           $d = new dao();
+        $today_date_for_token = date('Y-m-d');
+         for ($xd=0; $xd <count($registrationIds) ; $xd++) { 
+             $users_master_token_qry = $d->select("users_master, user_employment_details"," user_employment_details.user_id =users_master.user_id and   users_master.user_token = '$registrationIds[$xd]' ");
+             $users_master_token_data = mysqli_fetch_array($users_master_token_qry);
+              if( $users_master_token_data['business_category_id'] == '-1' && $users_master_token_data['business_sub_category_id'] == '-1' ){
+                        $pos = array_search($users_master_token_data['user_token'], $registrationIds);
+                        unset($registrationIds[$pos]);
+              }
+         }
+          $registrationIds = implode(",", $registrationIds);
+          $registrationIds = explode(",", $registrationIds);
         } else {
             $registrationIds = array($registrationIds);
         }
@@ -47,6 +61,10 @@ class firebase_resident
  
 
         if ($image=='' && $profile=='') {
+            $image= "https://www.zoobiz.in/img/logo.png";
+        }
+
+        if ($image=='' ) {
             $image= "https://www.zoobiz.in/img/logo.png";
         }
 
@@ -153,6 +171,20 @@ echo "<pre>";print_r($result);
 $registrationIds = implode(",", $registrationIds);
           $registrationIds = explode(",", $registrationIds);*/
 //$registrationIds = array($registrationIds);
+
+
+           $d = new dao();
+        $today_date_for_token = date('Y-m-d');
+         for ($xd=0; $xd <count($registrationIds) ; $xd++) { 
+             $users_master_token_qry = $d->select("users_master, user_employment_details"," user_employment_details.user_id =users_master.user_id and   users_master.user_token = '$registrationIds[$xd]' ");
+             $users_master_token_data = mysqli_fetch_array($users_master_token_qry);
+              if( $users_master_token_data['business_category_id'] == '-1' && $users_master_token_data['business_sub_category_id'] == '-1' ){
+                        $pos = array_search($users_master_token_data['user_token'], $registrationIds);
+                        unset($registrationIds[$pos]);
+              }
+         }
+          $registrationIds = implode(",", $registrationIds);
+          $registrationIds = explode(",", $registrationIds);
         } else {
             $registrationIds = array($registrationIds);
         }

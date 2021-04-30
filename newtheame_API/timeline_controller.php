@@ -1719,7 +1719,7 @@ $m->set_data('timeline_text',htmlspecialchars($timeline_text));
 
 
 				if ($parent_comments_id != 0) {
-					$quc = $d->selectRow("users_master.user_token,users_master.device,users_master.user_id","users_master,timeline_comments", "timeline_comments.user_id=users_master.user_id AND timeline_comments.timeline_id='$timeline_id' AND timeline_comments.user_id!='$user_id' and timeline_alert=0 and timeline_comments.parent_comments_id = '$parent_comments_id' ");
+					$quc = $d->selectRow("users_master.user_token,users_master.device,users_master.user_id","users_master,timeline_comments", "timeline_comments.user_id=users_master.user_id AND timeline_comments.timeline_id='$timeline_id' AND timeline_comments.user_id!='$user_id' and timeline_alert=0 and timeline_comments.comments_id = '$parent_comments_id' ");
 				} else {
 					$quc = $d->selectRow("users_master.user_token,users_master.device,users_master.user_id","users_master,timeline_master", "timeline_master.user_id=users_master.user_id AND timeline_master.timeline_id='$timeline_id' AND users_master.user_id!='$user_id' and timeline_alert=0 ");
 				}
