@@ -23,7 +23,7 @@ if (isset($_POST) && !empty($_POST)) {
 					$seasonalGreetings = array();
 					$seasonalGreetings["seasonal_greet_id"] = $data_app["seasonal_greet_id"];
 					$seasonalGreetings["title"] = html_entity_decode($data_app["title"]) . '';
-
+					 
 					/*if($data_app["is_expiry"]=="Yes"){
 						$seasonalGreetings["is_expiry"] =true;
 					} else{

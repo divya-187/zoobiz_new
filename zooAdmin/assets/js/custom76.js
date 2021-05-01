@@ -86,6 +86,125 @@ function  getLatLong() {
      });
 }
 
+function DeleteAllsubCat(deleteValue) {
+    // var myArray = [];
+    // var val = [];
+    var oTable = $("#subCatTable").dataTable();
+    // $(".multiDelteCheckbox:checked", oTable.fnGetNodes()).each(function(i) {
+    //     if (val != "") {
+    //         val[i] = val + "," + $(this).val();
+    //     } else {
+    //         val = $(this).val();
+    //     }
+    // });
+
+    var val = [];
+          $(".multiDelteCheckbox:checked", oTable.fnGetNodes()).each(function(i) {
+            val[i] = $(this).val();
+          });
+    if(val=="") {
+      swal(
+        'Warning !',
+        'Please Select at least 1 item !',
+        'warning'
+      );
+    } else {
+      // alert(val);
+    swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this data!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+              // $('form.deleteForm'+id).submit();
+          $.ajax({
+              url: "controller/deleteController.php",
+              cache: false,
+              type: "POST",
+              data: {ids : val,deleteValue
+                :deleteValue},
+              success: function(response){
+                console.log(response)
+                if(response==1) {
+                  // document.location.reload(true);
+                  history.go(0);
+                } else {
+                  // document.location.reload(true);
+                  history.go(0);
+                }
+              }
+            });
+
+             
+            } else {
+              // swal("Your data is safe!");
+            }
+          });
+    }
+}
+
+function DeleteAllMainCat(deleteValue) {
+    // var myArray = [];
+    // var val = [];
+    var oTable = $("#catTable").dataTable();
+    // $(".multiDelteCheckbox:checked", oTable.fnGetNodes()).each(function(i) {
+    //     if (val != "") {
+    //         val[i] = val + "," + $(this).val();
+    //     } else {
+    //         val = $(this).val();
+    //     }
+    // });
+
+    var val = [];
+          $(".multiDelteCheckbox:checked", oTable.fnGetNodes()).each(function(i) {
+            val[i] = $(this).val();
+          });
+    if(val=="") {
+      swal(
+        'Warning !',
+        'Please Select at least 1 item !',
+        'warning'
+      );
+    } else {
+      // alert(val);
+    swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this data!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+              // $('form.deleteForm'+id).submit();
+          $.ajax({
+              url: "controller/deleteController.php",
+              cache: false,
+              type: "POST",
+              data: {ids : val,deleteValue
+                :deleteValue},
+              success: function(response){
+                console.log(response)
+                if(response==1) {
+                  // document.location.reload(true);
+                  history.go(0);
+                } else {
+                  // document.location.reload(true);
+                  history.go(0);
+                }
+              }
+            });
+
+             
+            } else {
+              // swal("Your data is safe!");
+            }
+          });
+    }
+}
 function DeleteAll(deleteValue) {
     // var myArray = [];
     // var val = [];

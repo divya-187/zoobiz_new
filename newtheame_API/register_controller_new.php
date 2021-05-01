@@ -1363,17 +1363,18 @@ $custom_category_name = htmlentities($custom_category_name,ENT_QUOTES);
 						$d->sms_to_user_on_account_approval_request($user_mobile,$user_full_name);
 
 
-						
+						$dashboardLink = $base_url."zooAdmin/welcome";
 						 //email to admin for approval start
 						$zoobiz_admin_master = $d->selectRow("*","zoobiz_admin_master", "send_notification=1");
 						$bcc_string = array();
 						while ($zoobiz_admin_master_data = mysqli_fetch_array($zoobiz_admin_master)) {
+							$d->sms_to_admin_on_category_app($zoobiz_admin_master_data['admin_mobile'],$user_full_name,$custom_category_name,$dashboardLink);
 							$bcc_string[] =  $zoobiz_admin_master_data['admin_email'];
 						}
 	//$bcc_string = implode(",", $bcc_string);
 						$to = $bcc_string;
 						/*echo "<pre>";print_r($to);exit;*/
-						$dashboardLink = $base_url."zooAdmin/welcome";
+						
 						$custom_category_name = $custom_category_name;
 						$subject ="Category Approval Required";
 						include('../mail/memberApprovalEmailToAdmin.php');

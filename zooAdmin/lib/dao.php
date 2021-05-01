@@ -87,6 +87,13 @@ class dao implements interface1
        $sms= file_get_contents("https://2factor.in/API/R1/?module=TRANS_SMS&apikey=2eb6de0f-3a58-11e9-8806-0200cd936042&to=$user_mobile&from=ZOOBIZ&templatename=Account+Approval+Message&var1=$user_full_name");
    }
 
+     function sms_to_admin_on_category_app($admin_mobile,$admin_name,$custom_category_name,$link){
+       $admin_name=urlencode($admin_name); 
+       $link=urlencode($link); 
+       $custom_category_name=urlencode($custom_category_name); 
+       $sms= file_get_contents("https://2factor.in/API/R1/?module=TRANS_SMS&apikey=2eb6de0f-3a58-11e9-8806-0200cd936042&to=$admin_mobile&from=ZOOBIZ&templatename=Category+Approval+SMS+to+Admin&var1=$admin_name&var2=$custom_category_name&var3=$link");
+    }
+
 //NEW SMS CODE
 
 //5oct2020
@@ -203,6 +210,94 @@ $blocked_users = implode(",", $blocked_users);
 
 
     }
+
+    //1may2021
+     function insertFollowNotificationBelow39($title,$description,$timeline_id,$other_user_id,$type,$click_action)
+    { 
+      
+       date_default_timezone_set('Asia/Calcutta');
+        $today=date('Y-m-d H:i');
+          
+        mysqli_set_charset($this->conn,"utf8mb4");
+ 
+$blocked_users = array('0'); 
+$getBLockUserQry = $this->selectRow("user_id, block_by","user_block_master", " block_by='$other_user_id' or user_id='$other_user_id'  ", "");
+while($getBLockUserData=mysqli_fetch_array($getBLockUserQry)) {
+    
+    if($user_id != $getBLockUserData['user_id']){
+      $blocked_users[] = $getBLockUserData['user_id'];
+    }
+
+    if($user_id != $getBLockUserData['block_by']){
+      $blocked_users[] = $getBLockUserData['block_by'];
+    }
+    
+    
+}
+$blocked_users = implode(",", $blocked_users); 
+
+         return mysqli_query($this->conn,"INSERT INTO user_notification(user_id,notification_title,notification_desc,notification_date,notification_action,notification_logo,notification_type,timeline_id,other_user_id) SELECT users_master.user_id, '$title','$description','$today','$click_action','','$type','$timeline_id','$other_user_id' FROM users_master,follow_master  WHERE users_master.version_code<=39 and users_master.user_id=follow_master.follow_by AND follow_master.follow_to='$other_user_id' and  users_master.user_id not in ($blocked_users)  ") or die(mysqli_error($this->conn));
+
+
+    }
+    function insertFollowNotificationabove39($title,$description,$timeline_id,$other_user_id,$type,$click_action)
+    { 
+      
+       date_default_timezone_set('Asia/Calcutta');
+        $today=date('Y-m-d H:i');
+          
+        mysqli_set_charset($this->conn,"utf8mb4");
+ 
+$blocked_users = array('0'); 
+$getBLockUserQry = $this->selectRow("user_id, block_by","user_block_master", " block_by='$other_user_id' or user_id='$other_user_id'  ", "");
+while($getBLockUserData=mysqli_fetch_array($getBLockUserQry)) {
+    
+    if($user_id != $getBLockUserData['user_id']){
+      $blocked_users[] = $getBLockUserData['user_id'];
+    }
+
+    if($user_id != $getBLockUserData['block_by']){
+      $blocked_users[] = $getBLockUserData['block_by'];
+    }
+    
+    
+}
+$blocked_users = implode(",", $blocked_users); 
+
+         return mysqli_query($this->conn,"INSERT INTO user_notification(user_id,notification_title,notification_desc,notification_date,notification_action,notification_logo,notification_type,timeline_id,other_user_id) SELECT users_master.user_id, '$title','$description','$today','$click_action','','$type','$timeline_id','$other_user_id' FROM users_master,follow_master  WHERE users_master.version_code>=39 and users_master.user_id=follow_master.follow_by AND follow_master.follow_to='$other_user_id' and  users_master.user_id not in ($blocked_users)  ") or die(mysqli_error($this->conn));
+
+
+    }
+
+    function insertFollowNotificationIos($title,$description,$timeline_id,$other_user_id,$type,$click_action)
+    { 
+      
+       date_default_timezone_set('Asia/Calcutta');
+        $today=date('Y-m-d H:i');
+          
+        mysqli_set_charset($this->conn,"utf8mb4");
+ 
+$blocked_users = array('0'); 
+$getBLockUserQry = $this->selectRow("user_id, block_by","user_block_master", " block_by='$other_user_id' or user_id='$other_user_id'  ", "");
+while($getBLockUserData=mysqli_fetch_array($getBLockUserQry)) {
+    
+    if($user_id != $getBLockUserData['user_id']){
+      $blocked_users[] = $getBLockUserData['user_id'];
+    }
+
+    if($user_id != $getBLockUserData['block_by']){
+      $blocked_users[] = $getBLockUserData['block_by'];
+    }
+    
+    
+}
+$blocked_users = implode(",", $blocked_users); 
+
+         return mysqli_query($this->conn,"INSERT INTO user_notification(user_id,notification_title,notification_desc,notification_date,notification_action,notification_logo,notification_type,timeline_id,other_user_id) SELECT users_master.user_id, '$title','$description','$today','$click_action','','$type','$timeline_id','$other_user_id' FROM users_master,follow_master  WHERE lower(users_master.device)='ios' and users_master.user_id=follow_master.follow_by AND follow_master.follow_to='$other_user_id' and  users_master.user_id not in ($blocked_users)  ") or die(mysqli_error($this->conn));
+
+
+    }
+    //1may2021
 
     //17SEPT2020
     function insertAllUserNotification($title,$description,$notification_action,$notification_icon=null,$append_query=null,$notification_type=0)

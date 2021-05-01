@@ -108,12 +108,14 @@ if (isset($_GET['feature_arr'])!=''  ) {
                   }
                  if($_REQUEST['feature_arr'] == 2){
                     $leftJoin .="  , meeting_master    ";
-                    $where=" and (meeting_master.user_id= users_master.user_id OR meeting_master.member_id= users_master.user_id) and  meeting_master.date  BETWEEN '$nFrom' AND '$nTo'";
+                    // /OR meeting_master.member_id= users_master.user_id
+                    $where=" and (meeting_master.user_id= users_master.user_id ) and  meeting_master.date  BETWEEN '$nFrom' AND '$nTo'";
                   }
 
                   if($_REQUEST['feature_arr'] == 3){
                     $leftJoin .=" , chat_master ";
-                     $where=" and (chat_master.msg_by= users_master.user_id OR chat_master.msg_for= users_master.user_id)  and  chat_master.msg_date  BETWEEN '$nFrom' AND '$nTo'";
+                    //OR chat_master.msg_for= users_master.user_id
+                     $where=" and (chat_master.msg_by= users_master.user_id )  and  chat_master.msg_date  BETWEEN '$nFrom' AND '$nTo'";
                   }
                  
                 

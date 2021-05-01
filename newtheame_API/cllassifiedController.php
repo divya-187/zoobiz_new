@@ -9,68 +9,68 @@ if (isset($_POST) && !empty($_POST)) {
         if ($_POST['getCllassifiedCategories'] == "getCllassifiedCategories") {
 
 //getusers with dev category
-              $dev_users = $d->select("user_employment_details,business_categories, business_sub_categories", "  user_employment_details.business_category_id  =business_categories.business_category_id and  user_employment_details.business_sub_category_id  =business_sub_categories.business_sub_category_id and business_categories.category_status = 2  and business_sub_categories.sub_category_status = 2   ");
-            $silver_developer = array('0');
-               while ($dev_users_data=mysqli_fetch_array($dev_users)) {
-                $silver_developer[] = $dev_users_data['user_id'];
-               }
-               $silver_developer = implode(",", $silver_developer);
-               
+          $dev_users = $d->select("user_employment_details,business_categories, business_sub_categories", "  user_employment_details.business_category_id  =business_categories.business_category_id and  user_employment_details.business_sub_category_id  =business_sub_categories.business_sub_category_id and business_categories.category_status = 2  and business_sub_categories.sub_category_status = 2   ");
+          $silver_developer = array('0');
+          while ($dev_users_data=mysqli_fetch_array($dev_users)) {
+            $silver_developer[] = $dev_users_data['user_id'];
+        }
+        $silver_developer = implode(",", $silver_developer);
+
 //getusers with dev category
 
 
-$blocked_users = array('0'); 
-$getBLockUserQry = $d->selectRow("user_id, block_by","user_block_master", " block_by='$user_id' or user_id='$user_id'  ", "");
-while($getBLockUserData=mysqli_fetch_array($getBLockUserQry)) {
-        
-        if($user_id != $getBLockUserData['user_id']){
-            $blocked_users[] = $getBLockUserData['user_id'];
-        }
+        $blocked_users = array('0'); 
+        $getBLockUserQry = $d->selectRow("user_id, block_by","user_block_master", " block_by='$user_id' or user_id='$user_id'  ", "");
+        while($getBLockUserData=mysqli_fetch_array($getBLockUserQry)) {
 
-        if($user_id != $getBLockUserData['block_by']){
-            $blocked_users[] = $getBLockUserData['block_by'];
-        }
-        
-      
-}
-$blocked_users = implode(",", $blocked_users); 
-
-
-
-            $queryAry    = array();
-            $appendQuery = "";
-            if ($city_id != 0) {
-                $cityIdAry   = explode(",", $city_id);
-                $ids         = join("','", $cityIdAry);
-                $appendQuery = " AND  cllassifieds_city_master.city_id IN ('$ids')";
+            if($user_id != $getBLockUserData['user_id']){
+                $blocked_users[] = $getBLockUserData['user_id'];
             }
-            $q = $d->select("business_categories,cllassifieds_master, cllassifieds_city_master", " cllassifieds_master.active_status=0  AND  cllassifieds_master.cllassified_id=cllassifieds_city_master.cllassified_id 
 
-                AND (cllassifieds_master.business_category_id  =business_categories.business_category_id  or cllassifieds_master.business_category_id  =0 ) and 
+            if($user_id != $getBLockUserData['block_by']){
+                $blocked_users[] = $getBLockUserData['block_by'];
+            }
+
+
+        }
+        $blocked_users = implode(",", $blocked_users); 
 
 
 
-                business_categories.category_status = 0  and cllassifieds_master.user_id not in ($blocked_users) $appendQuery ", " group by  cllassifieds_master.cllassified_id   ORDER BY business_categories.category_name ASC ");
+        $queryAry    = array();
+        $appendQuery = "";
+        if ($city_id != 0) {
+            $cityIdAry   = explode(",", $city_id);
+            $ids         = join("','", $cityIdAry);
+            $appendQuery = " AND  cllassifieds_city_master.city_id IN ('$ids')";
+        }
+        $q = $d->select("business_categories,cllassifieds_master, cllassifieds_city_master", " cllassifieds_master.active_status=0  AND  cllassifieds_master.cllassified_id=cllassifieds_city_master.cllassified_id 
 
-            
-            if (mysqli_num_rows($q) > 0) {
-                $response["classifiedCategories"] = array();
-                if ($city_id != 0) {
+            AND (cllassifieds_master.business_category_id  =business_categories.business_category_id  or cllassifieds_master.business_category_id  =0 ) and 
+
+
+
+            business_categories.category_status = 0  and cllassifieds_master.user_id not in ($blocked_users) $appendQuery ", " group by  cllassifieds_master.cllassified_id   ORDER BY business_categories.category_name ASC ");
+
+
+        if (mysqli_num_rows($q) > 0) {
+            $response["classifiedCategories"] = array();
+            if ($city_id != 0) {
                     /*$totalCls = $d->count_data_direct("cllassified_id","cllassifieds_master,cllassifieds_city_master", "cllassifieds_master.cllassified_id=cllassifieds_city_master.cllassified_id AND
                     cllassifieds_master.business_category_id=0 AND
                     cllassifieds_master.business_sub_category_id=0  $appendQuery    ");*/
                     $totalCls = $d->select("cllassifieds_master,cllassifieds_city_master", " cllassifieds_master.active_status=0  AND cllassifieds_master.cllassified_id=cllassifieds_city_master.cllassified_id AND  cllassifieds_master.user_id not in ($silver_developer) and 
-	cllassifieds_master.business_category_id=0 AND
-	cllassifieds_master.business_sub_category_id=0 and cllassifieds_master.user_id not in ($blocked_users)   $appendQuery  GROUP BY cllassifieds_master.cllassified_id  ");
+                       cllassifieds_master.business_category_id=0 AND
+                       cllassifieds_master.business_sub_category_id=0 and cllassifieds_master.user_id not in ($blocked_users)   $appendQuery  GROUP BY cllassifieds_master.cllassified_id  ");
 
-                   
+
                 } else {
                     /*$totalCls = $d->count_data_direct("cllassified_id","cllassifieds_master", "
                     cllassifieds_master.business_category_id=0 AND
                     cllassifieds_master.business_sub_category_id=0    ");*/
                     $totalCls = $d->select("cllassifieds_master", " cllassifieds_master.active_status=0  AND 
-	cllassifieds_master.business_category_id=0 AND cllassifieds_master.user_id not in ($silver_developer) and 
-	cllassifieds_master.business_sub_category_id=0 and cllassifieds_master.user_id not in ($blocked_users)  GROUP BY cllassifieds_master.cllassified_id    ");
+                       cllassifieds_master.business_category_id=0 AND cllassifieds_master.user_id not in ($silver_developer) and 
+                       cllassifieds_master.business_sub_category_id=0 and cllassifieds_master.user_id not in ($blocked_users)  GROUP BY cllassifieds_master.cllassified_id    ");
                 }
                 $discussion = array();
                 //mysqli_num_rows($q)
@@ -86,27 +86,27 @@ $blocked_users = implode(",", $blocked_users);
                     $discussion["cnt"]        = $t; $t++;
                     if(!in_array($data['business_category_id'], $cat_arr)){ 
                         $cat_arr[] = $data['business_category_id'];
-                         $discussion["cat_arr"]        =  implode(",", $cat_arr);
-                    $business_category_id                      = $data['business_category_id'];
-                    /*$totalCls = $d->count_data_direct("cllassified_id","cllassifieds_master, cllassifieds_city_master", " cllassifieds_master.cllassified_id=cllassifieds_city_master.cllassified_id AND  cllassifieds_master.business_category_id='$business_category_id'   $appendQuery  ");*/
-                    $totalCls                                  = $d->select("cllassifieds_master, cllassifieds_city_master", "  cllassifieds_master.active_status=0  AND cllassifieds_master.cllassified_id=cllassifieds_city_master.cllassified_id AND cllassifieds_master.user_id not in ($silver_developer) and   cllassifieds_master.business_category_id='$business_category_id' and cllassifieds_master.user_id not in ($blocked_users)    $appendQuery  GROUP BY cllassifieds_master.cllassified_id   ");
+                        $discussion["cat_arr"]        =  implode(",", $cat_arr);
+                        $business_category_id                      = $data['business_category_id'];
+                        /*$totalCls = $d->count_data_direct("cllassified_id","cllassifieds_master, cllassifieds_city_master", " cllassifieds_master.cllassified_id=cllassifieds_city_master.cllassified_id AND  cllassifieds_master.business_category_id='$business_category_id'   $appendQuery  ");*/
+                        $totalCls                                  = $d->select("cllassifieds_master, cllassifieds_city_master", "  cllassifieds_master.active_status=0  AND cllassifieds_master.cllassified_id=cllassifieds_city_master.cllassified_id AND cllassifieds_master.user_id not in ($silver_developer) and   cllassifieds_master.business_category_id='$business_category_id' and cllassifieds_master.user_id not in ($blocked_users)    $appendQuery  GROUP BY cllassifieds_master.cllassified_id   ");
 
 
-                     if(isset($debug)){
-                        echo " cllassifieds_master.cllassified_id=cllassifieds_city_master.cllassified_id AND cllassifieds_master.user_id not in ($silver_developer) and   cllassifieds_master.business_category_id='$business_category_id' and cllassifieds_master.user_id not in ($blocked_users)   $appendQuery  GROUP BY cllassifieds_master.cllassified_id   "; 
-                    }
+                        if(isset($debug)){
+                            echo " cllassifieds_master.cllassified_id=cllassifieds_city_master.cllassified_id AND cllassifieds_master.user_id not in ($silver_developer) and   cllassifieds_master.business_category_id='$business_category_id' and cllassifieds_master.user_id not in ($blocked_users)   $appendQuery  GROUP BY cllassifieds_master.cllassified_id   "; 
+                        }
 
 
 
-                    
+
                     //$discussion["calssified_main_cat_entries"] = $totalCls;
                       //$discussion["qry"] = "AND  cllassifieds_master.business_category_id='$business_category_id' ".$appendQuery;
-                    $discussion["calssified_main_cat_entries"] = (string) mysqli_num_rows($totalCls);
-                    $discussion["business_category_id"]        = $data['business_category_id'];
-                    $discussion["category_name"]               = html_entity_decode($data['category_name']);
-                    array_push($response["classifiedCategories"], $discussion);
+                        $discussion["calssified_main_cat_entries"] = (string) mysqli_num_rows($totalCls);
+                        $discussion["business_category_id"]        = $data['business_category_id'];
+                        $discussion["category_name"]               = html_entity_decode($data['category_name']);
+                        array_push($response["classifiedCategories"], $discussion);
+                    }
                 }
-            }
                 $response["message"] = "Classified Main Categories";
                 $response["status"]  = "200";
                 echo json_encode($response);
@@ -118,20 +118,20 @@ $blocked_users = implode(",", $blocked_users);
         } else if ($_POST['getCllassifiedSubCategories'] == "getCllassifiedSubCategories") {
 
             $blocked_users = array('0'); 
-$getBLockUserQry = $d->selectRow("user_id, block_by","user_block_master", " block_by='$user_id' or user_id='$user_id'  ", "");
-while($getBLockUserData=mysqli_fetch_array($getBLockUserQry)) {
-        
-        if($user_id != $getBLockUserData['user_id']){
-            $blocked_users[] = $getBLockUserData['user_id'];
-        }
+            $getBLockUserQry = $d->selectRow("user_id, block_by","user_block_master", " block_by='$user_id' or user_id='$user_id'  ", "");
+            while($getBLockUserData=mysqli_fetch_array($getBLockUserQry)) {
 
-        if($user_id != $getBLockUserData['block_by']){
-            $blocked_users[] = $getBLockUserData['block_by'];
-        }
-        
-      
-}
-$blocked_users = implode(",", $blocked_users); 
+                if($user_id != $getBLockUserData['user_id']){
+                    $blocked_users[] = $getBLockUserData['user_id'];
+                }
+
+                if($user_id != $getBLockUserData['block_by']){
+                    $blocked_users[] = $getBLockUserData['block_by'];
+                }
+
+
+            }
+            $blocked_users = implode(",", $blocked_users); 
 
 
             $queryAry    = array();
@@ -144,13 +144,13 @@ $blocked_users = implode(",", $blocked_users);
 
 
             //getusers with dev category
-              $dev_users = $d->select("user_employment_details,business_categories, business_sub_categories", "  user_employment_details.business_category_id  =business_categories.business_category_id and  user_employment_details.business_sub_category_id  =business_sub_categories.business_sub_category_id and business_categories.category_status = 2  and business_sub_categories.sub_category_status = 2   ");
+            $dev_users = $d->select("user_employment_details,business_categories, business_sub_categories", "  user_employment_details.business_category_id  =business_categories.business_category_id and  user_employment_details.business_sub_category_id  =business_sub_categories.business_sub_category_id and business_categories.category_status = 2  and business_sub_categories.sub_category_status = 2   ");
             $silver_developer = array('0');
-               while ($dev_users_data=mysqli_fetch_array($dev_users)) {
+            while ($dev_users_data=mysqli_fetch_array($dev_users)) {
                 $silver_developer[] = $dev_users_data['user_id'];
-               }
-               $silver_developer = implode(",", $silver_developer);
-               
+            }
+            $silver_developer = implode(",", $silver_developer);
+
 //getusers with dev category
 
 
@@ -182,8 +182,8 @@ $blocked_users = implode(",", $blocked_users);
                         cllassifieds_master.business_category_id='$business_category_id'  and
                         cllassifieds_master.business_sub_category_id='$business_sub_category_id'   $appendQuery   ");*/
                         $totalClsSub                      = $d->select("cllassifieds_city_master,cllassifieds_master", "  cllassifieds_master.active_status=0  AND  cllassifieds_master.cllassified_id=cllassifieds_city_master.cllassified_id AND cllassifieds_master.user_id not in ($silver_developer) and 
-	cllassifieds_master.business_category_id='$business_category_id'  and
-	cllassifieds_master.business_sub_category_id='$business_sub_category_id' and cllassifieds_master.user_id not in ($blocked_users)   $appendQuery  GROUP BY cllassifieds_master.cllassified_id    ");
+                           cllassifieds_master.business_category_id='$business_category_id'  and
+                           cllassifieds_master.business_sub_category_id='$business_sub_category_id' and cllassifieds_master.user_id not in ($blocked_users)   $appendQuery  GROUP BY cllassifieds_master.cllassified_id    ");
                         $sub_cat_id                       = $data['business_sub_category_id'];
                         $business_sub_categories_new      = $d->select("business_sub_categories", " business_sub_category_id='$sub_cat_id'  ");
                         $business_sub_categories_data_new = mysqli_fetch_array($business_sub_categories_new);
@@ -210,24 +210,24 @@ $blocked_users = implode(",", $blocked_users);
             }
         } else
         //26oct2020
-            if ($_POST['getCllassified'] == "getCllassified" && filter_var($user_id, FILTER_VALIDATE_INT) == true) {
+        if ($_POST['getCllassified'] == "getCllassified" && filter_var($user_id, FILTER_VALIDATE_INT) == true) {
 
 
-                $blocked_users = array('0'); 
-$getBLockUserQry = $d->selectRow("user_id, block_by","user_block_master", " block_by='$user_id' or user_id='$user_id'  ", "");
-while($getBLockUserData=mysqli_fetch_array($getBLockUserQry)) {
-        
-        if($user_id != $getBLockUserData['user_id']){
-            $blocked_users[] = $getBLockUserData['user_id'];
-        }
+            $blocked_users = array('0'); 
+            $getBLockUserQry = $d->selectRow("user_id, block_by","user_block_master", " block_by='$user_id' or user_id='$user_id'  ", "");
+            while($getBLockUserData=mysqli_fetch_array($getBLockUserQry)) {
 
-        if($user_id != $getBLockUserData['block_by']){
-            $blocked_users[] = $getBLockUserData['block_by'];
-        }
-        
-      
-}
-$blocked_users = implode(",", $blocked_users); 
+                if($user_id != $getBLockUserData['user_id']){
+                    $blocked_users[] = $getBLockUserData['user_id'];
+                }
+
+                if($user_id != $getBLockUserData['block_by']){
+                    $blocked_users[] = $getBLockUserData['block_by'];
+                }
+
+
+            }
+            $blocked_users = implode(",", $blocked_users); 
 
 
             if ($filter_date_from != '') {
@@ -260,19 +260,19 @@ $blocked_users = implode(",", $blocked_users);
             /*if ($business_sub_category_id != 0) {
             $atchQuery = "cllassifieds_master.business_sub_category_id='$business_sub_category_id'";
             array_push($queryAry, $atchQuery);
-            }*/
-            $query2 = "";
-            if ($business_category_id != 0) {
-                $query2 .= " and cllassifieds_master.business_category_id='$business_category_id'";
-            } 
-if ($business_category_id == 0) {
-                $query2 .= " and cllassifieds_master.business_category_id=0 ";
-            }
+        }*/
+        $query2 = "";
+        if ($business_category_id != 0) {
+            $query2 .= " and cllassifieds_master.business_category_id='$business_category_id'";
+        } 
+        if ($business_category_id == 0) {
+            $query2 .= " and cllassifieds_master.business_category_id=0 ";
+        }
 
             /*else {
                  $query2 .= " and cllassifieds_master.business_category_id=0 ";
-            }*/
-            if ($business_sub_category_id != 0) {
+             }*/
+             if ($business_sub_category_id != 0) {
                 $query2 .= " and cllassifieds_master.business_sub_category_id='$business_sub_category_id'";
             }
 
@@ -377,24 +377,24 @@ if ($business_category_id == 0) {
             }
         } else
        //19APRIL21
-            if ($_POST['getCllassifiedSearch'] == "getCllassifiedSearch" && filter_var($user_id, FILTER_VALIDATE_INT) == true) {
+        if ($_POST['getCllassifiedSearch'] == "getCllassifiedSearch" && filter_var($user_id, FILTER_VALIDATE_INT) == true) {
 
 
-                $blocked_users = array('0'); 
-$getBLockUserQry = $d->selectRow("user_id, block_by","user_block_master", " block_by='$user_id' or user_id='$user_id'  ", "");
-while($getBLockUserData=mysqli_fetch_array($getBLockUserQry)) {
-        
-        if($user_id != $getBLockUserData['user_id']){
-            $blocked_users[] = $getBLockUserData['user_id'];
-        }
+            $blocked_users = array('0'); 
+            $getBLockUserQry = $d->selectRow("user_id, block_by","user_block_master", " block_by='$user_id' or user_id='$user_id'  ", "");
+            while($getBLockUserData=mysqli_fetch_array($getBLockUserQry)) {
 
-        if($user_id != $getBLockUserData['block_by']){
-            $blocked_users[] = $getBLockUserData['block_by'];
-        }
-        
-      
-}
-$blocked_users = implode(",", $blocked_users); 
+                if($user_id != $getBLockUserData['user_id']){
+                    $blocked_users[] = $getBLockUserData['user_id'];
+                }
+
+                if($user_id != $getBLockUserData['block_by']){
+                    $blocked_users[] = $getBLockUserData['block_by'];
+                }
+
+
+            }
+            $blocked_users = implode(",", $blocked_users); 
 
 
             if ($filter_date_from != '') {
@@ -412,7 +412,7 @@ $blocked_users = implode(",", $blocked_users);
             $queryAry = array();
             
             
-           
+
             $query2 = "";
             
 
@@ -430,23 +430,23 @@ $blocked_users = implode(",", $blocked_users);
                 $search = trim($search);
                 $query2 .= " and  ( c.cllassified_title LIKE '%$search%'    or c.cllassified_description LIKE '%$search%' or (business_categories.business_category_id = c.business_category_id  or  business_sub_categories.business_sub_category_id = c.business_sub_category_id) ) ";
 
-                 $catSearch =" and  (  business_categories.category_name LIKE '%$search%'  ) ";
-                 $subCatSearch =" and  (  business_sub_categories.sub_category_name LIKE '%$search%'  ) ";
+                $catSearch =" and  (  business_categories.category_name LIKE '%$search%'  ) ";
+                $subCatSearch =" and  (  business_sub_categories.sub_category_name LIKE '%$search%'  ) ";
             }
 
             $appendQuery    = implode(" AND ", $queryAry);
-             
 
-               $q              = $d->selectRow("cllassifieds_city_master.*, c.*,business_categories.category_name , business_sub_categories.sub_category_name","cllassifieds_city_master, cllassifieds_master as c  left join business_categories on  business_categories.business_category_id = c.business_category_id $catSearch   left join business_sub_categories on  business_sub_categories.business_sub_category_id = c.business_sub_category_id  $subCatSearch  ", "  
-                   c.active_status=0  AND c.cllassified_id=cllassifieds_city_master.cllassified_id and c.user_id not in ($blocked_users)   $query2  ", "GROUP BY c.cllassified_id ORDER BY c.cllassified_id DESC ");
 
-if(isset($debug)){
-    echo "cllassifieds_city_master, cllassifieds_master as c  left join business_categories on  business_categories.business_category_id = c.business_category_id $catSearch   left join business_sub_categories on  business_sub_categories.business_sub_category_id = c.business_sub_category_id  $subCatSearch  ";
+            $q              = $d->selectRow("cllassifieds_city_master.*, c.*,business_categories.category_name , business_sub_categories.sub_category_name","cllassifieds_city_master, cllassifieds_master as c  left join business_categories on  business_categories.business_category_id = c.business_category_id $catSearch   left join business_sub_categories on  business_sub_categories.business_sub_category_id = c.business_sub_category_id  $subCatSearch  ", "  
+             c.active_status=0  AND c.cllassified_id=cllassifieds_city_master.cllassified_id and c.user_id not in ($blocked_users)   $query2  ", "GROUP BY c.cllassified_id ORDER BY c.cllassified_id DESC ");
 
-    echo  "  
-                   c.active_status=0  AND c.cllassified_id=cllassifieds_city_master.cllassified_id and c.user_id not in ($blocked_users)   $query2 GROUP BY c.cllassified_id ORDER BY c.cllassified_id DESC ";exit;
-}
-           
+            if(isset($debug)){
+                echo "cllassifieds_city_master, cllassifieds_master as c  left join business_categories on  business_categories.business_category_id = c.business_category_id $catSearch   left join business_sub_categories on  business_sub_categories.business_sub_category_id = c.business_sub_category_id  $subCatSearch  ";
+
+                echo  "  
+                c.active_status=0  AND c.cllassified_id=cllassifieds_city_master.cllassified_id and c.user_id not in ($blocked_users)   $query2 GROUP BY c.cllassified_id ORDER BY c.cllassified_id DESC ";exit;
+            }
+
             
             $qchekc         = $d->selectRow("cllassified_mute", "users_master", "user_id='$user_id' ");
             $muteDataCommon = mysqli_fetch_array($qchekc);
@@ -479,7 +479,7 @@ if(isset($debug)){
                     } else {
                         $discussion["business_sub_category_id"]           = "0";
                     }
-                     
+
                     $discussion["cllassified_id"]           = $data['cllassified_id'];
                     
                     $discussion["cllassified_title"]        = html_entity_decode($data['cllassified_title']);
@@ -552,7 +552,7 @@ if(isset($debug)){
             }
         }
 //19APRIL21
-         else if ($_POST['getCllassifiedDetails'] == "getCllassifiedDetails" && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($cllassified_id, FILTER_VALIDATE_INT) == true) {
+        else if ($_POST['getCllassifiedDetails'] == "getCllassifiedDetails" && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($cllassified_id, FILTER_VALIDATE_INT) == true) {
             $q = $d->select("cllassifieds_master", "active_status=0 AND  cllassified_id='$cllassified_id'  ", "ORDER BY cllassified_id DESC");
             if (mysqli_num_rows($q) > 0) {
                 $response["discussion"] = array();
@@ -594,7 +594,7 @@ if(isset($debug)){
                     $created_by                  = $userdata['user_full_name'];
                     $user_profile                = $base_url . "img/users/members_profile/" . $userdata['user_profile_pic'];
 
-                     if($userdata['user_profile_pic'] ==""){
+                    if($userdata['user_profile_pic'] ==""){
                         $discussion["user_profile"] ="";
                     } else {
                         $discussion["user_profile"] = $user_profile;
@@ -616,11 +616,11 @@ if(isset($debug)){
                         $user_profile                    = $base_url . "img/users/members_profile/" . $userdataComment['user_profile_pic'];
                         $comment["user_profile"]         = $user_profile . '';
 
-                         if($userdataComment['user_profile_pic'] ==""){
-                        $comment["user_profile"] ="";
-                    } else {
-                        $comment["user_profile"] = $user_profile. '';
-                    }
+                        if($userdataComment['user_profile_pic'] ==""){
+                            $comment["user_profile"] ="";
+                        } else {
+                            $comment["user_profile"] = $user_profile. '';
+                        }
 
 
                         $comment["created_by"]           = $created_by;
@@ -640,13 +640,13 @@ if(isset($debug)){
                             $sub_comment["created_by"]           = $created_by;
                             $sub_comment["user_profile"]         = $user_profile . '';
 
-                              if($userdataComment['user_profile_pic'] ==""){
-                        $sub_comment["user_profile"] ="";
-                    } else {
-                        $sub_comment["user_profile"] = $user_profile. '';
-                    }
+                            if($userdataComment['user_profile_pic'] ==""){
+                                $sub_comment["user_profile"] ="";
+                            } else {
+                                $sub_comment["user_profile"] = $user_profile. '';
+                            }
 
-                    
+
                             array_push($comment["sub_comment"], $sub_comment);
                         }
                         array_push($discussion["comment"], $comment);
@@ -664,26 +664,26 @@ if(isset($debug)){
         } else if (isset($_POST['addCllassified']) && filter_var($user_id, FILTER_VALIDATE_INT) == true) {
 
             $blocked_users = array('0'); 
-$getBLockUserQry = $d->selectRow("user_id, block_by","user_block_master", " block_by='$user_id' or user_id='$user_id'  ", "");
-while($getBLockUserData=mysqli_fetch_array($getBLockUserQry)) {
-        
-        if($user_id != $getBLockUserData['user_id']){
-            $blocked_users[] = $getBLockUserData['user_id'];
-        }
+            $getBLockUserQry = $d->selectRow("user_id, block_by","user_block_master", " block_by='$user_id' or user_id='$user_id'  ", "");
+            while($getBLockUserData=mysqli_fetch_array($getBLockUserQry)) {
 
-        if($user_id != $getBLockUserData['block_by']){
-            $blocked_users[] = $getBLockUserData['block_by'];
-        }
-        
-      
-}
+                if($user_id != $getBLockUserData['user_id']){
+                    $blocked_users[] = $getBLockUserData['user_id'];
+                }
 
-if(!isset($user_name)){
-    $uQry = $d->selectRow("*","users_master", " user_id='$user_id'", "");
- $uData=mysqli_fetch_array($uQry);
- $user_name = $uData['user_full_name'];
-}
-$blocked_users = implode(",", $blocked_users); 
+                if($user_id != $getBLockUserData['block_by']){
+                    $blocked_users[] = $getBLockUserData['block_by'];
+                }
+
+
+            }
+
+            if(!isset($user_name)){
+                $uQry = $d->selectRow("*","users_master", " user_id='$user_id'", "");
+                $uData=mysqli_fetch_array($uQry);
+                $user_name = $uData['user_full_name'];
+            }
+            $blocked_users = implode(",", $blocked_users); 
 
 
             $maxsize = 10097152;
@@ -739,22 +739,22 @@ $blocked_users = implode(",", $blocked_users);
                 }
                 switch ($imageType) {
                     case IMAGETYPE_PNG:
-                        $imageSrc = imagecreatefrompng($uploadedFile);
-                        $tmp      = imageResize($imageSrc, $sourceProperties[0], $sourceProperties[1], $newImageWidth, $newImageHeight);
-                        imagepng($tmp, $dirPath . $newFileName . "_discussion." . $ext);
-                        break;
+                    $imageSrc = imagecreatefrompng($uploadedFile);
+                    $tmp      = imageResize($imageSrc, $sourceProperties[0], $sourceProperties[1], $newImageWidth, $newImageHeight);
+                    imagepng($tmp, $dirPath . $newFileName . "_discussion." . $ext);
+                    break;
                     case IMAGETYPE_JPEG:
-                        $imageSrc = imagecreatefromjpeg($uploadedFile);
-                        $tmp      = imageResize($imageSrc, $sourceProperties[0], $sourceProperties[1], $newImageWidth, $newImageHeight);
-                        imagejpeg($tmp, $dirPath . $newFileName . "_discussion." . $ext);
-                        break;
+                    $imageSrc = imagecreatefromjpeg($uploadedFile);
+                    $tmp      = imageResize($imageSrc, $sourceProperties[0], $sourceProperties[1], $newImageWidth, $newImageHeight);
+                    imagejpeg($tmp, $dirPath . $newFileName . "_discussion." . $ext);
+                    break;
                     case IMAGETYPE_GIF:
-                        $imageSrc = imagecreatefromgif($uploadedFile);
-                        $tmp      = imageResize($imageSrc, $sourceProperties[0], $sourceProperties[1], $newImageWidth, $newImageHeight);
-                        imagegif($tmp, $dirPath . $newFileName . "_discussion." . $ext);
-                        break;
+                    $imageSrc = imagecreatefromgif($uploadedFile);
+                    $tmp      = imageResize($imageSrc, $sourceProperties[0], $sourceProperties[1], $newImageWidth, $newImageHeight);
+                    imagegif($tmp, $dirPath . $newFileName . "_discussion." . $ext);
+                    break;
                     default:
-                        break;
+                    break;
                 }
                 $cllassified_photo = $newFileName . "_discussion." . $ext;
                 $notiUrl           = $base_url . 'img/cllassified/' . $cllassified_photo;
@@ -799,36 +799,68 @@ $blocked_users = implode(",", $blocked_users);
                 $title       = "Classified";
                 $description = "New Classified Added By $user_name";
 
-                //4nov2020
-                //$d->insertFollowNotification($title, $description, $timeline_id, $user_id, 0, "classified");
-                $d->insertFollowNotification($title, $description, $cllassified_id, $user_id,4, "classified");
+                $d->insertFollowNotificationBelow39($title, $description, $cllassified_id, $user_id,4, "classified");
+                $d->insertFollowNotificationabove39($title, $description, $cllassified_id, $user_id, 4, "view_classified_new");
+
+                $d->insertFollowNotificationIos($title, $description, $cllassified_id, $user_id,4, "classified");
 
 
-                $fcmArrayAndroid       = $d->get_android_fcm("users_master,follow_master", "users_master.user_id=follow_master.follow_by AND follow_master.follow_to='$user_id' AND users_master.user_token!='' AND  lower(users_master.device) ='android' and users_master.user_id not in ($blocked_users) ");
-                $fcmArrayIos           = $d->get_android_fcm("users_master,follow_master", "users_master.user_id=follow_master.follow_by AND follow_master.follow_to='$user_id' AND users_master.user_token!='' AND  lower(users_master.device)='ios' and users_master.user_id not in ($blocked_users)  ");
-                //----------------------------------------------------
-                //--------------------------------------------------------
-                $idsAndroid            = join("','", $fcmArrayAndroid);
-                $idsIos                = join("','", $fcmArrayIos);
-                $fcmArray              = $d->get_android_fcm("users_master,user_employment_details", "user_employment_details.user_id=users_master.user_id AND user_employment_details.business_category_id='$business_category_id' AND  users_master.user_id!='$user_id' AND users_master.cllassified_mute=0 AND users_master.user_token!='' AND  lower(users_master.device) ='android' OR users_master.user_token IN ('$idsAndroid') AND users_master.cllassified_mute=0 and users_master.user_id not in ($blocked_users) ");
-                $fcmArrayIos           = $d->get_android_fcm("users_master,user_employment_details", "user_employment_details.user_id=users_master.user_id AND user_employment_details.business_category_id='$business_category_id' AND  users_master.user_id!='$user_id' AND users_master.cllassified_mute=0 AND users_master.user_token!='' AND  lower(users_master.device)='ios' OR users_master.user_token IN ('$idsIos') AND users_master.cllassified_mute=0 and users_master.user_id not in ($blocked_users) ");
-                $fcmArrayAndroidFollow = $d->get_android_fcm("users_master,category_follow_master", "users_master.user_id=category_follow_master.user_id AND category_follow_master.category_id='$business_category_id' AND users_master.user_token!='' AND  lower(users_master.device) ='android' and users_master.user_id not in ($blocked_users) ");
-                $fcmArrayIosFollow     = $d->get_android_fcm("users_master,category_follow_master", "users_master.user_id=category_follow_master.user_id AND category_follow_master.category_id='$business_category_id' AND users_master.user_token!='' AND  lower(users_master.device) ='ios' and users_master.user_id not in ($blocked_users) ");
-                $fcmArray              = array_merge($fcmArrayAndroidFollow, $fcmArray);
-                $fcmArrayIos           = array_merge($fcmArrayIosFollow, $fcmArrayIos);
+                  //ANDROID CODE START
+    $fcmArrayAndroid = $d->get_android_fcm(
+     "users_master,follow_master",
+     " users_master.version_code>=39 and users_master.user_id=follow_master.follow_by AND follow_master.follow_to='$user_id' AND users_master.user_token!='' AND  lower(users_master.device) ='android' and users_master.user_id not in ($blocked_users) "
+    );
+    $idsAndroid = join("','", $fcmArrayAndroid);
 
+    $fcmArray = $d->get_android_fcm(
+     "users_master,user_employment_details",
+     " users_master.version_code>=39 and  user_employment_details.user_id=users_master.user_id AND user_employment_details.business_category_id='$business_category_id' AND  users_master.user_id!='$user_id' AND users_master.cllassified_mute=0 AND users_master.user_token!='' AND  lower(users_master.device) ='android' OR users_master.user_token IN ('$idsAndroid') AND users_master.cllassified_mute=0 and users_master.user_id not in ($blocked_users) "
+    );
 
-                //4nov
-                
-                /*$nResident->noti("classified", $notiUrl, 0, $fcmArray, $title, $description, 'classified');
-                $nResident->noti_ios("ClassifiedVC", $notiUrl, 0, $fcmArrayIos, $title, $description, 'classified');*/
+    $fcmArrayAndroidFollow = $d->get_android_fcm(
+     "users_master,category_follow_master",
+     "users_master.version_code>=39 and  users_master.user_id=category_follow_master.user_id AND category_follow_master.category_id='$business_category_id' AND users_master.user_token!='' AND  lower(users_master.device) ='android' and users_master.user_id not in ($blocked_users) "
+    );
+    $fcmArray = array_merge($fcmArrayAndroidFollow, $fcmArray);
+    $nResident->noti("view_classified_new", $notiUrl, 0, $fcmArray, $title, $description, $cllassified_id);
 
-                $nResident->noti("viewClassified", $notiUrl, 0, $fcmArray, $title, $description, $cllassified_id);
-                $nResident->noti_ios("viewClassified", $notiUrl, 0, $fcmArrayIos, $title, $description, $cllassified_id);
+          //VERSION CODE BELOW 39
+    $fcmArrayAndroid11 = $d->get_android_fcm(
+     "users_master,follow_master",
+     " users_master.version_code<=39 and users_master.user_id=follow_master.follow_by AND follow_master.follow_to='$user_id' AND users_master.user_token!='' AND  lower(users_master.device) ='android' and users_master.user_id not in ($blocked_users) "
+    );
+    $idsAndroid11 = join("','", $fcmArrayAndroid11);
 
+    $fcmArray11 = $d->get_android_fcm(
+     "users_master,user_employment_details",
+     " users_master.version_code<=39 and  user_employment_details.user_id=users_master.user_id AND user_employment_details.business_category_id='$business_category_id' AND  users_master.user_id!='$user_id' AND users_master.cllassified_mute=0 AND users_master.user_token!='' AND  lower(users_master.device) ='android' OR users_master.user_token IN ('$idsAndroid11') AND users_master.cllassified_mute=0 and users_master.user_id not in ($blocked_users) "
+    );
 
+    $fcmArrayAndroidFollow11 = $d->get_android_fcm(
+     "users_master,category_follow_master",
+     "users_master.version_code<=39 and  users_master.user_id=category_follow_master.user_id AND category_follow_master.category_id='$business_category_id' AND users_master.user_token!='' AND  lower(users_master.device) ='android' and users_master.user_id not in ($blocked_users) "
+    );
+    $fcmArray11 = array_merge($fcmArrayAndroidFollow11, $fcmArray11);
+    $nResident->noti("viewClassified", $notiUrl, 0, $fcmArray11, $title, $description, $cllassified_id);
+          //ANDROID CODE END
+          //IOS CODE START
+    $fcmArrayIos = $d->get_android_fcm(
+     "users_master,follow_master",
+     "users_master.user_id=follow_master.follow_by AND follow_master.follow_to='$user_id' AND users_master.user_token!='' AND  lower(users_master.device)='ios' and users_master.user_id not in ($blocked_users)  "
+    );
+    $idsIos = join("','", $fcmArrayIos);
+    $fcmArrayIos = $d->get_android_fcm(
+     "users_master,user_employment_details",
+     "user_employment_details.user_id=users_master.user_id AND user_employment_details.business_category_id='$business_category_id' AND  users_master.user_id!='$user_id' AND users_master.cllassified_mute=0 AND users_master.user_token!='' AND  lower(users_master.device)='ios' OR users_master.user_token IN ('$idsIos') AND users_master.cllassified_mute=0 and users_master.user_id not in ($blocked_users) "
+    );
 
-                // $d->insert_myactivity($user_id,"$society_id","0","$user_name","New discussion forum created","menu_fourm.png");
+    $fcmArrayIosFollow = $d->get_android_fcm(
+     "users_master,category_follow_master",
+     "users_master.user_id=category_follow_master.user_id AND category_follow_master.category_id='$business_category_id' AND users_master.user_token!='' AND  lower(users_master.device) ='ios' and users_master.user_id not in ($blocked_users) "
+    );
+    $fcmArrayIos = array_merge($fcmArrayIosFollow, $fcmArrayIos);
+    $nResident->noti_ios("view_classified_new", $notiUrl, 0, $fcmArrayIos, $title, $description, $cllassified_id);
+          //IOS CODE END  
                 $response["message"] = "Classified Added";
                 $response["status"]  = '200';
                 echo json_encode($response);
@@ -857,7 +889,14 @@ $blocked_users = implode(",", $blocked_users);
                 $classified_user_id       = $cllassifieds_master_data['user_id'];
 
                 $cllassified_title = $cllassifieds_master_data['cllassified_title'];
-                //23oct2020
+                
+                $users_master_qry = $d->selectRow("*", "users_master", "user_id='$classified_user_id'");
+                $uDetails = mysqli_fetch_array($users_master_qry);
+                $notification_action ="classified";
+                if($uDetails['version_code'] >=39){
+                  $notification_action ="view_classified_new_comment";
+                }
+
                 $notiAry                  = array(
                     'user_id' => $classified_user_id,
                     'other_user_id' => $user_id,
@@ -866,7 +905,7 @@ $blocked_users = implode(",", $blocked_users);
                     'notification_title' => "Comment On Classified By $user_name",
                     'notification_desc' => "Comment: $comment_messaage",
                     'notification_date' => date('Y-m-d H:i'),
-                    'notification_action' => 'classified',
+                    'notification_action' => $notification_action,
                     'notification_logo' => 'menu_fourm.png'
                 );
                 if($classified_user_id !=$user_id){
@@ -882,22 +921,29 @@ $blocked_users = implode(",", $blocked_users);
                 $cData                = mysqli_fetch_array($qct);
                 $business_category_id = $cData['business_category_id'];
                 $ids                  = join("','", $muteArray);
-                //23oct2020
-                /*$fcmArray = $d->get_android_fcm("users_master,user_employment_details", "user_employment_details.user_id=users_master.user_id AND  users_master.user_id NOT IN ('$ids') AND users_master.cllassified_mute=0 AND users_master.user_mobile!='$user_mobile' AND users_master.user_token!='' AND  users_master.device='android'  AND users_master.user_id!='$user_id'  AND user_employment_details.business_category_id='$business_category_id'");
-                $fcmArrayIos = $d->get_android_fcm("users_master,user_employment_details", "user_employment_details.user_id=users_master.user_id AND  users_master.user_id NOT IN ('$ids') AND users_master.cllassified_mute=0 AND users_master.user_mobile!='$user_mobile' AND users_master.user_token!='' AND  users_master.device='ios'  AND users_master.user_id!='$user_id' AND user_employment_details.business_category_id='$business_category_id'");*/
-                $fcmArray             = $d->get_android_fcm("users_master", " user_id='$classified_user_id' and user_token!='' and lower(device)='android' AND  user_id!='$user_id' and  cllassified_mute=0    ");
-                $fcmArrayIos          = $d->get_android_fcm("users_master ", " user_id='$classified_user_id' and     user_token!='' AND  lower(device)='ios'  AND  user_id!='$user_id' and cllassified_mute=0    ");
-                //23oct2020
+                
+                 //android start                  
+                $fcmArray = $d->get_android_fcm(
+                 "users_master",
+                 " version_code>=39 and user_id='$classified_user_id' and user_token!='' and lower(device)='android' AND  user_id!='$user_id' and  cllassified_mute=0    "
+                );
+                $nResident->noti("view_classified_new_comment","",0,$fcmArray,"Comment On Classified By $user_name","Comment: $comment_messaage",$cllassified_id);
 
-                //4nov 2020
-                /*$nResident->noti("classified", "", 0, $fcmArray, "$comment_messaage", "Comment On Classified By $user_name", 'classified');
-                $nResident->noti_ios("ClassifiedVC", "", 0, $fcmArrayIos, "$comment_messaage", "Comment On Classified By $user_name", 'classified');*/
-                $nResident->noti("viewClassified", "", 0, $fcmArray, "Comment On Classified By $user_name", "Comment: $comment_messaage", $cllassified_id);
-                $nResident->noti_ios("viewClassified", "", 0, $fcmArrayIos,  "Comment On Classified By $user_name", "Comment: $comment_messaage", $cllassified_id);
 
-               //4nov 2020
+                $fcmArray11 = $d->get_android_fcm(
+                 "users_master",
+                 " version_code<=39 and user_id='$classified_user_id' and user_token!='' and lower(device)='android' AND  user_id!='$user_id' and  cllassified_mute=0    "
+                );
+                $nResident->noti("viewClassified","",0,$fcmArray11,"Comment On Classified By $user_name","Comment: $comment_messaage",$cllassified_id);
 
-                // $d->insert_log($user_id,"$society_id","0","$user_name","Comment on discussion forum");
+                      //ios start
+                $fcmArrayIos = $d->get_android_fcm(
+                 "users_master ",
+                 " user_id='$classified_user_id' and     user_token!='' AND  lower(device)='ios'  AND  user_id!='$user_id' and cllassified_mute=0    "
+                );
+                $nResident->noti_ios("view_classified_new_comment", "", 0,$fcmArrayIos,"Comment On Classified By $user_name","Comment: $comment_messaage",$cllassified_id);
+
+                
                 $response["message"] = "Comment Added";
                 $response["status"]  = '200';
                 echo json_encode($response);
@@ -919,10 +965,7 @@ $blocked_users = implode(",", $blocked_users);
                 'created_date' => $m->get_data('created_date'),
                 'user_id' => $m->get_data('user_id')
             );
-            //8march21
-           /* $last_auto_id     = $d->last_auto_id("cllassified_comment");
-            $res              = mysqli_fetch_array($last_auto_id);
-            $comment_id11     = $res['Auto_increment'];*/
+            
 
             $q1               = $d->insert("cllassified_comment", $a);
             $comment_id11 = $con->insert_id;
@@ -934,136 +977,151 @@ $blocked_users = implode(",", $blocked_users);
                 $qct             = $d->select("cllassified_comment", "cllassified_id='$cllassified_id' AND comment_id='$comment_id'");
                 $comentUser      = mysqli_fetch_array($qct);
                 $comment_user_id = $comentUser['user_id'];
-                //5 nov 2020 'other_user_id' => $cllassified_id, 'notification_type' => 4,
-                $notiAry         = array(
-                    'user_id' => $comment_user_id,
-                    'other_user_id' => $user_id,
-                    'timeline_id' => $cllassified_id,
-                    'notification_type' => 4,
-                    'notification_title' => "Comment Reply By $user_name" ,
-                    'notification_desc' =>"Comment: $comment_messaage",
-                    'notification_date' => date('Y-m-d H:i'),
-                    'notification_action' => 'classified',
-                    'notification_logo' => 'menu_fourm.png'
-                );
 
 
-                $cllassifieds_master2      = $d->select("cllassifieds_master", "cllassified_id='$cllassified_id'");
-                $cllassifieds_master_data2 = mysqli_fetch_array($cllassifieds_master2);
-                $classified_user_id2       = $cllassifieds_master_data2['user_id'];
-                 if($classified_user_id2 !=$user_id){
-                        $d->insert("user_notification", $notiAry);
-                 }
-                $muteArray = array();
-                $qc11      = $d->select("cllassified_mute", "cllassified_id='$cllassified_id'");
-                while ($muteData = mysqli_fetch_array($qc11)) {
-                    array_push($muteArray, $muteData['user_id']);
-                }
-                $qct                  = $d->selectRow("business_category_id", "cllassifieds_master", "cllassified_id='$cllassified_id'");
-                $cData                = mysqli_fetch_array($qct);
-                $business_category_id = $cData['business_category_id'];
-                $ids                  = join("','", $muteArray);
-                $fcmArray             = $d->get_android_fcm("users_master", "  cllassified_mute=0 AND user_id='$comment_user_id' AND user_token!='' AND  lower(device)='android' AND user_id!='$user_id'");
-                $fcmArrayIos          = $d->get_android_fcm("users_master", "  cllassified_mute=0 AND user_id='$comment_user_id'  AND user_token!='' AND  lower(device) ='ios' AND user_id!='$user_id'");
-
-                //4NOV 2020
-                /*$nResident->noti("classified", "", $society_id, $fcmArray, "$comment_messaage", "Comment Reply By $user_name", 'classified');
-                $nResident->noti_ios("ClassifiedVC", "", $society_id, $fcmArrayIos, "$comment_messaage", "Comment Reply By $user_name", 'classified');*/
-
-                $nResident->noti("viewClassified", "", $society_id, $fcmArray, "Comment Reply By $user_name", "Reply: $comment_messaage", $cllassified_id);
-                $nResident->noti_ios("viewClassified", "", $society_id, $fcmArrayIos, "Comment Reply By $user_name", "Reply: $comment_messaage", $cllassified_id);
-
-
-                // $d->insert_log($user_id,"$society_id","0","$user_name","Reply in comment of discussion forum");
-                $response["comment_id"] = $comment_id11;
-                $response["message"]    = "Comment Reply Added";
-                $response["status"]     = '200';
-                echo json_encode($response);
-            } else {
-                $response["message"] = "Something Wrong.";
-                $response["status"]  = '201';
-                echo json_encode($response);
-            }
-        } else if (isset($_POST['addMute']) && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($cllassified_id, FILTER_VALIDATE_INT) == true) {
-            $m->set_data('cllassified_id', $cllassified_id);
-            $m->set_data('user_id', $user_id);
-            $a = array(
-                'cllassified_id' => $m->get_data('cllassified_id'),
-                'user_id' => $m->get_data('user_id')
+                $users_master_qry = $d->selectRow("*", "users_master", "user_id='$comment_user_id'");
+                $uDetails = mysqli_fetch_array($users_master_qry);
+                $notification_action ="classified";
+                if($uDetails['version_code'] >=39){
+                  $notification_action ="view_classified_new_comment";
+              }
+              $notiAry         = array(
+                'user_id' => $comment_user_id,
+                'other_user_id' => $user_id,
+                'timeline_id' => $cllassified_id,
+                'notification_type' => 4,
+                'notification_title' => "Comment Reply By $user_name" ,
+                'notification_desc' =>"Comment: $comment_messaage",
+                'notification_date' => date('Y-m-d H:i'),
+                'notification_action' => $notification_action,
+                'notification_logo' => 'menu_fourm.png'
             );
-            if ($mute_type == 0) {
-                $qc = $d->select("cllassified_mute", "user_id='$user_id' AND cllassified_id='$cllassified_id'");
-                if (mysqli_num_rows($qc) > 0) {
-                    $q1 = $d->update("cllassified_mute", $a, "user_id='$user_id' AND cllassified_id='$cllassified_id'");
-                } else {
-                    $q1 = $d->insert("cllassified_mute", $a);
-                }
-                $response["message"] = "Muted Successfully";
-            } else {
-                $response["message"] = "Unmute Successfully";
-                $q1                  = $d->delete("cllassified_mute", "user_id='$user_id' AND cllassified_id='$cllassified_id'");
+
+
+              $cllassifieds_master2      = $d->select("cllassifieds_master", "cllassified_id='$cllassified_id'");
+              $cllassifieds_master_data2 = mysqli_fetch_array($cllassifieds_master2);
+              $classified_user_id2       = $cllassifieds_master_data2['user_id'];
+              if($classified_user_id2 !=$user_id){
+                $d->insert("user_notification", $notiAry);
             }
-            if ($q1 > 0) {
-                $response["status"] = '200';
-                echo json_encode($response);
-            } else {
-                $response["message"] = "Something Wrong.";
-                $response["status"]  = '201';
-                echo json_encode($response);
+            $muteArray = array();
+            $qc11      = $d->select("cllassified_mute", "cllassified_id='$cllassified_id'");
+            while ($muteData = mysqli_fetch_array($qc11)) {
+                array_push($muteArray, $muteData['user_id']);
             }
-        } else if ($_POST['muteAllDiscussion'] == "muteAllDiscussion" && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($user_mobile, FILTER_VALIDATE_INT) == true) {
-            $m->set_data('cllassified_mute', $cllassified_mute);
-            $a = array(
-                'cllassified_mute' => $m->get_data('cllassified_mute')
-            );
-            $q = $d->update("users_master", $a, "user_mobile='$user_mobile'  ");
-            if ($q == true) {
-                if ($cllassified_mute == 1) {
-                    $response["message"] = "All Classified Muted";
-                } else {
-                    $response["message"] = "All Classified Unmuted";
-                }
-                // $response["message"] = "Mobile Privacy Changed ";
-                $response["status"] = "200";
-                echo json_encode($response);
-            } else {
-                $response["message"] = "Something Wrong";
-                $response["status"]  = "201";
-                echo json_encode($response);
-            }
-        } else if (isset($_POST['deleteCllassified']) && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($cllassified_id, FILTER_VALIDATE_INT) == true) {
-            $q1 = $d->delete("cllassifieds_master", "cllassified_id='$cllassified_id' AND user_id='$user_id'");
-            if ($q1 > 0) {
-                $d->delete("cllassified_comment", "cllassified_id='$cllassified_id' ");
-                $d->delete("cllassifieds_city_master", "cllassified_id='$cllassified_id' ");
-                $response["message"] = "Classified Deleted";
-                $response["status"]  = '200';
-                echo json_encode($response);
-            } else {
-                $response["message"] = "Something Wrong.";
-                $response["status"]  = '201';
-                echo json_encode($response);
-            }
-        } else if (isset($_POST['deleteComment']) && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($comment_id, FILTER_VALIDATE_INT) == true) {
-            $q1 = $d->delete("cllassified_comment", "comment_id='$comment_id' AND user_id='$user_id'");
-            if ($q1 > 0) {
-                $q1                  = $d->delete("cllassified_comment", "prent_comment_id='$comment_id' AND user_id='$user_id'");
-                $response["message"] = "Comment Deleted";
-                $response["status"]  = '200';
-                echo json_encode($response);
-            } else {
-                $response["message"] = "Something Wrong.";
-                $response["status"]  = '201';
-                echo json_encode($response);
-            }
+            $qct                  = $d->selectRow("business_category_id", "cllassifieds_master", "cllassified_id='$cllassified_id'");
+            $cData                = mysqli_fetch_array($qct);
+            $business_category_id = $cData['business_category_id'];
+            $ids                  = join("','", $muteArray);
+            $fcmArray             = $d->get_android_fcm("users_master", "  cllassified_mute=0 AND user_id='$comment_user_id' AND user_token!='' AND  lower(device)='android' AND user_id!='$user_id'");
+
+
+
+
+                 //android
+            $fcmArray = $d->get_android_fcm("users_master"," version_code>=39 and  cllassified_mute=0 AND user_id='$comment_user_id' AND user_token!='' AND  lower(device)='android' AND user_id!='$user_id'"
+        );
+            $nResident->noti("view_classified_new_comment","",$society_id,$fcmArray,"Comment Reply By $user_name","Reply: $comment_messaage",$cllassified_id);
+
+
+            $fcmArray11 = $d->get_android_fcm("users_master"," version_code<=39 and  cllassified_mute=0 AND user_id='$comment_user_id' AND user_token!='' AND  lower(device)='android' AND user_id!='$user_id'"
+        );
+            $nResident->noti("viewClassified","",$society_id,$fcmArray11,"Comment Reply By $user_name","Reply: $comment_messaage",$cllassified_id);
+
+            $fcmArrayIos          = $d->get_android_fcm("users_master", "  cllassified_mute=0 AND user_id='$comment_user_id'  AND user_token!='' AND  lower(device) ='ios' AND user_id!='$user_id'");
+            $nResident->noti_ios("viewClassified", "", $society_id, $fcmArrayIos, "Comment Reply By $user_name", "Reply: $comment_messaage", $cllassified_id);
+
+
+
+            $response["comment_id"] = $comment_id11;
+            $response["message"]    = "Comment Reply Added";
+            $response["status"]     = '200';
+            echo json_encode($response);
         } else {
-            $response["message"] = "wrong tag";
+            $response["message"] = "Something Wrong.";
+            $response["status"]  = '201';
+            echo json_encode($response);
+        }
+    } else if (isset($_POST['addMute']) && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($cllassified_id, FILTER_VALIDATE_INT) == true) {
+        $m->set_data('cllassified_id', $cllassified_id);
+        $m->set_data('user_id', $user_id);
+        $a = array(
+            'cllassified_id' => $m->get_data('cllassified_id'),
+            'user_id' => $m->get_data('user_id')
+        );
+        if ($mute_type == 0) {
+            $qc = $d->select("cllassified_mute", "user_id='$user_id' AND cllassified_id='$cllassified_id'");
+            if (mysqli_num_rows($qc) > 0) {
+                $q1 = $d->update("cllassified_mute", $a, "user_id='$user_id' AND cllassified_id='$cllassified_id'");
+            } else {
+                $q1 = $d->insert("cllassified_mute", $a);
+            }
+            $response["message"] = "Muted Successfully";
+        } else {
+            $response["message"] = "Unmute Successfully";
+            $q1                  = $d->delete("cllassified_mute", "user_id='$user_id' AND cllassified_id='$cllassified_id'");
+        }
+        if ($q1 > 0) {
+            $response["status"] = '200';
+            echo json_encode($response);
+        } else {
+            $response["message"] = "Something Wrong.";
+            $response["status"]  = '201';
+            echo json_encode($response);
+        }
+    } else if ($_POST['muteAllDiscussion'] == "muteAllDiscussion" && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($user_mobile, FILTER_VALIDATE_INT) == true) {
+        $m->set_data('cllassified_mute', $cllassified_mute);
+        $a = array(
+            'cllassified_mute' => $m->get_data('cllassified_mute')
+        );
+        $q = $d->update("users_master", $a, "user_mobile='$user_mobile'  ");
+        if ($q == true) {
+            if ($cllassified_mute == 1) {
+                $response["message"] = "All Classified Muted";
+            } else {
+                $response["message"] = "All Classified Unmuted";
+            }
+                // $response["message"] = "Mobile Privacy Changed ";
+            $response["status"] = "200";
+            echo json_encode($response);
+        } else {
+            $response["message"] = "Something Wrong";
             $response["status"]  = "201";
             echo json_encode($response);
         }
+    } else if (isset($_POST['deleteCllassified']) && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($cllassified_id, FILTER_VALIDATE_INT) == true) {
+        $q1 = $d->delete("cllassifieds_master", "cllassified_id='$cllassified_id' AND user_id='$user_id'");
+        if ($q1 > 0) {
+            $d->delete("cllassified_comment", "cllassified_id='$cllassified_id' ");
+            $d->delete("cllassifieds_city_master", "cllassified_id='$cllassified_id' ");
+            $response["message"] = "Classified Deleted";
+            $response["status"]  = '200';
+            echo json_encode($response);
+        } else {
+            $response["message"] = "Something Wrong.";
+            $response["status"]  = '201';
+            echo json_encode($response);
+        }
+    } else if (isset($_POST['deleteComment']) && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($comment_id, FILTER_VALIDATE_INT) == true) {
+        $q1 = $d->delete("cllassified_comment", "comment_id='$comment_id' AND user_id='$user_id'");
+        if ($q1 > 0) {
+            $q1                  = $d->delete("cllassified_comment", "prent_comment_id='$comment_id' AND user_id='$user_id'");
+            $response["message"] = "Comment Deleted";
+            $response["status"]  = '200';
+            echo json_encode($response);
+        } else {
+            $response["message"] = "Something Wrong.";
+            $response["status"]  = '201';
+            echo json_encode($response);
+        }
     } else {
-        $response["message"] = "wrong api key";
+        $response["message"] = "wrong tag";
         $response["status"]  = "201";
         echo json_encode($response);
     }
+} else {
+    $response["message"] = "wrong api key";
+    $response["status"]  = "201";
+    echo json_encode($response);
+}
 }

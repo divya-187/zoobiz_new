@@ -6,7 +6,19 @@ if (isset($_POST) && !empty($_POST)) {
 	// error_reporting(E_ALL);
 // //C:\xampp\htdocs\zoobiz\mobileApi\timeline_controller.php
 	if ($key == $keydb) {
-		$share_app_content ="Download Zoobiz App & Grow your business across cities. \nAndroid Link:\nhttps://play.google.com/store/apps/details?id=com.silverwing.zoobiz\nIOS Link:\nhttps://apps.apple.com/us/app/zoobiz/id1550560836";
+
+
+		if(isset($user_id)){ 
+		$u_qry=$d->select("users_master","user_id='$user_id'");
+        $u_data=mysqli_fetch_array($u_qry);
+
+        $share_user_full_name = $u_data['user_full_name'];
+        $share_user_user_mobile = $u_data['user_mobile'];
+
+        $share_app_content ="Download Zoobiz App & Grow your business across cities. \nAndroid Link:\nhttps://play.google.com/store/apps/details?id=com.silverwing.zoobiz\nIOS Link:\nhttps://apps.apple.com/us/app/zoobiz/id1550560836\n$share_user_full_name\n$share_user_user_mobile";
+    }else{
+    	$share_app_content ="Download Zoobiz App & Grow your business across cities. \nAndroid Link:\nhttps://play.google.com/store/apps/details?id=com.silverwing.zoobiz\nIOS Link:\nhttps://apps.apple.com/us/app/zoobiz/id1550560836";
+    }
 		$charLimit = 150;
 		$response = array();
 		extract(array_map("test_input", $_POST));

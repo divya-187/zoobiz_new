@@ -561,11 +561,11 @@ if($memberAdded > 0 ){
     array_push($response["userDetails"], $userDetails);
 //get menu start
     if (strtolower($device)=='android') {
-        $app_data=$d->selectRow("app_menu_id,menu_title,menu_click,ios_menu_click,menu_icon_new,menu_icon,menu_icon_ios,menu_sequence,tutorial_video","resident_app_menu","menu_status='0' AND menu_status_android='0' AND parent_menu_id=0 and menu_icon_new!='' ","ORDER BY menu_sequence ASC");
+        $app_data=$d->selectRow("app_menu_id,menu_title,menu_click,ios_menu_click,menu_icon_new,menu_icon,menu_icon_ios,menu_sequence,tutorial_video,is_show","resident_app_menu","menu_status='0' AND menu_status_android='0' AND parent_menu_id=0 and menu_icon_new!='' ","ORDER BY menu_sequence ASC");
     }else  if (strtolower($device)=='ios') {
-        $app_data=$d->selectRow("app_menu_id,menu_title,menu_click,ios_menu_click,menu_icon_new,menu_icon,menu_icon_ios,menu_sequence,tutorial_video","resident_app_menu","menu_status='0' AND menu_status_ios='0' AND parent_menu_id=0 and menu_icon_new!='' ","ORDER BY menu_sequence ASC");
+        $app_data=$d->selectRow("app_menu_id,menu_title,menu_click,ios_menu_click,menu_icon_new,menu_icon,menu_icon_ios,menu_sequence,tutorial_video,is_show","resident_app_menu","menu_status='0' AND menu_status_ios='0' AND parent_menu_id=0 and menu_icon_new!='' ","ORDER BY menu_sequence ASC");
     }else {
-        $app_data=$d->selectRow("app_menu_id,menu_title,menu_click,ios_menu_click,menu_icon_new,menu_icon,menu_icon_ios,menu_sequence,tutorial_video","resident_app_menu","menu_status='0'  AND parent_menu_id=0 and menu_icon_new!='' ","ORDER BY menu_sequence ASC");
+        $app_data=$d->selectRow("app_menu_id,menu_title,menu_click,ios_menu_click,menu_icon_new,menu_icon,menu_icon_ios,menu_sequence,tutorial_video,is_show","resident_app_menu","menu_status='0'  AND parent_menu_id=0 and menu_icon_new!='' ","ORDER BY menu_sequence ASC");
     }
     $response["appmenu"] = array();
 //code optimize
@@ -592,7 +592,7 @@ if($memberAdded > 0 ){
         }
     }
     $android_device_array = implode(",", $android_device_array);
-    $and_qry=$d->selectRow("parent_menu_id,app_menu_id,menu_title,menu_click,ios_menu_click,menu_icon,menu_icon_ios,menu_sequence,tutorial_video","resident_app_menu","menu_status='0' AND menu_status_android='0' AND parent_menu_id in ($android_device_array) ");
+    $and_qry=$d->selectRow("parent_menu_id,app_menu_id,menu_title,menu_click,ios_menu_click,menu_icon,menu_icon_ios,menu_sequence,tutorial_video,is_show","resident_app_menu","menu_status='0' AND menu_status_android='0' AND parent_menu_id in ($android_device_array) ");
     $AArray = array();
     $Acounter = 0 ;
     foreach ($and_qry as  $value) {
@@ -606,7 +606,7 @@ if($memberAdded > 0 ){
         $and_data[$AArray[$an]['parent_menu_id']][] = $AArray[$an];
     }
     $ios_device_array = implode(",", $ios_device_array);
-    $ios_qry=$d->selectRow("parent_menu_id,app_menu_id,menu_title,menu_click,ios_menu_click,menu_icon,menu_icon_ios,menu_sequence,tutorial_video","resident_app_menu","menu_status='0' AND menu_status_ios='0' AND parent_menu_id in ($ios_device_array) ");
+    $ios_qry=$d->selectRow("parent_menu_id,app_menu_id,menu_title,menu_click,ios_menu_click,menu_icon,menu_icon_ios,menu_sequence,tutorial_video,is_show","resident_app_menu","menu_status='0' AND menu_status_ios='0' AND parent_menu_id in ($ios_device_array) ");
     $IArray = array();
     $Icounter = 0 ;
     foreach ($ios_qry as  $value) {
@@ -621,7 +621,7 @@ if($memberAdded > 0 ){
     }
     $general_device_array = implode(",", $general_device_array);
 
-    $gen_qry=$d->selectRow("parent_menu_id,app_menu_id,menu_title,menu_click,ios_menu_click,menu_icon,menu_icon_ios,menu_sequence,tutorial_video","resident_app_menu","menu_status='0' AND parent_menu_id in ($general_device_array) ");
+    $gen_qry=$d->selectRow("parent_menu_id,app_menu_id,menu_title,menu_click,ios_menu_click,menu_icon,menu_icon_ios,menu_sequence,tutorial_video,is_show","resident_app_menu","menu_status='0' AND parent_menu_id in ($general_device_array) ");
     $GArray = array();
     $Gcounter = 0 ;
     foreach ($gen_qry as  $value) {
@@ -658,6 +658,12 @@ if($memberAdded > 0 ){
                            $appmenu["menu_icon_ios"]=$base_url."img/app_icon/".$data_app["menu_icon_ios"];
                        }
                        $appmenu["menu_sequence"]=$data_app["menu_sequence"];
+                       if($data_app["is_show"]==1){
+                         $appmenu["is_show"]=true;
+                       }else {
+                         $appmenu["is_show"]=false;
+                       }
+                      
                        $appmenu["tutorial_video"]=$data_app["tutorial_video"].'';
                        if ($data_app["is_new"]==1) {
                           $appmenu["is_new"]=true;
@@ -682,6 +688,12 @@ if($memberAdded > 0 ){
                   $appmenu_sub["menu_icon"]=$base_url."img/app_icon/".$subData["menu_icon"];
                   $appmenu_sub["menu_icon_ios"]=$base_url."img/app_icon/".$appmenu_sub["menu_icon_ios"];
                   $appmenu_sub["menu_sequence"]=$subData["menu_sequence"];
+                   if($subData["is_show"]==1){
+                         $appmenu_sub["is_show"]=true;
+                       }else {
+                         $appmenu_sub["is_show"]=false;
+                       }
+                       
                   $appmenu_sub["tutorial_video"]=$subData["tutorial_video"].'';
                   if ($subData["is_new"]==1) {
                       $appmenu_sub["is_new"]=true;

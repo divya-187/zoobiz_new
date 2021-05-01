@@ -13,7 +13,7 @@
        <div class="col-sm-3">
          <div class="btn-group float-sm-right">
            <a href="categoryWiseUsersReport"   class="btn btn-sm btn-warning waves-effect waves-light">Report</a>
-           <a href="javascript:void(0)" onclick="DeleteAll('deleteCategory');" class="btn  btn-sm btn-danger pull-right"><i class="fa fa-trash-o fa-lg"></i> Delete </a>
+           <a href="javascript:void(0)" onclick="DeleteAllMainCat('deleteCategory');" class="btn  btn-sm btn-danger pull-right"><i class="fa fa-trash-o fa-lg"></i> Delete </a>
           <a href="#" data-toggle="modal" data-target="#addCategory" class="btn btn-sm btn-primary waves-effect waves-light"><i class="fa fa-plus mr-1"></i> Add New </a>
        </div>
      </div>
@@ -55,7 +55,7 @@
                   <td class='text-center'>
                      <?php 
                    
-                   $q3=$d->select("users_master,user_employment_details,business_categories,business_sub_categories"," business_sub_categories.business_sub_category_id=user_employment_details.business_sub_category_id AND   business_categories.business_category_id=user_employment_details.business_category_id AND user_employment_details.user_id=users_master.user_id  AND user_employment_details.business_category_id='$business_category_id'","");
+                   $q3=$d->select("users_master,user_employment_details,business_categories,business_sub_categories"," business_sub_categories.business_sub_category_id=user_employment_details.business_sub_category_id AND   business_categories.business_category_id=user_employment_details.business_category_id AND user_employment_details.user_id=users_master.user_id  AND user_employment_details.business_category_id='$business_category_id' AND users_master.office_member=0 AND users_master.active_status=0","");
                  $totalCategory =  mysqli_num_rows($q3);
                   if ($totalCategory==0) {
                   ?>  
@@ -70,7 +70,10 @@
                     if ($totalCategory==0) {
                       echo "0";
                    } else {
-                     echo $totalCategory;
+                     echo $totalCategory;?>
+                      <br> 
+                      <a href="categoryWiseUsersReportDetails?business_category_id=<?php echo $data['business_category_id']; ?>" class="btn btn-warning btn-sm " target="_blank">View Details</a>
+                      <?php 
                   } ?>
                   </td>
                   

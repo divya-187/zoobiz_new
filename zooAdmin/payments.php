@@ -44,7 +44,7 @@ $where="";
                     }
                     
                   }
-                   ?> 
+       /*            ?> 
 
       <div class="col-sm-3">
            <?php if($total_transaction>0){ ?> 
@@ -56,7 +56,7 @@ $where="";
           <a href="couponReport"> <span class="badge badge-pill badge-danger m-1"> <span >Coupon <i class="fa fa-inr"></i><?php echo number_format($total_coupon,2,'.',''); ?> </span > </span > </a>
           <?php } ?> 
       </div>
-      <?php //24nov2020 ?>
+      <?php*/ //24nov2020 ?>
 
 
     </div>
@@ -148,6 +148,13 @@ $where="";
                   $i = 0;
                   while($row=mysqli_fetch_array($q))
                   {
+                    if($_GET['mode']==1 && $row['razorpay_payment_id']=='' ){
+                      continue;
+                    }
+
+                    if($_GET['mode']==2 && $row['razorpay_payment_id']!='' ){
+                      continue;
+                    }
                   // extract($row);
                   $i++;
                   

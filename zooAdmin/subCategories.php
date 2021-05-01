@@ -16,7 +16,7 @@
          <a href="subCategoryWiseUsersReport"   class="btn btn-sm btn-warning waves-effect waves-light">Report</a>
 
 
-         <a href="javascript:void(0)" onclick="DeleteAll('deleteSubCategory');" class="btn  btn-sm btn-danger pull-right"><i class="fa fa-trash-o fa-lg"></i> Delete </a>
+         <a href="javascript:void(0)" onclick="DeleteAllsubCat('deleteSubCategory');" class="btn  btn-sm btn-danger pull-right"><i class="fa fa-trash-o fa-lg"></i> Delete </a>
          <a href="#" data-toggle="modal" data-target="#addCategory" class="btn btn-sm btn-primary waves-effect waves-light"><i class="fa fa-plus mr-1"></i> Add New </a>
          
 
@@ -114,7 +114,7 @@
    /*$qdata_qry=$d->select("users_master,user_employment_details,business_categories,business_sub_categories"," business_sub_categories.business_sub_category_id=user_employment_details.business_sub_category_id AND   business_categories.business_category_id=user_employment_details.business_category_id AND user_employment_details.user_id=users_master.user_id  AND user_employment_details.business_sub_category_id in ($array) ","");*/
 
 
-   $qdata_qry=$d->select(" user_employment_details,business_sub_categories"," business_sub_categories.business_sub_category_id=user_employment_details.business_sub_category_id   ","");
+   $qdata_qry=$d->select(" users_master,user_employment_details,business_sub_categories"," user_employment_details.user_id=users_master.user_id  AND business_sub_categories.business_sub_category_id=user_employment_details.business_sub_category_id and users_master.active_status=0   ","");
 
 
    $count_array = array('0');
@@ -155,8 +155,12 @@
                     <?php   
                     if ($totalSubCategory==0) {
                       echo "0";
-                    } else {
-                      echo $totalSubCategory;
+                    } else {?>
+                      <?php
+                      echo $totalSubCategory;?>
+                      <br>
+                      <a href="subCategoryWiseUsersDetails?business_sub_category_id=<?php echo $data['business_sub_category_id']; ?>" class="btn btn-warning btn-sm " target="_blank">View Details</a>
+                      <?php 
                     }?>
                   </td>
 

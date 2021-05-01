@@ -95,11 +95,11 @@
                   $where="";
                   if(isset($_GET['filter_business_category_id']) && $_GET['filter_business_category_id'] !=0 ){
                     $filter_business_category_id = $_GET['filter_business_category_id'];
-                    $where .=" and  business_category_id ='$filter_business_category_id' ";
+                    $where .=" and  cllassifieds_master.business_category_id ='$filter_business_category_id' ";
                   }
                   if(isset($_GET['filter_business_categories_sub']) && $_GET['filter_business_categories_sub'] != 0 ){
                     $filter_business_sub_category_id = $_GET['filter_business_categories_sub'];
-                    $where .=" and business_sub_category_id ='$filter_business_sub_category_id' ";
+                    $where .=" and cllassifieds_master.business_sub_category_id ='$filter_business_sub_category_id' ";
                   }
 //24nov2020
 $business_categories_qry=$d->select("business_categories"," category_status != 1  ");
@@ -120,7 +120,7 @@ while($business_sub_categories_data=mysqli_fetch_array($business_sub_categories_
 }
  
 //24nov2020
-                    $q=$d->select("cllassifieds_master"," user_id != 0  $where ","ORDER BY cllassified_id DESC");
+                    $q=$d->select("cllassifieds_master, users_master","users_master.user_id =cllassifieds_master.user_id  AND users_master.office_member=0 AND users_master.active_status=0  and   cllassifieds_master.user_id != 0  $where ","ORDER BY cllassifieds_master.cllassified_id DESC");
                     $i = 0;
                     while($row=mysqli_fetch_array($q)) {
                       $i++;
