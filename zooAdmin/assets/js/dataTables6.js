@@ -20,7 +20,7 @@ $(document).ready(function() {
         lengthChange: false,
         buttons: ['copy', 'excel', 'pdf', 'print', 'colvis'] ,
          "columnDefs": [
-            { "searchable": false, "targets": 5 },{ "searchable": false, "targets": 4 }
+            { "searchable": false, "targets": 5 },{ "searchable": false, "targets": 6 }
           ]
     });
       subCatTable.buttons().container().appendTo('#subCatTable_wrapper .col-md-6:eq(0)');

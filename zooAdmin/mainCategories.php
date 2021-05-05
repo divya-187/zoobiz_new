@@ -69,10 +69,12 @@
                     <?php 
                     if ($totalCategory==0) {
                       echo "0";
-                   } else {
+                   } else { ?>
+
+                    <a href="categoryWiseUsersReportDetails?business_category_id=<?php echo $data['business_category_id']; ?>"  target="_blank">
+                     <?php
                      echo $totalCategory;?>
-                      <br> 
-                      <a href="categoryWiseUsersReportDetails?business_category_id=<?php echo $data['business_category_id']; ?>" class="btn btn-warning btn-sm " target="_blank">View Details</a>
+                     </a>
                       <?php 
                   } ?>
                   </td>
