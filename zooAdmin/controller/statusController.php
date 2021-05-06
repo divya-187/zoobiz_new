@@ -9,6 +9,45 @@ include '../common/objectController.php';
 if(isset($_POST) && !empty($_POST) )//it can be $_GET doesn't matter
 {
 
+//6may2021
+
+ if($_POST['status']=="appMenuDeactive") {
+
+   $resident_app_menu_q=$d->select("resident_app_menu","app_menu_id='$id'","");
+    $resident_app_menu_data=mysqli_fetch_array($resident_app_menu_q);
+   $menu_title = $resident_app_menu_data['menu_title'];
+      $menu_status="1";
+        $m->set_data('menu_status',$menu_status);
+        $a1= array ('menu_status'=> $m->get_data('menu_status')
+      );
+      $q=$d->update('resident_app_menu',$a1,"app_menu_id='$id'");
+      if($q>0) {
+         $d->insert_log("","0","$_SESSION[zoobiz_admin_id]","$created_by",ucwords('$menu_title is deactivated'));
+        echo 1;
+      } else {
+        echo 0;
+      }
+  }
+
+  if($_POST['status']=="appMenuActive") {
+
+   $resident_app_menu_q=$d->select("resident_app_menu","app_menu_id='$id'","");
+    $resident_app_menu_data=mysqli_fetch_array($resident_app_menu_q);
+   $menu_title = $resident_app_menu_data['menu_title'];
+      $menu_status="0";
+        $m->set_data('menu_status',$menu_status);
+        $a1= array ('menu_status'=> $m->get_data('menu_status')
+      );
+      $q=$d->update('resident_app_menu',$a1,"app_menu_id='$id'");
+      if($q>0) {
+         $d->insert_log("","0","$_SESSION[zoobiz_admin_id]","$created_by",ucwords('$menu_title is activated'));
+        echo 1;
+      } else {
+        echo 0;
+      }
+  }
+//6may2021
+
 //17march2021
   if($_POST['status']=="DisableUPI") {
       $active_status="1";

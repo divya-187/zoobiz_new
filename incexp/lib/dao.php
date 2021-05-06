@@ -46,6 +46,24 @@ class dao implements interface1
         mysqli_set_charset($this->conn,"utf8mb4");
         return mysqli_query($this->conn,"INSERT INTO $table($field) VALUES($val)") or die(mysqli_error($this->conn));
     }
+
+    //6may2021
+    function get_user_details($user_id){
+      $users_master=$this->select("users_master","  user_id= '$user_id' ","");
+      $users_master_data = mysqli_fetch_array($users_master);
+      return $users_master_data;
+    }
+    function insert__feature_clicked_log($feature_used,$user_id) {   
+      $user_details = $this->get_user_details($user_id);
+      $device = $user_details['device'];
+      $feature_used = $this->conn->real_escape_string($feature_used);
+      $user_id = $this->conn->real_escape_string($user_id);
+        $created_at=date("y-m-d H:i:s");
+        $val="'$feature_used','$user_id','$device','$created_at'";
+        mysqli_set_charset($this->conn,"utf8mb4");
+        return mysqli_query($this->conn,"INSERT INTO feature_usage_master(feature_used,user_id,device,created_at) VALUES($val)") or die(mysqli_error($this->conn));
+    }
+    //6may2021
     
     // insert log
     function insert_log($recident_user_id,$society_id,$user_id,$user_name,$log_name)

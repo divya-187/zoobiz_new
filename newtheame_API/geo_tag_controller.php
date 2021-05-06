@@ -116,6 +116,10 @@ if (isset($_POST) && !empty($_POST)) {
 			}
 
 		} else if ($_POST['getGeoMembersNew'] == "getGeoMembersNew" && filter_var($user_id, FILTER_VALIDATE_INT) == true) {
+			if(isset($user_id)){
+				$d->insert__feature_clicked_log('1',$user_id);
+			}
+
 $main_user_id = $user_id;
 			if ($city_id != "") {
 				// find city id

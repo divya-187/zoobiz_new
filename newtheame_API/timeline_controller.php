@@ -26,7 +26,9 @@ $active_user_arr = array();
 		if ($_POST['getFeed'] == "getFeed" && filter_var($user_id, FILTER_VALIDATE_INT) == true) {
 
 
-
+ if(isset($user_id)){
+        $d->insert__feature_clicked_log('4',$user_id);
+      }
 
 
 

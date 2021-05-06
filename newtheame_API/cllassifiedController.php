@@ -7,6 +7,9 @@ if (isset($_POST) && !empty($_POST)) {
         $today = date("Y-m-d");
         //26oct2020
         if ($_POST['getCllassifiedCategories'] == "getCllassifiedCategories") {
+        if(isset($user_id)){
+            $d->insert__feature_clicked_log('2',$user_id);
+        }
 
 //getusers with dev category
           $dev_users = $d->select("user_employment_details,business_categories, business_sub_categories", "  user_employment_details.business_category_id  =business_categories.business_category_id and  user_employment_details.business_sub_category_id  =business_sub_categories.business_sub_category_id and business_categories.category_status = 2  and business_sub_categories.sub_category_status = 2   ");

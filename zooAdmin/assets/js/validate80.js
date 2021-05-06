@@ -3731,6 +3731,70 @@ $("#promoFrmFrm").validate({
 
 //27oct
 
+//6may2021
+$("#appMenuFrmNew").validate({
+        errorPlacement: function (error, element) {
+            if (element.parent('.input-group').length) { 
+                error.insertAfter(element.parent());      // radio/checkbox?
+            } else if (element.hasClass('select2-hidden-accessible')) {     
+                error.insertAfter(element.next('span'));  // select2
+                element.next('span').addClass('error').removeClass('valid');
+            } else {                                      
+                error.insertAfter(element);               // default
+            }
+        },
+        rules: {
+              
+             menu_title:{ 
+              required:true,
+              noSpace:true   
+          }  ,
+          menu_click:{ 
+              required:true,
+              noSpace:true   
+          },
+          menu_icon_new:{ 
+              required:false,
+              filesize:true
+          },
+          ios_menu_click:{ 
+              required:true,
+              noSpace:true   
+          },
+          menu_sequence:{ 
+              required:true 
+          } 
+  
+
+        },
+        messages: {
+            
+            menu_title:{
+                required:"please add menu title."
+            },
+            menu_click:{
+                required:"please enter android menu click."
+            },
+            ios_menu_click:{
+                required:"please enter ios menu click."
+            }   ,
+            menu_icon_new:{
+                required:"please select menu icon."
+            },
+            menu_sequence:{
+                  required:"please select menu sequence."
+            }
+             
+        },
+        submitHandler: function(form) {
+                $(':input[type="submit"]').prop('disabled', true);
+                form.submit(); 
+             
+        }
+        
+    });
+//6may2021
+
 
 $.validator.addMethod("custom_rule", function(value, element) {
     var dropdown_val = $('#cpnFrm :input[name="coupon_amount"]').val();

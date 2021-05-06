@@ -113,7 +113,9 @@ if(isset($_POST) && !empty($_POST)){
     }  else if (isset($getRecentChatMember) && $getRecentChatMember=='getRecentChatMember' && filter_var($user_id, FILTER_VALIDATE_INT) == true) { 
 
 
-
+         if(isset($user_id)){
+            $d->insert__feature_clicked_log('5',$user_id);
+          }
         $q4=$d->getRecentChatMemberNew("chat_master",$user_id);
         
         $dataArray = array();

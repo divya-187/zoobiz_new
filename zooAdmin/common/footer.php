@@ -208,7 +208,7 @@
     
     <!--Form Validatin Script-->
     <script src="assets/plugins/jquery-validation/js/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="assets/js/validate79.js"></script>
+    <script type="text/javascript" src="assets/js/validate80.js"></script>
     <script src="assets/js/custom76.js"></script>
     
     <!--Select Plugins Js-->

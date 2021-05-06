@@ -683,6 +683,11 @@ if ($data_app["company_contact_number_privacy"] == 1) {
 		}  else   if (isset($get_other_member_details) && $get_other_member_details == 'get_other_member_details' && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($member_id, FILTER_VALIDATE_INT) == true) {
 
 
+if(isset($user_id)){
+            $d->insert__feature_clicked_log('7',$user_id);
+          }
+
+
 			$user_block_master = $d->count_data_direct("user_id","user_block_master", "  block_by='$member_id' and user_id='$user_id'", "");
 				if($user_block_master >0 ){
 					$response["message"] = "Blocked";

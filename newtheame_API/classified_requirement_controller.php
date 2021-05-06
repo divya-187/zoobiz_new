@@ -6,6 +6,11 @@
       extract(array_map("test_input", $_POST));
       $today = date("Y-m-d");
       if ($_POST['getCllassifiedNew'] == "getCllassifiedNew" && filter_var($user_id, FILTER_VALIDATE_INT) == true) {
+
+        if(isset($user_id)){
+            $d->insert__feature_clicked_log('8',$user_id);
+        }
+
         $blocked_users = array('0');
         $getBLockUserQry = $d->selectRow("user_id, block_by", "user_block_master", " block_by='$user_id' or user_id='$user_id'  ", "");
         while ($getBLockUserData = mysqli_fetch_array($getBLockUserQry)) {

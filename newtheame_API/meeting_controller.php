@@ -8,7 +8,7 @@ if (isset($_POST) && !empty($_POST)) {
     extract(array_map("test_input" , $_POST));
 
     if ($_POST['addMeeting'] == "addMeeting" && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($member_id, FILTER_VALIDATE_INT) == true) {
-
+ 
       $date = str_replace("/", "-",$date);
 
       $meeting_date = date("Y-m-d", strtotime($date));
@@ -717,7 +717,9 @@ $opp_user = $d->select("users_master", "  user_id = '$member_id'");
 
 else if ($_POST['getMyMeetings'] == "getMyMeetings" && filter_var($user_id, FILTER_VALIDATE_INT) == true  ) {
 
-
+if(isset($user_id)){
+            $d->insert__feature_clicked_log('6',$user_id);
+          }
 
   $active_usr_qry=$d->select("users_master","active_status=0");
   $active_user_arr = array();

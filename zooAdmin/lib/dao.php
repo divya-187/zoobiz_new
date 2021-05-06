@@ -26,8 +26,7 @@ class dao implements interface1
 
 
       $left_days = ($end_date - $start_date)/60/60/24;
-
-      if($left_days<0 ){
+       if($left_days<0 ){
         $left_days = 0 ; 
       }
       return $left_days;
@@ -87,13 +86,12 @@ class dao implements interface1
        $sms= file_get_contents("https://2factor.in/API/R1/?module=TRANS_SMS&apikey=2eb6de0f-3a58-11e9-8806-0200cd936042&to=$user_mobile&from=ZOOBIZ&templatename=Account+Approval+Message&var1=$user_full_name");
    }
 
-     function sms_to_admin_on_category_app($admin_mobile,$admin_name,$custom_category_name,$link){
+   function sms_to_admin_on_category_app($admin_mobile,$admin_name,$custom_category_name,$link){
        $admin_name=urlencode($admin_name); 
        $link=urlencode($link); 
        $custom_category_name=urlencode($custom_category_name); 
        $sms= file_get_contents("https://2factor.in/API/R1/?module=TRANS_SMS&apikey=2eb6de0f-3a58-11e9-8806-0200cd936042&to=$admin_mobile&from=ZOOBIZ&templatename=Category+Approval+SMS+to+Admin&var1=$admin_name&var2=$custom_category_name&var3=$link");
     }
-
 //NEW SMS CODE
 
 //5oct2020
@@ -144,6 +142,26 @@ class dao implements interface1
         mysqli_set_charset($this->conn,"utf8mb4");
         return mysqli_query($this->conn,"INSERT INTO $table($field) VALUES($val)") or die(mysqli_error($this->conn));
     }
+    
+
+     //6may2021
+    function get_user_details($user_id){
+      $users_master=$this->select("users_master","  user_id= '$user_id' ","");
+      $users_master_data = mysqli_fetch_array($users_master);
+      return $users_master_data;
+    }
+    function insert__feature_clicked_log($feature_used,$user_id) {   
+      $user_details = $this->get_user_details($user_id);
+      $device = $user_details['device'];
+      $feature_used = $this->conn->real_escape_string($feature_used);
+      $user_id = $this->conn->real_escape_string($user_id);
+        $created_at=date("y-m-d H:i:s");
+        $val="'$feature_used','$user_id','$device','$created_at'";
+        mysqli_set_charset($this->conn,"utf8mb4");
+        return mysqli_query($this->conn,"INSERT INTO feature_usage_master(feature_used,user_id,device,created_at) VALUES($val)") or die(mysqli_error($this->conn));
+    }
+    //6may2021
+
     
     // insert log
     function insert_log($recident_user_id,$society_id,$user_id,$user_name,$log_name)
@@ -298,7 +316,7 @@ $blocked_users = implode(",", $blocked_users);
 
     }
     //1may2021
-
+    
     //17SEPT2020
     function insertAllUserNotification($title,$description,$notification_action,$notification_icon=null,$append_query=null,$notification_type=0)
     { 

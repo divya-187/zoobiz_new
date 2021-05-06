@@ -716,7 +716,9 @@ $company["search_keyword"] = html_entity_decode($data["search_keyword"]);
 
 //3feb21
 else if ($_POST['getAllMembersWithoutCompany'] == "getAllMembersWithoutCompany" && filter_var($user_id, FILTER_VALIDATE_INT) == true ) {
-
+	if(isset($user_id)){
+	  $d->insert__feature_clicked_log('0',$user_id);
+	}
 //recent memmber data start
 $user_recent_master_qry = $d->selectRow("users_master.user_id,business_categories.business_category_id,business_sub_categories.business_sub_category_id,users_master.user_full_name, users_master.user_first_name,users_master.user_last_name, users_master.zoobiz_id,users_master.public_mobile,users_master.user_mobile,users_master.user_profile_pic,business_categories.category_name,business_sub_categories.sub_category_name,user_employment_details.company_name, user_employment_details.company_logo   ,user_recent_master.id,user_recent_master.member_id,user_recent_master.user_id,user_recent_master.flag,user_employment_details.company_name,user_employment_details.company_logo, users_master.user_full_name, users_master.user_profile_pic","user_recent_master,users_master,user_employment_details, business_categories,business_sub_categories",
 				"user_employment_details.user_id=user_recent_master.member_id and  business_sub_categories.business_sub_category_id=user_employment_details.business_sub_category_id AND   business_categories.business_category_id=user_employment_details.business_category_id AND users_master.office_member=0 AND users_master.active_status=0  AND  users_master.user_id =user_recent_master.member_id and   user_recent_master.user_id ='$user_id' and   user_recent_master.member_id != $user_id ", " GROUP by user_recent_master.user_id, user_recent_master.member_id, user_recent_master.flag       order by user_recent_master.id desc limit 0,4 ");

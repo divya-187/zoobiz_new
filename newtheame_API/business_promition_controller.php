@@ -8,6 +8,11 @@ $today = date('Y-m-d');
 
 
 if (isset($getEventData) && $getEventData == 'getEventData'   ) {
+
+	if(isset($user_id)){
+				$d->insert__feature_clicked_log('3',$user_id);
+			}
+
 $today = date("Y-m-d");
 // /
 $promotion_master=$d->select("promotion_master"," '$today' between `event_date` and `event_end_date` and  status = 0 order by order_date asc   ","");
