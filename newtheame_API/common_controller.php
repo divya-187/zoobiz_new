@@ -10,7 +10,15 @@ if (isset($_POST) && !empty($_POST)) {
 		$response = array();
 		extract(array_map("test_input", $_POST));
 
-		if ($_POST['shareSeasonalGreet'] == "shareSeasonalGreet" && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($promotion_id, FILTER_VALIDATE_INT) == true) {
+if ($_POST['addClick'] == "addClick" && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($feature_used, FILTER_VALIDATE_INT) == true) {
+   
+   $d->insert__feature_clicked_log($feature_used,$user_id);
+   $response["message"] = "Done";
+	$response["status"] = "200";
+	echo json_encode($response);
+	exit();
+
+} else  if ($_POST['shareSeasonalGreet'] == "shareSeasonalGreet" && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($promotion_id, FILTER_VALIDATE_INT) == true) {
 
 
 			$m->set_data('promotion_id', $promotion_id);
@@ -683,9 +691,9 @@ if ($data_app["company_contact_number_privacy"] == 1) {
 		}  else   if (isset($get_other_member_details) && $get_other_member_details == 'get_other_member_details' && filter_var($user_id, FILTER_VALIDATE_INT) == true && filter_var($member_id, FILTER_VALIDATE_INT) == true) {
 
 
-if(isset($user_id)){
+/*if(isset($user_id)){
             $d->insert__feature_clicked_log('7',$user_id);
-          }
+          }*/
 
 
 			$user_block_master = $d->count_data_direct("user_id","user_block_master", "  block_by='$member_id' and user_id='$user_id'", "");

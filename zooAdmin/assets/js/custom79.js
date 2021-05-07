@@ -2511,11 +2511,38 @@ function getNewPriceDiscountFlat() {
         type: "POST",
         data: {plan_id : plan_id},
         success: function(response){
-          $('#coupon_amount').attr('max', response);
 
+          var fields = response.split('~');
+
+          $('#coupon_amount').attr('max', fields[0]);
+          if(fields[1] == 1){
+            $('#coupon_amount').prop('readonly', true);
+            $('#coupon_per').prop('readonly', true);
+            $('#coupon_per').val('100');
+          } else {
+            $('#coupon_amount').prop('readonly', false);
+            $('#coupon_per').prop('readonly', false);
+            $('#coupon_per').val('0');
+          }
              
         }
      });
+ }
+
+
+ function is_cpn_package_func(){
+   var is_cpn_package = $("#is_cpn_package option:selected").val();
+   
+    if(is_cpn_package==1){
+      $('#package_amount').val('0');
+      $('#package_amount').prop('disabled', true);
+      $('#gst_slab_id').prop('disabled', true);
+    } else{
+      $('#package_amount').val('');
+      $('#package_amount').prop('disabled', false);
+      $('#gst_slab_id').prop('disabled', false);
+    }
+  
  }
 //30oct2020
 

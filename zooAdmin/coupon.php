@@ -60,7 +60,7 @@ extract($coupon_master_data);
 
                             $max_amount = 0 ;
                             while ($bData=mysqli_fetch_array($qb)) {?>
-                              <option <?php if(isset($coupon_id) &&  $bData['package_id']== $plan_id ){ $max_amount =$bData['package_amount'] ;    echo "selected";} ?>   value="<?php echo $bData['package_id']; ?>"><?php echo $bData['package_name']; ?>-<?php echo $bData['no_of_month']; ?> <?php if($bData['time_slab'] == 1) echo "Days"; else echo "Month"; ?> (₹ <?php echo $bData['package_amount']; ?> )</option>
+                              <option <?php if(isset($coupon_id) &&  $bData['package_id']== $plan_id ){ $max_amount =$bData['package_amount'] ;    echo "selected";} ?>   value="<?php echo $bData['package_id']; ?>"><?php echo $bData['package_name']; ?>-<?php echo $bData['no_of_month']; ?> <?php if($bData['time_slab'] == 1) echo "Days"; else echo "Month"; ?> (₹ <?php echo $bData['package_amount']; ?> ) <?php if($bData['is_cpn_package'] ==1){ echo "- Promotion Only Plan";} ?> </option>
                             <?php } ?> 
                           </select>
                          
@@ -162,18 +162,22 @@ extract($coupon_master_data);
                 
 
                 </div>
-               
+               <?php  $package_master=$d->select("package_master"," package_id = '$plan_id'","");
+               $package_master_data=mysqli_fetch_array($package_master);
+
+                ?>
               <div class="form-group row">
       <label for="client" class="col-lg-2 col-form-label form-control-label">Coupon Amount  </label>
       <div class="col-lg-3">
-        <input maxlength="10" onchange="getNewPriceDiscountFlat();" class="form-control onlyNumber"  id="coupon_amount" type="text" name="coupon_amount" value="<?php echo  number_format( $coupon_amount, 2, '.', ''); ?>" placeholder=""   max="<?php if(isset($coupon_id)){ echo $max_amount; } ?>">
+        <input <?php if($package_master_data['is_cpn_package'] ==1){ echo "readonly";} ?>  maxlength="10" onchange="getNewPriceDiscountFlat();" class="form-control onlyNumber"  id="coupon_amount" type="text" name="coupon_amount" value="<?php echo  number_format( $coupon_amount, 2, '.', ''); ?>" placeholder=""   max="<?php if(isset($coupon_id)){ echo $max_amount; } ?>">
       </div>
       <div class="col-lg-2 text-center">
         <span  class="">OR</span>
       </div>
       <label for="client" class="col-lg-2 col-form-label form-control-label">Coupon Discount in % </label>
       <div class="col-lg-3">
-        <input maxlength="6" onchange="getNewPriceDiscountPer();" class="form-control onlyNumber"  id="coupon_per" type="text" name="coupon_per" value="<?php echo number_format($coupon_per,2); ?>" placeholder="" max="100"  >
+        <input <?php if($package_master_data['is_cpn_package'] ==1){ echo "readonly";
+      } ?>   maxlength="6" onchange="getNewPriceDiscountPer();" class="form-control onlyNumber"  id="coupon_per" type="text" name="coupon_per" value="<?php echo number_format($coupon_per,2); ?>" placeholder="" max="100"  >
       </div>
 
     </div>

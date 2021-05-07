@@ -8,5 +8,7 @@ $is_plan_expired =0;
        $is_plan_expired =1;
     }
 
+
+echo "<pre>";print_r(getenv());echo "</pre>";
     echo '7777'.$is_plan_expired;exit;
 ?>

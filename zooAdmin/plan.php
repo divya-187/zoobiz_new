@@ -62,7 +62,7 @@ if(isset($package_id))
                 <div class="col-sm-10">
 
                   
-                 <select   name="is_cpn_package"    class="form-control single-select" name="gst_slab_id" type="text" >
+                 <select   name="is_cpn_package" id="is_cpn_package"  onchange="is_cpn_package_func();"   class="form-control single-select" name="gst_slab_id" type="text" >
                             <option <?php if($is_cpn_package == 0){ echo "selected";} ?> value="0">No</option>
                             <option <?php if($is_cpn_package == 1){ echo "selected";} ?>  value="1">Yes</option>
                               
@@ -92,10 +92,10 @@ if(isset($package_id))
                   <input disabled=""  type="text" min="1" size="20" required="" class="form-control allow_decimal" id="trlDays" maxlength="9"  value="<?php echo $package_amount; ?>">
 
 
-                   <input type="hidden"  name="package_amount" value="<?php echo $package_amount; ?>">
+                   <input type="hidden"  <?php if($is_cpn_package == 1){ echo "disabled";} ?>   name="package_amount" id="package_amount" value="<?php echo $package_amount; ?>">
 
                  <?php } else {?>
-                   <input   type="text" min="1" size="20" required="" class="form-control allow_decimal" id="trlDays" name="package_amount" value="<?php echo $package_amount; ?>"   maxlength="9"  >
+                   <input   type="text" min="1" size="20" required="" class="form-control allow_decimal" <?php if($is_cpn_package == 1){ echo "disabled";} ?>   id="package_amount" name="package_amount" value="<?php echo $package_amount; ?>"   maxlength="9"  >
                   <?php } //24nov2020 ?> 
 
                 </div>
@@ -113,7 +113,7 @@ if(isset($package_id))
                      $dis ="disabled";
                   }
                   ?>
-                 <select <?php echo $dis;?> id="gst_slab_id" required="" class="form-control single-select" name="gst_slab_id" type="text" >
+                 <select <?php if($is_cpn_package == 1){ echo "disabled";} ?>   <?php echo $dis;?> id="gst_slab_id" required="" class="form-control single-select" name="gst_slab_id" type="text" >
                             <option value="">-- Select --</option>
                              <option <?php if($gst_slab_id == 0){ echo "selected";} ?>  value="0">None</option>
                             <?php $qb=$d->select("gst_master","status=0","");
@@ -215,9 +215,9 @@ if(isset($package_id))
                 <div class="col-sm-10">
 
                   
-                 <select   name="is_cpn_package"   class="form-control single-select" name="gst_slab_id" type="text" >
-                            <option <?php if($is_cpn_package == 0){ echo "selected";} ?> value="0">No</option>
-                            <option <?php if($is_cpn_package == 1){ echo "selected";} ?>  value="1">Yes</option>
+                 <select onchange="is_cpn_package_func();"   name="is_cpn_package"  id="is_cpn_package"    class="form-control single-select"   type="text" >
+                            <option  value="0">No</option>
+                            <option   value="1">Yes</option>
                               
                           </select>
 
@@ -237,7 +237,7 @@ if(isset($package_id))
                 <div class="form-group row">
                   <label for="input-12" class="col-sm-2 col-form-label"> Amount Without GST  <span class="required">*</span></label>
                   <div class="col-sm-10">
-                    <input type="text" min="1"  maxlength="9" required="" class="form-control allow_decimal" id="trlDays" name="package_amount" value="<?php echo $package_amount; ?>">
+                    <input type="text" min="1"  maxlength="9" required="" class="form-control allow_decimal" id="package_amount" name="package_amount" value="<?php echo $package_amount; ?>">
                   </div>
 
                 </div>
