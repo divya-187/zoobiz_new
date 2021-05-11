@@ -694,6 +694,60 @@ $today_date = date("Y-m-d");
          </div>
        </div>
     </div>
+
+
+    <div class="row">
+       <div class="col-12 col-lg-12 col-xl-12">
+         <div class="card">
+           <div class="card-header border-0">
+         Business name Change Requests
+          <div class="card-action">
+           
+           </div>
+          </div>
+          <div class="table-responsive">
+           <table id="default-datatable2" class="table align-items-center table-bordered table-flush">
+             <thead>
+              <tr>
+               <th>No.</th>
+               <th>Name</th>
+               <th>Email</th>
+               <th>Mobile Number</th>
+               <th>Current Business Name</th>
+               <th>Requested Business Name</th>
+                
+              </tr>
+             </thead>
+             <tbody>
+              <?php 
+              $i=1;
+              
+         
+$today_date = date("Y-m-d");
+
+              $nq=$d->select("users_master,business_name_change_request_masater,user_employment_details"," user_employment_details.user_id = users_master.user_id and  business_name_change_request_masater.request_status = 'Pending'   AND   business_name_change_request_masater.user_id=users_master.user_id and users_master.user_mobile!='0' AND users_master.active_status=0    "," group by users_master.user_mobile ORDER BY business_name_change_request_masater.requested_at ASC  ");
+
+
+              while ($newUserData=mysqli_fetch_array($nq)) {
+
+             
+          
+               ?>
+               <tr>
+                 <td><?php echo $i++; ?></td>
+                 <td><a href="approveBusinessName?id=<?php echo $newUserData['user_id']; ?>&business_name_change_request_id=<?php echo $newUserData['business_name_change_request_id']; ?>"><?php echo $newUserData['user_full_name']; ?></a></td>
+                 <td><?php echo $newUserData['user_email']; ?></td>
+                 <td><?php echo $newUserData['user_mobile']; ?></td>
+                 <td><?php echo html_entity_decode(  $newUserData['company_name']); ?></td>
+                 <td><?php echo html_entity_decode(  $newUserData['requested_business_name']); ?></td>
+                 </tr>
+              <?php  } ?>
+             </tbody>
+           </table>
+         </div>
+         </div>
+       </div>
+    </div>
 <?php  /* ?>
      <div class="row">
        <div class="col-12 col-lg-12 col-xl-12">

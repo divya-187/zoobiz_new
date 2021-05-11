@@ -1,10 +1,10 @@
 <?php 
 include '../common/objectController.php'; 
 // print_r($_POST);
-if(isset($_POST) && !empty($_POST) )//it can be $_GET doesn't matter
+if(isset($_REQUEST) && !empty($_REQUEST) )//it can be $_GET doesn't matter
 {
  
- 
+
 if (isset($temp_user_id)) {
  
   $main_users_master = $d->selectRow("*","users_master_temp", "user_id = '$temp_user_id'    ");
@@ -106,6 +106,133 @@ if (isset($temp_user_id)) {
 
 
 }
+//11may21
+if(isset($appBusinessName) && $appBusinessName=="Approve") {
+   
+    $requested_company_name= ucwords($requested_company_name);
+ 
+    $a1= array (
+
+      'company_name'=> $requested_company_name 
+    );
+
+    $q=$d->update("user_employment_details",$a1,"user_id = $user_id");
+
+
+    if($q==TRUE) {
+    $m->set_data('requested_company_name',$requested_company_name); 
+      $a1= array (
+       
+       'action_by'=> $created_by,
+       'action_at' =>date("Y-m-d H:i:s"),
+       'request_status'=>'Approved'
+      );
+      $q=$d->update("business_name_change_request_masater",$a1,"user_id='$user_id' and business_name_change_request_id='$business_name_change_request_id' ");
+
+
+
+                $title = 'Business Name Change Approved';
+                $msg ='Business Name Change "'.$requested_company_name.'" Approved';
+                $notiAry = array(
+                  'user_id' => $user_id,
+                  'notification_title' => $title,
+                  'notification_desc' => $msg,
+                  'notification_date' => date('Y-m-d H:i'),
+                  'notification_action' => 'custom_notification',
+                  'notification_logo' => 'profile.png',
+                  'notification_type' => '5'
+                );
+                $d->insert("user_notification", $notiAry);
+
+ 
+                $u_dta_qry = $d->selectRow("*","users_master", "user_token!='' AND user_id ='$user_id'    ");
+                $u_dta = mysqli_fetch_array($u_dta_qry);
+
+                 $fcm_data_array = array(
+                          'img' =>"https://zoobiz.in/img/logo.png",
+                          'title' =>$title,
+                          'desc' => $msg,
+                          'time' =>date("d M Y h:i A")
+                        );
+
+              if (strtolower($u_dta['device']) =='android') {
+                $nResident->noti("custom_notification","",0,$u_dta['user_token'],$title,$msg,$fcm_data_array);
+              }  else if(strtolower($u_dta['device']) =='ios') {
+                $nResident->noti_ios("custom_notification","",0,$u_dta['user_token'],$title,$msg,$fcm_data_array);
+              }
+ 
+
+      $_SESSION['msg']=$msg;
+      $d->insert_log("","0","$_SESSION[zoobiz_admin_id]","$created_by",$_SESSION['msg']);
+      header("Location: ../welcome");
+    } else {
+      header("Location: ../welcome");
+    }
+  }
+
+   if(isset($_REQUEST['rejBusinessName']) && $_REQUEST['rejBusinessName']=="Reject") {
+  
+    $business_name_change_request_id =$_REQUEST['business_name_change_request_id'];
+ $user_id =$_REQUEST['user_id'];
+    $bn_data=$d->select("business_name_change_request_masater","business_name_change_request_id='$business_name_change_request_id'","");
+    $bn_details=mysqli_fetch_array($bn_data);
+extract($bn_details);
+  
+  $a1= array (
+       
+       'action_by'=> $created_by,
+       'action_at' =>date("Y-m-d H:i:s"),
+       'request_status'=>'Rejected'
+      );
+      $q=$d->update("business_name_change_request_masater",$a1,"user_id='$user_id' and business_name_change_request_id='$business_name_change_request_id' ");
+
+
+    if($q==TRUE) {
+
+                 $title = 'Business Name Change Not Approved';
+                $msg ='Business Name Change "'.$requested_company_name.'" Not Approved';
+
+                 
+                $notiAry = array(
+                  'user_id' => $user_id,
+                  'notification_title' => $title,
+                  'notification_desc' => $msg,
+                  'notification_date' => date('Y-m-d H:i'),
+                  'notification_action' => 'custom_notification',
+                  'notification_logo' => 'profile.png',
+                  'notification_type' => '5'
+                );
+                $d->insert("user_notification", $notiAry);
+
+ 
+                $u_dta_qry = $d->selectRow("*","users_master", "user_token!='' AND user_id ='$added_by_member_id'    ");
+                $u_dta = mysqli_fetch_array($u_dta_qry);
+
+
+              $fcm_data_array = array(
+            'img' =>"https://zoobiz.in/img/logo.png",
+            'title' =>$title,
+            'desc' => $msg,
+            'time' =>date("d M Y h:i A")
+          );
+
+              if (strtolower($u_dta['device']) =='android') {
+                $nResident->noti("custom_notification","",0,$u_dta['user_token'],$title,$msg,$fcm_data_array);
+              }  else if(strtolower($u_dta['device']) =='ios') {
+                $nResident->noti_ios("custom_notification","",0,$u_dta['user_token'],$title,$msg,$fcm_data_array);
+              }
+
+
+
+
+      $_SESSION['msg']=$msg;
+      $d->insert_log("","0","$_SESSION[zoobiz_admin_id]","$created_by",$_SESSION['msg']);
+      header("Location: ../welcome");
+    } else {
+      header("Location: ../welcome");
+    }
+  }
+//11may21
  
  
 } else{

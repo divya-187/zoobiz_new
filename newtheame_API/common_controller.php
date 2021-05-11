@@ -26,16 +26,19 @@ if ($_POST['addClick'] == "addClick" && filter_var($user_id, FILTER_VALIDATE_INT
 	$requested_company_name = html_entity_decode($requested_company_name);
 	$requested_company_name = stripslashes($requested_company_name);
 	$requested_company_name = htmlentities($requested_company_name,ENT_QUOTES);
- 
+ $requested_company_name= ucwords($requested_company_name);
 
- 					$a11 = array(
-						'requested_company_name'=>$requested_company_name
-					);
-					$result = $d->update("user_employment_details", $a11, "user_id='$user_id'  ");
-					if($result){
+ 					 
 
-						
- 
+			    $arr = array(
+                  'user_id' => $user_id,
+                  'requested_business_name' => $requested_company_name,
+                  'requested_at' => date('Y-m-d H:i') 
+                );
+                $result = $d->insert("business_name_change_request_masater", $arr);
+             if($result){
+
+				 
 					$admin_mobile_array= array();	
 						$bcc_string = array();
 					$zoobiz_admin_master=$d->select("zoobiz_admin_master","send_notification = '1'    ");
