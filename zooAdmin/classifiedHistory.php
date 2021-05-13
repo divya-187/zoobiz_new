@@ -26,13 +26,39 @@ $request_id = (int)$request_id;
           <div class="card-body">
              <p><b>Title :</b> <?php echo $data['cllassified_title']; ?></p>
             <p class="text-justify"><b>Description :</b> <?php echo $data['cllassified_description']; ?></p>
-            <p><b>Category :</b> <?php 
+            <p><b>Categories :</b> <?php 
                     if ($data['business_category_id']==0) {
                       echo "All Category";
                     } else {
-                      $bq=$d->selectRow("category_name","business_categories","  business_category_id='$data[business_category_id]'");
-                      $catData=mysqli_fetch_array($bq);
-                      echo $catData['category_name'];
+
+
+                      $subCatCount =  $d->count_data_direct("business_category_id","classified_category_master","classified_id='$data[cllassified_id]'");
+                      if($subCatCount > 0){
+ echo "<br>";
+
+                         $cats_qry = $d->selectRow(" business_categories.business_category_id, business_sub_categories.business_sub_category_id, sub_category_name,category_name ","business_sub_categories,classified_category_master,business_categories  ", "
+
+                          business_categories.business_category_id =classified_category_master.business_category_id and  
+
+                          business_sub_categories.business_sub_category_id =classified_category_master.business_sub_category_id and     classified_category_master.classified_id='$data[cllassified_id]'","");
+
+
+                         
+                           
+ while ($cats_data = mysqli_fetch_array($cats_qry)) {
+          echo    $cats_data['sub_category_name'].' - '.$cats_data['category_name']."<br>\n";
+    }
+
+                      
+                       
+
+
+                       } else {
+
+                          $bq=$d->selectRow("sub_category_name, category_name","business_categories, business_sub_categories "," business_sub_categories.business_category_id =business_categories.business_category_id and     business_sub_categories.business_sub_category_id='$data[business_sub_category_id]'");
+                          $catData=mysqli_fetch_array($bq);
+                          echo $catData['sub_category_name'].' - '.$catData['category_name'];
+                        }
                     }
              ?></p>
             <p><b>Created Date :</b> <?php echo  date('d M Y h:i A',strtotime($data['created_date'])); ?></p>
@@ -40,7 +66,7 @@ $request_id = (int)$request_id;
 
 
              <?php 
-              $qa=$d->select("cllassifieds_city_master,cities","cities.city_id=cllassifieds_city_master.city_id and cllassifieds_city_master.cllassified_id='$id' ");
+              $qa=$d->select("cllassifieds_city_master,cities","cities.city_id=cllassifieds_city_master.city_id and cllassifieds_city_master.cllassified_id='$data[cllassified_id]' ");
                
 
                   if($id){ 
@@ -55,7 +81,7 @@ $request_id = (int)$request_id;
                   $arr = implode(",", $arr);
 
                  // echo $arr;
-
+$h=0;
                         if(strlen($arr) > 20 ||1) {
                           $data44 = substr($arr, 0, 20);
                        //   echo $data; 
@@ -119,16 +145,62 @@ $request_id = (int)$request_id;
               <i class="<?php echo $imgIcon2;?> fa-4x" aria-hidden="true"></i>
               </a>
          
-          <?php } ?>
+          <?php }  
+
+          $classified_document_master_q=$d->select("classified_document_master ","classified_id ='$data[cllassified_id]' ","ORDER BY  classified_id DESC");
+                    $i = 0;
+                    while($classified_document_master_data=mysqli_fetch_array($classified_document_master_q)) {
+                      $dFile1= $classified_document_master_data['document_name'];
+              $ext = pathinfo($dFile1, PATHINFO_EXTENSION);
+              if ($ext == 'pdf' || $ext == 'PDF') {
+                $imgIcon = 'img/pdf.png';
+                 $imgIcon2="fa fa-file-pdf-o";
+              } elseif ($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png') {
+                $imgIcon = 'img/jpg.png';
+                $imgIcon2="fa fa-picture-o";
+              } elseif($ext == 'png'){
+                $imgIcon = 'img/png.png';
+                $imgIcon2="fa fa-picture-o";
+              }elseif ($ext == 'doc' || $ext == 'docx') {
+                $imgIcon = 'img/doc.png';
+                $imgIcon2="fa fa-file";
+              } else{
+                $imgIcon = 'img/doc.png';
+                $imgIcon2="fa fa-file";
+              }
+
+             ?>
+            <a target="_blank" href="../img/cllassified/docs/<?php echo $classified_document_master_data['document_name'];?>" >
+
+              <i class="<?php echo $imgIcon2;?> fa-4x" aria-hidden="true"></i>
+              </a>
+                 <?php   } ?>
           
           </p>
+           <p><b>Photos</b> 
           <?php if ($data['cllassified_photo']!='') { ?>
              
             <a href="../img/cllassified/<?php echo $data['cllassified_photo'];?>" data-fancybox="images" data-caption="Photo Name : <?php echo $data["cllassified_photo"]; ?>"><img width="300" height="250" src="../img/cllassified/<?php echo $data['cllassified_photo'];?>" alt=""></a>
-          <?php } ?>
+          <?php } 
+          $classified_photos_master_q=$d->select("classified_photos_master ","classified_id ='$data[cllassified_id]' ","ORDER BY  classified_id DESC");
+                    $i = 0;
+                    while($classified_photos_master_data=mysqli_fetch_array($classified_photos_master_q)) {
+                      ?>
+             
+            <a href="../img/cllassified/<?php echo $classified_photos_master_data['photo_name'];?>" data-fancybox="images" data-caption="Photo Name : <?php echo $classified_photos_master_data["photo_name"]; ?>"><img width="150" height="200" src="../img/cllassified/<?php echo $classified_photos_master_data['photo_name'];?>" alt=""></a>
+          <?php
+                    }?>
 
-        
-
+        </p>
+<p><b>Audio</b>
+  <?php if($data['classified_audio']!=''){?>
+<audio controls>
+  <source src="../img/cllassified/audio/<?php echo $data['classified_audio'];?>" type="audio/mpeg">
+</audio>
+<?php } else {
+  echo "N/A";
+}?> 
+ </p>
           <div class="row pt-2 pb-2">
       <div class="col-sm-12 text-center">
          <!-- <button data-toggle="modal" data-target="#vieComp"   class="btn btn-sm btn-primary" type="button"><i class="fa fa-comments"></i> Comment</button> -->

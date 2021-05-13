@@ -79,27 +79,42 @@
                     <th class="text-center">#</th>
                     <th class="text-right">#</th>
                     <th>Title</th>
-                    <th>Created Date</th>
                     <th>View</th>
                     <th class="text-right">Total City</th>
                     <?php //24nov2020 ?>
-                    <th>Category</th>
-                    <th>Sub Category</th>
+                    <th>Category - Sub Category</th>
                      <?php //24nov2020 ?>
                     <th>Created By</th>
+                    <th>Created Date</th>
                     <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   <?php
                   $where="";
+                  $orwhere ="";
                   if(isset($_GET['filter_business_category_id']) && $_GET['filter_business_category_id'] !=0 ){
                     $filter_business_category_id = $_GET['filter_business_category_id'];
                     $where .=" and  cllassifieds_master.business_category_id ='$filter_business_category_id' ";
+
+                    $orwhere ="";
+
                   }
                   if(isset($_GET['filter_business_categories_sub']) && $_GET['filter_business_categories_sub'] != 0 ){
                     $filter_business_sub_category_id = $_GET['filter_business_categories_sub'];
                     $where .=" and cllassifieds_master.business_sub_category_id ='$filter_business_sub_category_id' ";
+                  }
+
+
+
+                  $leftWhere ="";
+                  if(isset($_GET['filter_business_category_id']) && $_GET['filter_business_category_id'] !=0 ){
+                    $filter_business_category_id = $_GET['filter_business_category_id'];
+                    $leftWhere .=" and (  classified_category_master.business_category_id ='$filter_business_category_id' or cllassifieds_master.business_category_id ='$filter_business_category_id' )  ";
+                  }
+                  if(isset($_GET['filter_business_categories_sub']) && $_GET['filter_business_categories_sub'] != 0 ){
+                    $filter_business_sub_category_id = $_GET['filter_business_categories_sub'];
+                    $leftWhere .=" and (  classified_category_master.business_sub_category_id ='$filter_business_sub_category_id' OR  cllassifieds_master.business_sub_category_id ='$filter_business_sub_category_id' )  ";
                   }
 //24nov2020
 $business_categories_qry=$d->select("business_categories"," category_status != 1  ");
@@ -120,11 +135,12 @@ while($business_sub_categories_data=mysqli_fetch_array($business_sub_categories_
 }
  
 //24nov2020
-                    $q=$d->select("cllassifieds_master, users_master","users_master.user_id =cllassifieds_master.user_id  AND users_master.office_member=0 AND users_master.active_status=0  and   cllassifieds_master.user_id != 0  $where ","ORDER BY cllassifieds_master.cllassified_id DESC");
+ 
+                    $q=$d->selectRow("users_master.*,cllassifieds_master.* "," users_master,cllassifieds_master LEFT JOIN classified_category_master on  cllassifieds_master.cllassified_id = classified_category_master.classified_id $leftWhere ","users_master.user_id =cllassifieds_master.user_id  AND users_master.office_member=0 AND users_master.active_status=0  and   cllassifieds_master.user_id != 0   "," group by cllassifieds_master.cllassified_id ORDER BY cllassifieds_master.cllassified_id DESC");
                     $i = 0;
                     while($row=mysqli_fetch_array($q)) {
                       $i++;
-                      
+                    //  echo "<pre>";print_r($row);echo "</pre>";
                   ?>
                     <tr>
                       <td class='text-center'>
@@ -132,7 +148,7 @@ while($business_sub_categories_data=mysqli_fetch_array($business_sub_categories_
                       </td>
                       <td class="text-right"><?php echo $i; ?></td>
                       <td ><?php echo custom_echo($row['cllassified_title'],60); ?></td>
-                      <td data-order="<?php echo date("U",strtotime($row['created_date'])); ?>"><?php echo date('d M Y, h:i A',strtotime($row['created_date'])); ?></td>
+                      
                       <td>
                               <form   class="mr-2" action="discussionForum" method="post">
                             <a href="classifiedHistory?id=<?php echo $row['cllassified_id'] ?>" class="btn btn-primary btn-sm" name="pullingReport">View</a>
@@ -151,16 +167,42 @@ while($business_sub_categories_data=mysqli_fetch_array($business_sub_categories_
                     <td><?php if($row['business_category_id'] == 0){
                       echo "All";
                     } else {
-                      $cat_array = $business_categories_array[$row['business_category_id']];
-                      echo $cat_array;
+
+
+
+
+
+
+                       $subCatCount =  $d->count_data_direct("business_category_id","classified_category_master","classified_id='$row[cllassified_id]'");
+                       if($subCatCount > 0){
+ 
+
+                         $cats_qry = $d->selectRow(" business_categories.business_category_id, business_sub_categories.business_sub_category_id, sub_category_name,category_name ","business_sub_categories,classified_category_master,business_categories  ", "
+
+                          business_categories.business_category_id =classified_category_master.business_category_id and  
+
+                          business_sub_categories.business_sub_category_id =classified_category_master.business_sub_category_id and     classified_category_master.classified_id='$row[cllassified_id]'","");
+
+
+                         
+                           
+ while ($cats_data = mysqli_fetch_array($cats_qry)) {
+          echo    $cats_data['sub_category_name'].' - '.$cats_data['category_name']."<br>\n";
+    }
+
+                      
+                       
+
+
+                       } else {
+                        $cat_array = $business_categories_array[$row['business_category_id']];
+                        $sub_cat_array = $business_sub_categories_array[$row['business_sub_category_id']];
+                      
+
+                        echo  $sub_cat_array.'-'.$cat_array;
+                      }
                     } ?></td>
-                    <td><?php if($row['business_sub_category_id'] == 0){
-                      echo "All";
-                    } else {
-                      $sub_cat_array = $business_sub_categories_array[$row['business_sub_category_id']];
-                      echo $sub_cat_array;
-                    } ?></td>
-                     <?php //24nov2020 ?>
+                     
 
                        <td>
                         <?php
@@ -170,6 +212,7 @@ while($business_sub_categories_data=mysqli_fetch_array($business_sub_categories_
                           echo $userdata['salutation'].' '.$userdata['user_full_name'];
                         ?>
                       </td>
+                      <td data-order="<?php echo date("U",strtotime($row['created_date'])); ?>"><?php echo date('d M Y, h:i A',strtotime($row['created_date'])); ?></td>
                       <td>
                          <?php if($row['active_status']=="0"){
                         ?>
