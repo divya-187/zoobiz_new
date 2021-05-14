@@ -56,9 +56,9 @@ $where="";
           <a href="couponReport"> <span class="badge badge-pill badge-danger m-1"> <span >Coupon <i class="fa fa-inr"></i><?php echo number_format($total_coupon,2,'.',''); ?> </span > </span > </a>
           <?php } ?> 
       </div>
-      <?php*/ //24nov2020 ?>
+      <?php  */ //24nov2020 ?>
 
-
+  
     </div>
 
     <form action="" method="get">

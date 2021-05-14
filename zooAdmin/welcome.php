@@ -700,7 +700,7 @@ $today_date = date("Y-m-d");
        <div class="col-12 col-lg-12 col-xl-12">
          <div class="card">
            <div class="card-header border-0">
-         Business name Change Requests
+         Business Name Change Requests
           <div class="card-action">
            
            </div>
