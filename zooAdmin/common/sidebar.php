@@ -32,7 +32,7 @@
         if(array_intersect($singleArray, $accessMenuIdArr)){
          
         ?>
-        <li class="<?php  $q1=$d->select("master_menu","parent_menu_id='$menu_id' AND menu_link='$_GET[f]'","");
+        <li class="<?php  $q1=$d->select("master_menu","parent_menu_id='$menu_id' AND page_status='0' AND menu_link='$_GET[f]'","");
             $dataSub=mysqli_fetch_array($q1);
              $actStatus=$dataSub['menu_link'];
               if($_GET['f'] ==$actStatus) {
@@ -45,7 +45,7 @@
           </a>
           <ul class="sidebar-submenu" >
             <?php
-              $q1=$d->select("master_menu","parent_menu_id='$menu_id'","ORDER BY order_no ASC");
+              $q1=$d->select("master_menu","parent_menu_id='$menu_id' AND page_status='0'","ORDER BY order_no ASC");
             while ($dataSub=mysqli_fetch_array($q1)) {
               $menu_id1=$dataSub['menu_id'];
             if(in_array($menu_id1, $accessMenuIdArr)){

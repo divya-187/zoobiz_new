@@ -37,7 +37,7 @@
                 <thead>
                     <tr>
                       <th class="deleteTh">
-                          SELECT
+                          #
                       </th>
                       <th class="text-right">#</th>
                       <th>Name</th>
@@ -55,8 +55,7 @@
                       // print_r($data);
                      ?>
                     <tr>
-                    <td class='text-center'>
-                      <input type="checkbox" class="multiDelteCheckbox"  value="<?php echo $data['sessionId']; ?>">
+                    <td class='text-center'> <?php echo $i; ?> 
                     </td>
                       <td class="text-right"><?php echo $i++; ?></td>
                         <td><?php echo $data["name"]; ?></td>

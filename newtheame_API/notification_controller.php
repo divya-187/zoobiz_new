@@ -253,6 +253,9 @@ $response["max_notification_line"] = $zoobiz_settings_master_data['max_api_notif
                             $notification["notification_img_url"] =$base_url.'img/logo.png';
                             $notification["notification_logo"] = $base_url.'img/logo.png';
                         } 
+
+
+                        
                         $notification["notification_title"] =ucwords($data_app['notification_title']) ;  
                         $notification["notification_desc"] = html_entity_decode($data_app["notification_desc"] , ENT_QUOTES);
 
@@ -267,10 +270,10 @@ $response["max_notification_line"] = $zoobiz_settings_master_data['max_api_notif
 
                     }
 
-                    if($data_app["notification_type"] ==4){
+                   /* if($data_app["notification_type"] ==4){
                         $notification["notification_logo"]=$base_url . "img/app_icon/ic_fourm.png";
                         $notification["notification_img_url"] =$base_url.'img/app_icon/ic_fourm.png';
-                    }
+                    }*/
 
                     array_push($response["notification"], $notification);
                 }

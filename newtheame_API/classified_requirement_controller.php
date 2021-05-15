@@ -5,6 +5,10 @@
       $response = array();
       extract(array_map("test_input", $_POST));
       $today = date("Y-m-d");
+
+      if(!isset($limit_cls)){
+        $limit_cls = 0 ;
+      }
       if ($_POST['getCllassifiedNew'] == "getCllassifiedNew" && filter_var($user_id, FILTER_VALIDATE_INT) == true) {
 
         if(isset($user_id)){
@@ -38,10 +42,18 @@
           $query2 .= " and  cllassifieds_city_master.city_id IN ('$ids')";
         }
         $appendQuery = implode(" AND ", $queryAry);
+
+         $qcnt = $d->select(
+          "cllassifieds_master,cllassifieds_city_master,users_master",
+          "users_master.user_id =cllassifieds_master.user_id AND users_master.active_status=0 and  cllassifieds_master.active_status=0  AND cllassifieds_master.cllassified_id=cllassifieds_city_master.cllassified_id and cllassifieds_master.user_id not in ($blocked_users)   $query2  /*$appendQuery*/",
+          "GROUP BY cllassifieds_master.cllassified_id ORDER BY cllassifieds_master.cllassified_id DESC   "
+        );
+         $response["total_classified"] = mysqli_num_rows($qcnt);
+
         $q = $d->select(
           "cllassifieds_master,cllassifieds_city_master,users_master",
           "users_master.user_id =cllassifieds_master.user_id AND users_master.active_status=0 and  cllassifieds_master.active_status=0  AND cllassifieds_master.cllassified_id=cllassifieds_city_master.cllassified_id and cllassifieds_master.user_id not in ($blocked_users)   $query2  /*$appendQuery*/",
-          "GROUP BY cllassifieds_master.cllassified_id ORDER BY cllassifieds_master.cllassified_id DESC "
+          "GROUP BY cllassifieds_master.cllassified_id ORDER BY cllassifieds_master.cllassified_id DESC LIMIT $limit_cls ,10  "
         );
         $dataArray = array();
         $counter = 0;
@@ -339,6 +351,12 @@ $subCatArr = array('0');
     array_push($response["discussion"], $discussion);
     }
     }
+
+    if(isset($pos1)){
+                    $response["pos1"] = $pos1 + 0;
+                } else {
+                    $response["pos1"] = 0;
+                }
     $response["cllassified_mute"] = $muteDataCommon['cllassified_mute'];
     $response["message"] = "Classified Data";
     $response["status"] = "200";
@@ -377,13 +395,17 @@ $subCatArr = array('0');
     $citiesSearch = " and  (  cities.city_name LIKE '%$search%'  ) ";
     }
     $appendQuery = implode(" AND ", $queryAry);
+
+
+    $qcnt = $d->selectRow(
+    "cm.*,c.*,business_categories.category_name,business_sub_categories.sub_category_name,cc.business_category_id ,cc.business_sub_category_id ","users_master, cllassifieds_master AS c LEFT JOIN classified_category_master cc ON c.cllassified_id = cc.classified_id LEFT JOIN cllassifieds_city_master cm ON cm.cllassified_id = c.cllassified_id  left join business_categories on business_categories.business_category_id = cc.business_category_id $catSearch left join business_sub_categories on   business_sub_categories.business_sub_category_id = cc.business_sub_category_id  $subCatSearch  left join cities on   cities.city_id = cm.city_id  $citiesSearch  "," c.active_status=0 AND  users_master.user_id = c.user_id  and users_master.active_status=0 and  c.user_id not in ($blocked_users)   $query2  ",  "GROUP BY c.cllassified_id ORDER BY c.cllassified_id DESC  "
+        );
+         $response["total_classified"] = mysqli_num_rows($qcnt);
+
     $q = $d->selectRow(
-    "cm.*,c.*,business_categories.category_name,business_sub_categories.sub_category_name,cc.business_category_id ,cc.business_sub_category_id ","users_master, cllassifieds_master AS c LEFT JOIN classified_category_master cc ON c.cllassified_id = cc.classified_id LEFT JOIN cllassifieds_city_master cm ON cm.cllassified_id = c.cllassified_id  left join business_categories on business_categories.business_category_id = cc.business_category_id $catSearch left join business_sub_categories on   business_sub_categories.business_sub_category_id = cc.business_sub_category_id  $subCatSearch  left join cities on   cities.city_id = cm.city_id  $citiesSearch  "," c.active_status=0 AND  users_master.user_id = c.user_id  and  c.user_id not in ($blocked_users)   $query2  ",  "GROUP BY c.cllassified_id ORDER BY c.cllassified_id DESC "
+    "cm.*,c.*,business_categories.category_name,business_sub_categories.sub_category_name,cc.business_category_id ,cc.business_sub_category_id ","users_master, cllassifieds_master AS c LEFT JOIN classified_category_master cc ON c.cllassified_id = cc.classified_id LEFT JOIN cllassifieds_city_master cm ON cm.cllassified_id = c.cllassified_id  left join business_categories on business_categories.business_category_id = cc.business_category_id $catSearch left join business_sub_categories on   business_sub_categories.business_sub_category_id = cc.business_sub_category_id  $subCatSearch  left join cities on   cities.city_id = cm.city_id  $citiesSearch  "," c.active_status=0 AND  users_master.user_id = c.user_id  and  users_master.active_status=0 and  c.user_id not in ($blocked_users)   $query2  ",  "GROUP BY c.cllassified_id ORDER BY c.cllassified_id DESC LIMIT $limit_cls ,10 "
     );
-    if(isset($debug)){
-    echo "users_master, cllassifieds_master AS c LEFT JOIN classified_category_master cc ON c.cllassified_id = cc.classified_id LEFT JOIN cllassifieds_city_master cm ON cm.cllassified_id = c.cllassified_id  left join business_categories on business_categories.business_category_id = cc.business_category_id $catSearch left join business_sub_categories on   business_sub_categories.business_sub_category_id = cc.business_sub_category_id  $subCatSearch  left join cities on   cities.city_id = cm.city_id  $citiesSearch  ";
-    echo  " c.active_status=0 AND  users_master.user_id = c.user_id  and  c.user_id not in ($blocked_users)   $query2  GROUP BY c.cllassified_id ORDER BY c.cllassified_id DESC ";exit;
-    }
+     
     $dataArray = array();
     $counter = 0;
     foreach ($q as $value) {
@@ -655,6 +677,11 @@ $subCatArr = array('0');
           array_push($response["discussion"], $discussion);
         }
       }
+      if(isset($pos1)){
+                    $response["pos1"] = $pos1 + 0;
+                } else {
+                    $response["pos1"] = 0;
+                }
       $response["cllassified_mute"] = $muteDataCommon['cllassified_mute'];
       $response["message"] = "Classified Data";
       $response["status"] = "200";
@@ -694,13 +721,17 @@ $subCatArr = array('0');
       $subCatSearch = " and  (  business_sub_categories.sub_category_name LIKE '%$search%'  ) ";
     }
     $appendQuery = implode(" AND ", $queryAry);
-    $q = $d->selectRow(
+
+
+     $qcnt = $d->selectRow(
       "cllassifieds_city_master.*,c.*,business_categories.category_name,business_sub_categories.sub_category_name,cc.business_category_id ,cc.business_sub_category_id ","cllassifieds_city_master,  cllassifieds_master AS c LEFT JOIN classified_category_master cc ON c.cllassified_id = cc.classified_id left join business_categories on business_categories.business_category_id = cc.business_category_id $catSearch left join business_sub_categories on   business_sub_categories.business_sub_category_id = cc.business_sub_category_id  $subCatSearch "," c.active_status=0 AND c.cllassified_id=cllassifieds_city_master.cllassified_id and c.user_id not in ($blocked_users)   $query2  ",  "GROUP BY c.cllassified_id ORDER BY c.cllassified_id DESC "
+        );
+         $response["total_classified"] = mysqli_num_rows($qcnt);
+
+    $q = $d->selectRow(
+      "cllassifieds_city_master.*,c.*,business_categories.category_name,business_sub_categories.sub_category_name,cc.business_category_id ,cc.business_sub_category_id "," users_master, cllassifieds_city_master,  cllassifieds_master AS c LEFT JOIN classified_category_master cc ON c.cllassified_id = cc.classified_id left join business_categories on business_categories.business_category_id = cc.business_category_id $catSearch left join business_sub_categories on   business_sub_categories.business_sub_category_id = cc.business_sub_category_id  $subCatSearch "," users_master.user_id = c.user_id and users_master.active_status=0 and c.active_status=0 AND c.cllassified_id=cllassifieds_city_master.cllassified_id and c.user_id not in ($blocked_users)   $query2  ",  "GROUP BY c.cllassified_id ORDER BY c.cllassified_id DESC LIMIT $limit_cls ,10"
     );
-    if(isset($debug)){
-      echo "cllassifieds_city_master,  cllassifieds_master AS c LEFT JOIN classified_category_master cc ON c.cllassified_id = cc.classified_id left join business_categories on business_categories.business_category_id = cc.business_category_id $catSearch left join business_sub_categories on   business_sub_categories.business_sub_category_id = cc.business_sub_category_id  $subCatSearch";
-      echo  "c.active_status=0 AND c.cllassified_id=cllassifieds_city_master.cllassified_id and c.user_id not in ($blocked_users)   $query2  GROUP BY c.cllassified_id ORDER BY c.cllassified_id DESC ";exit;
-    }
+    
     $dataArray = array();
     $counter = 0;
     foreach ($q as $value) {
@@ -968,6 +999,11 @@ $subCatArr = array('0');
             array_push($response["discussion"], $discussion);
           }
         }
+        if(isset($pos1)){
+                    $response["pos1"] = $pos1 + 0;
+                } else {
+                    $response["pos1"] = 0;
+                }
         $response["cllassified_mute"] = $muteDataCommon['cllassified_mute'];
         $response["message"] = "Classified Data";
         $response["status"] = "200";
@@ -1016,13 +1052,18 @@ $subCatArr = array('0');
         $citiesSearch = " and  (  cities.city_name LIKE '%$search%'  ) ";
       }
       $appendQuery = implode(" AND ", $queryAry);
+
+
+       $qcnt = $d->selectRow(
+        "cm.*,c.*,business_categories.category_name,business_sub_categories.sub_category_name,cc.business_category_id ,cc.business_sub_category_id ","users_master,cllassifieds_master AS c LEFT JOIN classified_category_master cc ON c.cllassified_id = cc.classified_id LEFT JOIN cllassifieds_city_master cm ON cm.cllassified_id = c.cllassified_id  left join business_categories on business_categories.business_category_id = cc.business_category_id $catSearch left join business_sub_categories on   business_sub_categories.business_sub_category_id = cc.business_sub_category_id  $subCatSearch  left join cities on   cities.city_id = cm.city_id  $citiesSearch  "," users_master.user_id =c.user_id and c.active_status=0 AND users_master.active_status=0 AND  c.user_id not in ($blocked_users)   $query2  ",  "GROUP BY c.cllassified_id ORDER BY c.cllassified_id DESC  "
+        );
+         $response["total_classified"] = mysqli_num_rows($qcnt);
+
+
       $q = $d->selectRow(
-        "cm.*,c.*,business_categories.category_name,business_sub_categories.sub_category_name,cc.business_category_id ,cc.business_sub_category_id ","cllassifieds_master AS c LEFT JOIN classified_category_master cc ON c.cllassified_id = cc.classified_id LEFT JOIN cllassifieds_city_master cm ON cm.cllassified_id = c.cllassified_id  left join business_categories on business_categories.business_category_id = cc.business_category_id $catSearch left join business_sub_categories on   business_sub_categories.business_sub_category_id = cc.business_sub_category_id  $subCatSearch  left join cities on   cities.city_id = cm.city_id  $citiesSearch  "," c.active_status=0 AND  c.user_id not in ($blocked_users)   $query2  ",  "GROUP BY c.cllassified_id ORDER BY c.cllassified_id DESC "
+        "cm.*,c.*,business_categories.category_name,business_sub_categories.sub_category_name,cc.business_category_id ,cc.business_sub_category_id ","users_master,cllassifieds_master AS c LEFT JOIN classified_category_master cc ON c.cllassified_id = cc.classified_id LEFT JOIN cllassifieds_city_master cm ON cm.cllassified_id = c.cllassified_id  left join business_categories on business_categories.business_category_id = cc.business_category_id $catSearch left join business_sub_categories on   business_sub_categories.business_sub_category_id = cc.business_sub_category_id  $subCatSearch  left join cities on   cities.city_id = cm.city_id  $citiesSearch  ","users_master.user_id =c.user_id and  c.active_status=0 AND users_master.active_status=0 and   c.user_id not in ($blocked_users)   $query2  ",  "GROUP BY c.cllassified_id ORDER BY c.cllassified_id DESC LIMIT $limit_cls ,10"
       );
-      if(isset($debug)){
-        echo "cllassifieds_master AS c LEFT JOIN classified_category_master cc ON c.cllassified_id = cc.classified_id LEFT JOIN cllassifieds_city_master cm ON cm.cllassified_id = c.cllassified_id  left join business_categories on business_categories.business_category_id = cc.business_category_id $catSearch left join business_sub_categories on   business_sub_categories.business_sub_category_id = cc.business_sub_category_id  $subCatSearch  left join cities on   cities.city_id = cm.city_id  $citiesSearch  ";
-        echo  " c.active_status=0 AND  c.user_id not in ($blocked_users)     $query2  GROUP BY c.cllassified_id ORDER BY c.cllassified_id DESC ";exit;
-      }
+      
       $dataArray = array();
       $counter = 0;
       foreach ($q as $value) {
@@ -1288,6 +1329,11 @@ $subCatArr = array('0');
               array_push($response["discussion"], $discussion);
             }
           }
+          if(isset($pos1)){
+                    $response["pos1"] = $pos1 + 0;
+                } else {
+                    $response["pos1"] = 0;
+                }
           $response["cllassified_mute"] = $muteDataCommon['cllassified_mute'];
           $response["message"] = "Classified Data";
           $response["status"] = "200";
@@ -1326,10 +1372,19 @@ $subCatArr = array('0');
           $query2 .= " and  cllassifieds_city_master.city_id IN ('$ids')";
         }
         $appendQuery = implode(" AND ", $queryAry);
-        $q = $d->select(
+
+        $qcnt = $d->select(
           "cllassifieds_master,cllassifieds_city_master,users_master",
           "users_master.user_id =cllassifieds_master.user_id AND users_master.active_status=0 and  cllassifieds_master.active_status=0  AND cllassifieds_master.cllassified_id=cllassifieds_city_master.cllassified_id and cllassifieds_master.user_id not in ($blocked_users)  and cllassifieds_master.cllassified_id ='$cllassified_id'  $query2  /*$appendQuery*/",
           "GROUP BY cllassifieds_master.cllassified_id ORDER BY cllassifieds_master.cllassified_id DESC "
+        );
+         $response["total_classified"] = mysqli_num_rows($qcnt);
+
+
+        $q = $d->select(
+          "cllassifieds_master,cllassifieds_city_master,users_master",
+          "users_master.user_id =cllassifieds_master.user_id AND users_master.active_status=0 and  cllassifieds_master.active_status=0  AND cllassifieds_master.cllassified_id=cllassifieds_city_master.cllassified_id and cllassifieds_master.user_id not in ($blocked_users)  and cllassifieds_master.cllassified_id ='$cllassified_id'  $query2  /*$appendQuery*/",
+          "GROUP BY cllassifieds_master.cllassified_id ORDER BY cllassifieds_master.cllassified_id DESC LIMIT $limit_cls ,10"
         );
         $dataArray = array();
         $counter = 0;
@@ -1596,6 +1651,11 @@ $subCatArr = array('0');
                 array_push($response["discussion"], $discussion);
               }
             }
+            if(isset($pos1)){
+                    $response["pos1"] = $pos1 + 0;
+                } else {
+                    $response["pos1"] = 0;
+                }
             $response["cllassified_mute"] = $muteDataCommon['cllassified_mute'];
             $response["message"] = "Classified Data";
             $response["status"] = "200";
@@ -1639,10 +1699,19 @@ $subCatArr = array('0');
           }
           $appendQuery = implode(" AND ", $queryAry);
           $saved_cls_array = implode(",", $classified_timeline_array);
-          $q = $d->select(
+
+
+            $qcnt = $d->select(
             "cllassifieds_master,cllassifieds_city_master,users_master",
             "users_master.user_id =cllassifieds_master.user_id AND users_master.active_status=0 and  cllassifieds_master.active_status=0  AND cllassifieds_master.cllassified_id=cllassifieds_city_master.cllassified_id and cllassifieds_master.user_id not in ($blocked_users) and cllassifieds_master.cllassified_id in ($saved_cls_array)  $query2  /*$appendQuery*/",
             "GROUP BY cllassifieds_master.cllassified_id ORDER BY cllassifieds_master.cllassified_id DESC "
+        );
+         $response["total_classified"] = mysqli_num_rows($qcnt);
+
+          $q = $d->select(
+            "cllassifieds_master,cllassifieds_city_master,users_master",
+            "users_master.user_id =cllassifieds_master.user_id AND users_master.active_status=0 and  cllassifieds_master.active_status=0  AND cllassifieds_master.cllassified_id=cllassifieds_city_master.cllassified_id and cllassifieds_master.user_id not in ($blocked_users) and cllassifieds_master.cllassified_id in ($saved_cls_array)  $query2  /*$appendQuery*/",
+            "GROUP BY cllassifieds_master.cllassified_id ORDER BY cllassifieds_master.cllassified_id DESC  LIMIT $limit_cls ,10"
           );
           $dataArray = array();
           $counter = 0;
@@ -1904,6 +1973,11 @@ $subCatArr = array('0');
                   array_push($response["discussion"], $discussion);
                 }
               }
+              if(isset($pos1)){
+                    $response["pos1"] = $pos1 + 0;
+                } else {
+                    $response["pos1"] = 0;
+                }
               $response["cllassified_mute"] = $muteDataCommon['cllassified_mute'];
               $response["message"] = "Classified Data";
               $response["status"] = "200";
@@ -1917,7 +1991,7 @@ $subCatArr = array('0');
             $qcomment = $d->selectRow(
               "users_master.user_profile_pic,users_master.user_full_name,users_master.user_first_name,users_master.user_last_name, cllassified_comment.*  ",
               "cllassified_comment,users_master,user_employment_details",
-              " user_employment_details.user_id = users_master.user_id and cllassified_comment.cllassified_id='$classified_id' AND cllassified_comment.user_id=users_master.user_id AND cllassified_comment.prent_comment_id=0",
+              " user_employment_details.user_id = users_master.user_id and cllassified_comment.cllassified_id='$classified_id' AND cllassified_comment.user_id=users_master.user_id users_master.active_status=0 and AND cllassified_comment.prent_comment_id=0 ",
               "ORDER BY cllassified_comment.cllassified_id DESC"
             );
     //code opt start
@@ -1940,7 +2014,7 @@ $subCatArr = array('0');
             $sub_q = $d->selectRow(
               "users_master.user_profile_pic,users_master.user_full_name,users_master.user_first_name,users_master.user_last_name, cllassified_comment.*",
               "cllassified_comment,users_master ",
-              "  cllassified_comment.cllassified_id in ($cllassified_id_array) AND cllassified_comment.user_id=users_master.user_id AND cllassified_comment.prent_comment_id in ($comment_id_array) ",
+              "  cllassified_comment.cllassified_id in ($cllassified_id_array) AND cllassified_comment.user_id=users_master.user_id  AND users_master.active_status=0 and cllassified_comment.prent_comment_id in ($comment_id_array) ",
               " group by cllassified_comment.comment_id ORDER BY cllassified_comment.comment_id DESC"
             );
             $SCArray = array();
@@ -2245,6 +2319,14 @@ $subCatArr = array('0');
 
     $d->insertFollowNotificationIos($title, $description, $cllassified_id, $user_id,4, "classified");
 
+    $users_master2=$d->selectRow("user_full_name,user_profile_pic"," users_master","user_id= '$user_id'");
+            $data_q2=mysqli_fetch_array($users_master2);
+            if($data_q2['user_profile_pic']!=""){
+                    $profile_u = $base_url . "img/users/members_profile/" . $data_q2['user_profile_pic'];
+                  } else {
+                    $profile_u ="https://zoobiz.in/img/user.png";
+                  }
+
           //ANDROID CODE START
     $fcmArrayAndroid = $d->get_android_fcm(
      "users_master,follow_master",
@@ -2262,7 +2344,7 @@ $subCatArr = array('0');
      "users_master.version_code>=39 and  users_master.user_id=category_follow_master.user_id AND category_follow_master.category_id='$business_category_id' AND users_master.user_token!='' AND  lower(users_master.device) ='android' and users_master.user_id not in ($blocked_users) "
     );
     $fcmArray = array_merge($fcmArrayAndroidFollow, $fcmArray);
-    $nResident->noti("view_classified_new", $notiUrl, 0, $fcmArray, $title, $description, $cllassified_id);
+    $nResident->noti("view_classified_new", $notiUrl, 0, $fcmArray, $title, $description, $cllassified_id,0,$profile_u);
 
           //VERSION CODE BELOW 39
     $fcmArrayAndroid11 = $d->get_android_fcm(
@@ -2281,7 +2363,7 @@ $subCatArr = array('0');
      "users_master.version_code<=39 and  users_master.user_id=category_follow_master.user_id AND category_follow_master.category_id='$business_category_id' AND users_master.user_token!='' AND  lower(users_master.device) ='android' and users_master.user_id not in ($blocked_users) "
     );
     $fcmArray11 = array_merge($fcmArrayAndroidFollow11, $fcmArray11);
-    $nResident->noti("viewClassified", $notiUrl, 0, $fcmArray11, $title, $description, $cllassified_id);
+    $nResident->noti("viewClassified", $notiUrl, 0, $fcmArray11, $title, $description, $cllassified_id,0,$profile_u);
           //ANDROID CODE END
           //IOS CODE START
     $fcmArrayIos = $d->get_android_fcm(
@@ -2299,7 +2381,7 @@ $subCatArr = array('0');
      "users_master.user_id=category_follow_master.user_id AND category_follow_master.category_id='$business_category_id' AND users_master.user_token!='' AND  lower(users_master.device) ='ios' and users_master.user_id not in ($blocked_users) "
     );
     $fcmArrayIos = array_merge($fcmArrayIosFollow, $fcmArrayIos);
-    $nResident->noti_ios("view_classified_new", $notiUrl, 0, $fcmArrayIos, $title, $description, $cllassified_id);
+    $nResident->noti_ios("view_classified_new", $notiUrl, 0, $fcmArrayIos, $title, $description, $cllassified_id,0,$profile_u);
           //IOS CODE END                  
     $response["message"] = "Classified Added";
     $response["status"] = '200';
