@@ -660,8 +660,8 @@ if($_SESSION['role_id'] == 1   ){  ?>
                <th>No.</th>
                <th>Name</th>
                <th>Email</th>
-               <th>Mobile Number</th>
-               <th>Custom Sub Category Name</th>
+               <th>Mobile<br>Number</th>
+               <th>Custom Sub<br>Category Name</th>
                 
               </tr>
              </thead>
@@ -686,6 +686,7 @@ $today_date = date("Y-m-d");
                  <td><?php echo $newUserData['user_email']; ?></td>
                  <td><?php echo $newUserData['user_mobile']; ?></td>
                  <td><?php echo html_entity_decode(  $newUserData['sub_category_name']); ?></td>
+
                  </tr>
               <?php  } ?>
              </tbody>
@@ -712,10 +713,10 @@ $today_date = date("Y-m-d");
                <th>No.</th>
                <th>Name</th>
                <th>Email</th>
-               <th>Mobile Number</th>
-               <th>Current Business Name</th>
-               <th>Requested Business Name</th>
-                
+               <th>Mobile<br>Number</th>
+               <th>Current<br>Business<br>Name</th>
+               <th>Requested<br>Business<br>Name</th>
+               <th>Requested<br>Date</th> 
               </tr>
              </thead>
              <tbody>
@@ -739,7 +740,9 @@ $today_date = date("Y-m-d");
                  <td><?php echo $newUserData['user_email']; ?></td>
                  <td><?php echo $newUserData['user_mobile']; ?></td>
                  <td><?php echo html_entity_decode(  $newUserData['company_name']); ?></td>
-                 <td><?php echo html_entity_decode(  $newUserData['requested_business_name']); ?></td>
+                 <td><?php echo  wordwrap(html_entity_decode(  $newUserData['requested_business_name']),15,"<br>\n");
+  ?></td>
+                 <td data-order="<?php echo date("U",strtotime($newUserData['requested_at'])); ?>" ><?php echo $newUserData['requested_at']; ?></td>
                  </tr>
               <?php  } ?>
              </tbody>

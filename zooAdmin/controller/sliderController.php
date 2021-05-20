@@ -182,13 +182,20 @@ if(isset($_POST) && !empty($_POST) )
 $gu=$d->select("slider_master","slider_id='$slider_id'");
 $NewData=mysqli_fetch_array($gu);
 
-     $q = $d->delete("slider_master","slider_id='$slider_id'");
+$m->set_data('deleted_by', $_SESSION[full_name]);
+$a = array(
+                            'deleted_by' =>$m->get_data('deleted_by'),
+                            'deleted_at' => date("Y-m-d H:i:s"),
+                             'status'=>'1'
+                        );
+                $q = $d->update("slider_master", $a,"slider_id='$slider_id'");
+     // $q = $d->delete("slider_master","slider_id='$slider_id'");
     if($q==TRUE) {
 
      //delete images
-     $abspath=$_SERVER['DOCUMENT_ROOT'];
+    /* $abspath=$_SERVER['DOCUMENT_ROOT'];
      $path_slider_image = $abspath."/img/sliders/".$NewData['slider_image'];
-      unlink($path_slider_image);
+      unlink($path_slider_image);*/
      //delete images
 
 

@@ -21,17 +21,39 @@
         </div>
 
         <div class="card-body border-top">
+
+           <?php 
+         $role_master=$d->select("role_master","role_id='$_SESSION[role_id]'");
+      $role_master_data=mysqli_fetch_array($role_master);
+       ?>
+
+        <div class="media align-items-center">
+           <div>
+             <i class="fa fa-user"></i>
+           </div>
+           <div class="media-body text-left ml-3">
+             <div class="progress-wrapper">
+               <?php echo $role_master_data['role_name']; ?>
+            </div>                   
+          </div>
+
+        </div>
+
+        
          <div class="media align-items-center">
            <div>
              <i class="fa fa-phone"></i>
            </div>
            <div class="media-body text-left ml-3">
              <div class="progress-wrapper">
-               <?php echo $_SESSION['mobile_number']; ?>
+               <?php echo $_SESSION['mobile_number'];
+                ?>
             </div>                   
           </div>
 
         </div>
+       
+
         <div class="media align-items-center">
            <div>
              <i class="fa fa-envelope"></i>

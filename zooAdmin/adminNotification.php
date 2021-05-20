@@ -23,7 +23,7 @@
               <table id="example" class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>select</th>
                         <th>#</th>
                         <th> Title</th>
                         <th> Description</th>
