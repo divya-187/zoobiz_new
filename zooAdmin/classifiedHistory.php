@@ -206,11 +206,17 @@ $h=0;
          <!-- <button data-toggle="modal" data-target="#vieComp"   class="btn btn-sm btn-primary" type="button"><i class="fa fa-comments"></i> Comment</button> -->
       </div>
     </div>
+    <?php 
+       
+          $timelineQuery = $d->select("cllassified_comment","cllassified_id='$id' AND prent_comment_id=0","ORDER BY comment_id DESC"); 
+
+          if(mysqli_num_rows($timelineQuery)  > 0    ){
+            ?> 
     <section class="cd-timeline js-cd-timeline" >
       <div class="cd-timeline__container">
         <?php 
         $i11=0;
-          $timelineQuery = $d->select("cllassified_comment","cllassified_id='$id' AND prent_comment_id=0","ORDER BY comment_id DESC");
+          
           while($timelineData = mysqli_fetch_array($timelineQuery)){
             $prent_comment_id= $timelineData['comment_id'];
             $coIndex= $i11++;
@@ -220,18 +226,19 @@ $h=0;
               $rightSide=false;
             }
         ?>
-          <div class="cd-timeline__block js-cd-block <?php if($rightSide==true){ echo "floatRight"; } ?>">
-            <div class="cd-timeline__img cd-timeline__img--picture js-cd-img text-center ">
-              <img src="../img/fav.png">
-            </div> 
-
-            <div class="cd-timeline__content js-cd-content" style="border: 1px solid gray;">
-              <p><?php
+        <?php
 
                    $q111=$d->select("users_master","user_id='$timelineData[user_id]'","");
                     $userdataComment=mysqli_fetch_array($q111);
                    $user_full_name= $userdataComment['salutation'].' '.$userdataComment['user_full_name'] ;
                 ?>
+          <div class="cd-timeline__block js-cd-block <?php if($rightSide==true){ echo "floatRight"; } ?>">
+            <div class="cd-timeline__img cd-timeline__img--picture js-cd-img text-center ">
+              <img class="rounded-circle" id="blah"  onerror="this.src='img/user.png'" src="../img/users/members_profile/<?php echo $userdataComment['user_profile_pic']; ?>"  width="30" height="30"   src="#" alt="your image" class='profile' />
+            </div> 
+
+            <div class="cd-timeline__content js-cd-content" style="border: 1px solid gray;">
+              <p>
                 <img class="rounded-circle" id="blah"  onerror="this.src='img/user.png'" src="../img/users/members_profile/<?php echo $userdataComment['user_profile_pic']; ?>"  width="30" height="30"   src="#" alt="your image" class='profile' />
                 <?php echo $user_full_name;
                ?></p>
@@ -283,6 +290,7 @@ $h=0;
         <?php } ?>
       </div>
     </section>
+    <?php } ?>
           </div>
         </div>
       </div>

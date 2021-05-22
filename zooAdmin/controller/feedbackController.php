@@ -13,6 +13,18 @@ if(isset($_POST) && !empty($_POST) ) {
    include '../mail/feedbackReply.php';
    include '../mail.php';
    $_SESSION['msg']="Inquiry Reply Sent Successfully to '$to'";
+    $m->set_data('reply_msg', $reply);
+    $a1 = array(
+     'feedback_id' => $feedback_id,
+     'reply_msg' => $m->get_data('reply_msg'),
+     'admin_name' => $created_by,
+     'created_at' => date("Y-m-d H:i:s")
+    );
+
+    
+    $d->insert("feedback_reply_master", $a1);
+
+
    $d->insert_log("","0","$_SESSION[zoobiz_admin_id]","$created_by",$_SESSION['msg']);
    header("Location: ../feedback");
  }

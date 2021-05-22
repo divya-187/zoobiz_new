@@ -92,6 +92,15 @@
                    class="btn btn-primary btn-sm" onclick="replyFeedback('<?php echo $feedback_id; ?>','<?php echo $email; ?>');" ><i class="fa fa-reply"></i></button>
 
                  </div>
+
+                   <?php  $replyQuery = $d->select("feedback_reply_master","feedback_id='$feedback_id'","ORDER BY created_at DESC"); 
+
+          if(mysqli_num_rows($replyQuery)  > 0    ){ ?>
+                            <a href="feedbackHistory?id=<?php echo $feedback_id;?>" class="btn btn-primary btn-sm" name="pullingReport">View</a>
+                           <?php } ?> 
+                           
+                         
+
                  <div style="display: inline-block;">
                     <form action="controller/feedbackController.php" method="post">    
                           <input type="hidden" name="feedback_id" value="<?php echo $feedback_id; ?>">    

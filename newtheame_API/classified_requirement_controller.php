@@ -1991,8 +1991,8 @@ $subCatArr = array('0');
             $qcomment = $d->selectRow(
               "users_master.user_profile_pic,users_master.user_full_name,users_master.user_first_name,users_master.user_last_name, cllassified_comment.*  ",
               "cllassified_comment,users_master,user_employment_details",
-              " user_employment_details.user_id = users_master.user_id and cllassified_comment.cllassified_id='$classified_id' AND cllassified_comment.user_id=users_master.user_id users_master.active_status=0 and AND cllassified_comment.prent_comment_id=0 ",
-              "ORDER BY cllassified_comment.cllassified_id DESC"
+              " user_employment_details.user_id = users_master.user_id and cllassified_comment.cllassified_id='$classified_id' AND cllassified_comment.user_id=users_master.user_id and users_master.active_status=0  AND cllassified_comment.prent_comment_id=0 ",
+              "ORDER BY cllassified_comment.created_date DESC"
             );
     //code opt start
             $CArray = array();
@@ -2015,7 +2015,7 @@ $subCatArr = array('0');
               "users_master.user_profile_pic,users_master.user_full_name,users_master.user_first_name,users_master.user_last_name, cllassified_comment.*",
               "cllassified_comment,users_master ",
               "  cllassified_comment.cllassified_id in ($cllassified_id_array) AND cllassified_comment.user_id=users_master.user_id  AND users_master.active_status=0 and cllassified_comment.prent_comment_id in ($comment_id_array) ",
-              " group by cllassified_comment.comment_id ORDER BY cllassified_comment.comment_id DESC"
+              " group by cllassified_comment.comment_id ORDER BY cllassified_comment.created_date DESC"
             );
             $SCArray = array();
             $SCcounter = 0;
