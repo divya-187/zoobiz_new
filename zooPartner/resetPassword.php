@@ -1,0 +1,147 @@
+<?php session_start();
+error_reporting(0);
+$url=$_SESSION['url'] = $_SERVER['REQUEST_URI']; 
+
+
+
+
+ ?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <meta name="description" content=""/>
+  <meta name="author" content=""/>
+  <title>Set New Password | ZooBiz</title>
+  <link rel="icon" href="../zooAdmin/assets/images/favicon.ico" type="image/x-icon">
+  <!-- Bootstrap core CSS-->
+  <link href="../zooAdmin/assets/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- animate CSS-->
+  <link href="../zooAdmin/assets/css/animate.css" rel="stylesheet" type="text/css"/>
+  <!-- Icons CSS-->
+  <link href="../zooAdmin/assets/css/icons.css" rel="stylesheet" type="text/css"/>
+  <!-- Custom Style-->
+  <link href="../zooAdmin/assets/css/app-style13.css" rel="stylesheet"/>
+  
+</head>
+
+<body class="bg-dark">
+ <!-- Start wrapper-->
+ <div id="wrapper">
+	<div class="card card-authentication1 mx-auto my-5">
+		<div class="card-body">
+		 <div class="card-content p-2">
+		 	<div class="text-center">
+		 		<img src="../img/logo.png" alt="ZooBiz Logo" width="150">
+		 	</div>
+		  <div class="card-title text-uppercase text-center pb-2 py-3">Set New Password</div>
+		  		<?php
+              		include_once 'lib/dao.php';
+					include 'lib/model.php';
+					$d = new dao();
+					$m = new model();
+  
+$get_array = array();
+ foreach ($_GET as  $key => $valueNew) {
+             $valueNew = str_ireplace( array( '\'','"'),'', $valueNew);
+                 $get_array[$key] = $valueNew;
+ }
+   $_GET = $get_array; 
+   
+                    extract(array_map("test_input" , $_GET));
+                    $forgotTime=date("Y-m-d");
+                    $q=$d->select("zoobiz_admin_master","forgot_token='$t' AND zoobiz_admin_id = '$f' AND token_date='$forgotTime'");
+
+                    //echo "forgot_token='$t' AND zoobiz_admin_id = '$f' AND token_date='$forgotTime'";
+                    $data=mysqli_fetch_array($q);
+                    if ($data>0) {
+                    $_SESSION['forgot_admin_id']=$f;
+                ?>
+		    <form id="signupForm" action="controller/loginController.php" method="post">
+			  <div class="form-group">
+			  <label for="exampleInputEmailAddress" class="">New Password</label>
+			   <div class="position-relative has-icon-right">
+				  <input type="password" name="passwordNew" required="" id="exampleInputEmailAddress" class="form-control input-shadow" placeholder="Password">
+				  <div class="form-control-position">
+					  <i class="fa fa-lock"></i>
+				  </div>
+			   </div>
+			  </div>
+			  <div class="form-group">
+			  <label for="exampleInputEmailAddress" class="">Confirm New Password</label>
+			   <div class="position-relative has-icon-right">
+				  <input type="password" name="password2" required="" id="exampleInputEmailAddress" class="form-control input-shadow" placeholder="Confirm Password">
+				  <div class="form-control-position">
+					  <i class="fa fa-lock"></i>
+				  </div>
+			   </div>
+			  </div>
+			 
+			  <button type="submit" class="btn btn-primary shadow-primary btn-block waves-effect waves-light mt-3">Set Password</button>
+			  <div >
+			 	<br>
+	            <?php include 'common/alert.php'; ?>
+	        </div>
+			 </form>
+			<?php } 
+                else{  ?>
+                	<div class="alert alert-danger alert-dismissible" role="alert">
+					   <button type="button" class="close" data-dismiss="alert">×</button>
+						<div class="alert-icon">
+						 <i class="fa fa-times"></i>
+						</div>
+						<div class="alert-message">
+						  <span><strong>Error!</strong> Invalid URL or Token Expired</span>
+						</div>
+					 </div>
+                    
+            <?php    }
+            ?>
+		   </div>
+		  </div>
+		   <div class="card-footer text-center py-3">
+		    <p class="text-muted mb-0">Return to the <a href="index.php"> Sign In</a></p>
+		  </div>
+	     </div>
+    
+     <!--Start Back To Top Button-->
+    <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
+    <!--End Back To Top Button-->
+	</div><!--wrapper-->
+	
+ <script src="../zooAdmin/assets/js/jquery.min.js"></script>
+  <script src="../zooAdmin/assets/js/popper.min.js"></script>
+  <script src="../zooAdmin/assets/js/bootstrap.min.js"></script>
+  <script src="../zooAdmin/assets/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+  <script>
+    $().ready(function() {
+    $("#personal-info").validate();
+   // validate signup form on keyup and submit
+    $("#signupForm").validate({
+	        rules: {
+	            mobile: {
+	                required: true,
+	                minlength: 2
+	            },
+	            inputPass: {
+	                required: true,
+	                minlength: 5
+	            },
+	        },
+	        messages: {
+	            mobile: "Please enter your Email Or Mobile",
+	            inputPass: "Please enter your Password",
+	        }
+    	});
+
+	});
+
+    </script>
+  
+  
+</body>
+
+</html>

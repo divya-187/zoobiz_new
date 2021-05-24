@@ -38,6 +38,10 @@ class dao implements interface1
         $sms= file_get_contents("https://2factor.in/API/R1/?module=TRANS_SMS&apikey=2eb6de0f-3a58-11e9-8806-0200cd936042&to=$mobile&from=ZOOBIZ&templatename=User+Profile+Complete+Reminder1&var1=$many");
     }
 
+    function partner_login_otp($partnerNumber,$otp_web) {
+        $sms= file_get_contents("https://2factor.in/API/R1/?module=TRANS_SMS&apikey=2eb6de0f-3a58-11e9-8806-0200cd936042&to=$partnerNumber&from=ZOOBIZ&templatename=Partner+Login+-+Admin+Panel&var1=$otp_web");
+    }
+
     function sms_reminder2($mobile,$more) {
         $sms= file_get_contents("https://2factor.in/API/R1/?module=TRANS_SMS&apikey=2eb6de0f-3a58-11e9-8806-0200cd936042&to=$mobile&from=ZOOBIZ&templatename=User+Profile+Complete+Reminder+2&var1=$more");
     }

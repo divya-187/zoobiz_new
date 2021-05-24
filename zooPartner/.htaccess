@@ -1,0 +1,12 @@
+RewriteEngine On
+
+RewriteRule ^/?([a-zA-Z0-9_-]+)$ dashboard.php?f=$1 [L,QSA]
+
+
+# remove space from url
+RewriteCond %{QUERY_STRING} "^([^/]*?)(?:/|%20)+([^/]+?)/?$"
+RewriteRule ^ %{REQUEST_URI}?%1%2 [L,R=302,NE]
+
+# remove ' from url
+RewriteCond %{QUERY_STRING} "^([^/]*?)(?:/|%27)+([^/]+?)/?$"
+RewriteRule ^ %{REQUEST_URI}?%1%2 [L,R=302,NE]

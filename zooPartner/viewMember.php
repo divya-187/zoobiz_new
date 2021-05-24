@@ -83,7 +83,7 @@ $followers= mysqli_num_rows($tq33);
         <img class="img-fluid" src="img/Free-hd-building-wallpaper.jpg" alt="Card image cap">
       </div>
       <div class="card-body pt-5">
-        <img id="blah"  onerror="this.src='img/user.png'" src="../img/users/members_profile/<?php echo $user_profile_pic; ?>"  width="75" height="75"   src="#" alt="your image" class='profile' />
+        <img id="blah"  onerror="this.src='../zooAdmin/img/user.png'" src="../img/users/members_profile/<?php echo $user_profile_pic; ?>"  width="75" height="75"   src="#" alt="your image" class='profile' />
         <h5 class="card-title"><?php echo $salutation; ?> <?php echo $user_full_name; ?></h5>
         <p class="card-text">Zoobiz Id : <b> <?php echo  $zoobiz_id; ?></b></p>
         <div class="media align-items-center text-center">
@@ -1350,7 +1350,7 @@ if($userData['active_status']=="0"){
 } ?>
 </div>
 </div>
-<script src="assets/js/jquery.min.js"></script>
+<script src="../zooAdmin/assets/js/jquery.min.js"></script>
 <script type="text/javascript">
   function readURL(input) {
     if (input.files && input.files[0]) {
