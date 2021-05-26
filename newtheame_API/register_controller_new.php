@@ -1459,6 +1459,59 @@ $custom_category_name = htmlentities($custom_category_name,ENT_QUOTES);
 				}
 				
 
+				//26MAY21
+				$org_users_master_data_user = $org_users_master_data['user_id'];
+				$transection_master_org_user = $d->selectRow("*","transection_master", " transection_amount > 0 and is_paid = 0 and user_id='$org_users_master_data_user'   ", "");
+				if(mysqli_num_rows($transection_master_org_user)  > 0    ){
+					$transection_master_org_data = mysqli_fetch_array($transection_master_org_user);
+
+				$zoobiz_admin_master_Q = $d->selectRow("*","zoobiz_admin_master", " status = 0 and send_notification=1  ", "");
+				$adminArray = array();
+				while ($zoobiz_admin_master_DTAT = mysqli_fetch_array($zoobiz_admin_master_Q)) {
+					$adminArray[] = $zoobiz_admin_master_DTAT['admin_mobile'];
+				}
+               
+					if(!empty($adminArray)){
+
+
+					 
+					$adminArray = implode(",", $adminArray);
+					$fcmArrayAdmins = $d->get_android_fcm("users_master", "user_token!='' AND  lower(device) ='android' and user_mobile in ($adminArray) AND user_id != $user_id");
+
+					$fcmArrayAdmins1 = $d->get_android_fcm("users_master ", " user_token!='' AND  lower(device) ='ios' and user_mobile in ($adminArray)   AND user_id != $user_id ");
+				 
+					  if($org_users_master_data['user_profile_pic']!=""){
+	               		 $profile_uN = $base_url . "img/users/members_profile/" . $org_users_master_data['user_profile_pic'];
+	                  } else {
+	                    $profile_uN ="https://zoobiz.in/zooAdmin/img/user.png";
+	                  }
+				 
+
+         			$nResident->noti("viewMemeber","",0,$fcmArrayAdmins,ucfirst($org_users_master_data['user_full_name']), "Payment of ₹".$transection_master_org_data['transection_amount'].' Done Through '.$transection_master_org_data['payment_mode'],$user_id,1,$profile_uN);
+				    $nResident->noti_ios("viewMemeber","",0,$fcmArrayAdmins1,ucfirst($org_users_master_data['user_full_name']), "Payment of ₹".$transection_master_org_data['transection_amount'].' Done Through '.$transection_master_org_data['payment_mode'],$user_id,1,$profile_uN);
+
+
+
+         			$users_master_q = $d->selectRow("*","users_master", " user_mobile in ($adminArray) AND user_id != $user_id   ", "");
+
+         			while ($users_master_data = mysqli_fetch_array($users_master_q)) {
+
+	         			 	$notiAry = array(
+							'user_id' => $users_master_data['user_id'],
+							'notification_title' => ucfirst($org_users_master_data['user_full_name']),
+							'notification_desc' => "Payment of ₹".$transection_master_org_data['transection_amount'].' Done Through '.$transection_master_org_data['payment_mode'],
+							'notification_date' => date('Y-m-d H:i'),
+							'notification_action' => 'profile',
+							'notification_logo' => 'profile.png',
+							'notification_type' => '12',
+							'other_user_id' => $org_users_master_data['user_id'] 
+							);
+							$d->insert("user_notification", $notiAry);
+         			 }
+         			}
+         		}
+				//26MAY21
+
 				$full_data_query = $d->selectRow("users_master.user_mobile,users_master.alt_mobile,
 					users_master.invoice_download,users_master.plan_renewal_date,users_master.facebook,users_master.instagram,users_master.linkedin,users_master.twitter,users_master.youtube,users_master.whatsapp_privacy,users_master.email_privacy,business_adress_master.adress,business_adress_master.add_latitude,business_adress_master.add_longitude,business_adress_master.pincode,business_adress_master.area_id,
 

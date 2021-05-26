@@ -16,8 +16,7 @@
          <a href="subCategoryWiseUsersReport"   class="btn btn-sm btn-warning waves-effect waves-light">Report</a>
 
 
-         <a href="javascript:void(0)" onclick="DeleteAllsubCat('deleteSubCategory');" class="btn  btn-sm btn-danger pull-right"><i class="fa fa-trash-o fa-lg"></i> Delete </a>
-         <a href="#" data-toggle="modal" data-target="#addCategory" class="btn btn-sm btn-primary waves-effect waves-light"><i class="fa fa-plus mr-1"></i> Add New </a>
+         
          
 
        </div>
@@ -72,16 +71,14 @@
             <table id="subCatTable" class="table table-bordered">
               <thead>
                 <tr>
-                  <th class="deleteTh">
-                   Select
-                  </th>
+                  
                   <th class="text-right">#</th>
                   <th class="text-right">Members</th>
                   <th>Name</th>
                   <th>Main Category</th>
                   <th>Related Category</th>
                   
-                  <th>Action</th>
+                   
                 </tr>
               </thead>
               <tbody>
@@ -203,35 +200,7 @@
                   }
                   ?></td>
                   
-                  <td>
-                    <a data-toggle="modal" data-target="#editCategory" href="javascript:void();" onclick="editSubCategory('<?php echo $business_category_id; ?>','<?php echo $business_sub_category_id; ?>','<?php echo str_replace("'", "\\'", $data['sub_category_name']);?>','<?php echo $data['sub_category_images']; ?>','<?php echo $totalSubCategory;?>');" class="btn btn-sm btn-primary shadow-primary">Edit</a>
-
-                    
-
-
-                    <form action="manageSubCategory" method="post" style="display: inline-block;">    
-                      <input type="hidden" name="business_sub_category_id" value="<?php echo $business_sub_category_id; ?>">    
-                      <button type="submit" name="" class="btn btn-primary btn-sm "> Bind Sub Cat</button>
-                    </form>
-
-                    <form action="manageSubCategory2" method="post" style="display: inline-block;">    
-                      <input type="hidden" name="business_sub_category_id" value="<?php echo $business_sub_category_id; ?>">    
-                      <button type="submit" name="" class="btn btn-primary btn-sm "> Bind Cat</button>
-                    </form>
-
-
-                    <form action="viewSubCategory" method="post" style="display: inline-block;">    
-                      <input type="hidden" name="business_sub_category_id" value="<?php echo $business_sub_category_id; ?>">    
-                      <button type="submit" name="" class="btn btn-secondary btn-sm "> View</button>
-                    </form>
-
- 
-                    <form action="manageSubCatKeywords" method="post" style="display: inline-block;">    
-                      <input type="hidden" name="business_sub_category_id" value="<?php echo $business_sub_category_id; ?>">    
-                      <button type="submit" name="" class="btn btn-warning btn-sm ">Keywords(<?php echo $d->count_data_direct("business_category_id","sub_category_keywords_master","business_sub_category_id=$business_sub_category_id ");?>)</button>
-                    </form>
-
-                  </td>
+                   
                   
 
                 </tr>

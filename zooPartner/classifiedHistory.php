@@ -108,14 +108,7 @@ $h=0;
               echo $userdata['salutation'].' '.$userdata['user_full_name'] ;
             ?>
           </p>
-          <p><b>Status:</b>
-             <?php if($data['active_status']=="0"){
-                        ?>
-                          <input type="checkbox" checked class="js-switch" data-color="#15ca20" onchange ="changeStatus('<?php echo $data['cllassified_id']; ?>','discussionDeactive');" data-size="small"/>
-                          <?php } else { ?>
-                         <input type="checkbox"  class="js-switch" data-color="#15ca20" onchange ="changeStatus('<?php echo $data['cllassified_id']; ?>','discussionActive');" data-size="small"/>
-                        <?php } ?>
-          </p>
+          
           <p><b>Document</b> 
                 <?php 
                 $imgIcon2="";

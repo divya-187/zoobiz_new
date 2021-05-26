@@ -12,8 +12,7 @@
       </div>
       <div class="col-sm-3 col-6">
         <div class="btn-group float-sm-right">
-          <!-- <a href="discussionForum" class="btn btn-primary btn-sm waves-effect waves-light"><i class="fa fa-plus mr-1"></i> Add New</a> -->
-          <a href="javascript:void(0)" onclick="DeleteAll('deleteClassifieds');" class="btn btn-danger btn-sm waves-effect waves-light"><i class="fa fa-trash-o fa-lg"></i> Delete </a>
+        
 
 
         </div>
@@ -86,7 +85,7 @@
                      <?php //24nov2020 ?>
                     <th>Created By</th>
                     <th>Created Date</th>
-                    <th>Status</th>
+                   
                   </tr>
                 </thead>
                 <tbody>
@@ -213,14 +212,7 @@ while($business_sub_categories_data=mysqli_fetch_array($business_sub_categories_
                         ?>
                       </td>
                       <td data-order="<?php echo date("U",strtotime($row['created_date'])); ?>"><?php echo date('d M Y, h:i A',strtotime($row['created_date'])); ?></td>
-                      <td>
-                         <?php if($row['active_status']=="0"){
-                        ?>
-                          <input type="checkbox" checked class="js-switch" data-color="#15ca20" onchange ="changeStatus('<?php echo $row['cllassified_id']; ?>','discussionDeactive');" data-size="small"/>
-                          <?php } else { ?>
-                         <input type="checkbox"  class="js-switch" data-color="#15ca20" onchange ="changeStatus('<?php echo $row['cllassified_id']; ?>','discussionActive');" data-size="small"/>
-                        <?php } ?>
-                      </td>
+                     
                     </tr>
                   <?php }?>
                 </tbody>

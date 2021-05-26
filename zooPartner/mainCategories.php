@@ -13,8 +13,7 @@
        <div class="col-sm-3">
          <div class="btn-group float-sm-right">
            <a href="categoryWiseUsersReport"   class="btn btn-sm btn-warning waves-effect waves-light">Report</a>
-           <a href="javascript:void(0)" onclick="DeleteAllMainCat('deleteCategory');" class="btn  btn-sm btn-danger pull-right"><i class="fa fa-trash-o fa-lg"></i> Delete </a>
-          <a href="#" data-toggle="modal" data-target="#addCategory" class="btn btn-sm btn-primary waves-effect waves-light"><i class="fa fa-plus mr-1"></i> Add New </a>
+            
        </div>
      </div>
    </div>
@@ -36,10 +35,7 @@
                   <th class="text-right">#</th>
                  <th class="text-right">Members</th>
                   <th>Name</th>
-                  <!-- <th>Icon</th>
-                  <th>Photo</th> -->
                   
-                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -89,33 +85,7 @@
                      <?php } ?></td>
                
                  <?php */ ?> 
-                   <td>
-                     <a data-toggle="modal" data-target="#editCategory" href="javascript:void();" onclick="editCategory('<?php echo $data['business_category_id']; ?>','<?php echo $data['category_name']; ?>','<?php echo str_replace("'", "\\'",$data['category_images']); ?>','<?php echo $data['menu_icon']; ?>');" class="btn btn-sm btn-primary shadow-primary">Edit</a>
-
-                     <?php 
-
-                       
-
-
-                        $cnt=$d->select(" business_categories,business_sub_categories "," business_sub_categories.business_category_id = business_categories.business_category_id and    business_categories.category_status = 0  and business_categories.business_category_id='$business_category_id'  group by business_categories.business_category_id   order by business_categories.category_name asc   ");
-
-
-
-                 $cnt2 =  mysqli_num_rows($cnt);
-
-                  if ($cnt2 > 0) {?>
-                      <form action="manageMainCategory" method="post" style="display: inline-block;">    
-                          <input type="hidden" name="business_category_id" value="<?php echo $data['business_category_id']; ?>">    
-                          <button type="submit" name="" class="btn btn-primary btn-sm "> Bind Sub Cat</button>
-                        </form>
-                         
-                         <form action="manageMainCategory2" method="post" style="display: inline-block;">    
-                          <input type="hidden" name="business_category_id" value="<?php echo $data['business_category_id']; ?>">    
-                          <button type="submit" name="" class="btn btn-primary btn-sm "> Bind Cat</button>
-                        </form>
-                        
-                      <?php } ?> 
-                 </td>
+                    
                 
 
                </tr>

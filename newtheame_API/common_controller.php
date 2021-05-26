@@ -808,6 +808,22 @@ if ($data_app["company_contact_number_privacy"] == 1) {
 			}
 
 
+//26may21
+$interest_qry = $d->selectRow("*","interest_master,interest_relation_master","interest_relation_master.interest_id  = interest_master.interest_id and  interest_relation_master.member_id ='$member_id' and interest_master.int_status!='User Added'   and interest_master.status= 0   ", "");
+ 
+$response["interest_array"] = array();
+ 
+       while ($interest_data=mysqli_fetch_array($interest_qry)) {	
+        $interest_array = array(); 		 
+		 $interest_array["interest_id"] = $interest_data['interest_id'];
+		 $interest_array["interest_name"] = html_entity_decode($interest_data['interest_name']);
+	  array_push($response["interest_array"], $interest_array);  
+ }
+						
+					 
+
+//26may21
+
 			$user_follow_master_q = $d->selectRow("follow_id,follow_to","follow_master", "follow_to='$member_id' and follow_by='$user_id'  ", "");
 			
 			$user_follow_master_array_user = array('0');

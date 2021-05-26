@@ -153,17 +153,15 @@
   <body style="background-image: url(img/nf-bg.jpg);">
     <div class="standard-padding">
 
-    <div class="text-center" style="padding-top: 70px;">
-      <a data-toggle="modal" data-target="#feed" class="btn btn-primary btn-sm" href="#">Add New Post</a>
-    </div>
+    
     <?php
 
 date_default_timezone_set('Asia/Calcutta');
 
-    $zoo_admin_qry=$d->selectRow("admin_name,admin_profile,partner_login_id","zoobiz_admin_master","");
+    $zoo_admin_qry=$d->selectRow("admin_name,admin_profile,zoobiz_admin_id","zoobiz_admin_master","");
     $adamin_array = array();
     while($zoo_admin_data=mysqli_fetch_array($zoo_admin_qry)) {
-         $adamin_array[$zoo_admin_data['partner_login_id']] = $zoo_admin_data ;
+         $adamin_array[$zoo_admin_data['zoobiz_admin_id']] = $zoo_admin_data ;
     }
           
  
@@ -210,7 +208,7 @@ $admin_data =  $adamin_array[$data_notification['admin_id']];
                           <button type="submit" name="deleteCmp" class="form-btn btn btn-danger btn-sm "> <i title="Delete Post" class="fa fa-trash-o"  ></i></button>
                         </form>
 </div> -->
-        <a style="margin-left: 12px;" href="#" class="btn btn-sm btn-danger  pull-right" onclick="deletePost('<?php echo $timeline_id; ?>')"><i title="Delete Post" class="fa fa-trash-o"  ></i></a>  
+         
 
         <a class="time pull-right"> <?php 
         if(strtotime($data_notification['created_date']) < strtotime('-30 days')) {
@@ -397,9 +395,7 @@ $totalCmt = mysqli_num_rows($qcomment);
            <span style="float: left; ">
           <img  onerror="this.src='../zooAdmin/img/user.png'" class="imgRedonda1 lazyload" src="../img/infinity.gif"  data-src="../img/users/members_profile/<?php echo $data_comment['user_profile_pic']; ?>" width="10%">
         </span>
-          <span style="float: right;">
-          <i title="Delete Comment" class=" text-danger fa fa-trash-o "  data-toggle="modal" data-target="#editFloor" onclick="deleteComment('<?php echo $comments_id; ?>')"></i>
-        </span>
+          
 
 
 
@@ -421,9 +417,7 @@ $totalCmt = mysqli_num_rows($qcomment);
           <img  onerror="this.src='../zooAdmin/img/user.png'" class="imgRedonda1 lazyload" src="../img/infinity.gif" data-src="../img/users/members_profile/<?php echo $data_Sub_comment['user_profile_pic']; ?>" width="10%">
         </span>
 
-        <span style="float: right;">
-          <i title="Delete Comment" class="text-danger fa fa-trash-o "  data-toggle="modal" data-target="#editFloor" onclick="deleteComment('<?php echo $comments_id; ?>')"></i>
-        </span>
+       
             <p>
           <a style="padding-left: 5px !important;"  href="memberView?id=<?php echo $data_Sub_comment['user_id']; ?>" target="_blank" class="profileName1 text-primary"> <?php echo $data_Sub_comment['user_name']; ?></a><span class="pull-right"><?php echo time_elapsed_string($data_Sub_comment['modify_date']); ?></span> <br><?php echo html_entity_decode($data_Sub_comment['msg']); ?> 
           </p>
@@ -461,9 +455,7 @@ $totalCmt = mysqli_num_rows($qcomment);
           <img  onerror="this.src='../zooAdmin/img/user.png'" class="imgRedonda1 lazyload" src="../img/infinity.gif" data-src="../img/users/members_profile/<?php echo $data_comment['user_profile_pic']; ?>" width="10%">
         </span>
 
-        <span style="float: right;">
-          <i title="Delete Comment" class="text-danger fa fa-trash-o "  data-toggle="modal" data-target="#editFloor" onclick="deleteComment('<?php echo $comments_id; ?>')"></i>
-        </span>
+        
             <p>
           <a style="padding-left: 5px !important;"  href="memberView?id=<?php echo $data_comment['user_id']; ?>" target="_blank" class="profileName1 text-primary"> <?php echo $data_comment['user_name']; ?></a><span class="pull-right"><?php echo time_elapsed_string($data_comment['modify_date']); ?></span> <br><?php echo html_entity_decode($data_comment['msg']); ?> 
           </p>
@@ -482,9 +474,7 @@ $totalCmt = mysqli_num_rows($qcomment);
           <img  onerror="this.src='../zooAdmin/img/user.png'" class="imgRedonda1 lazyload" src="../img/infinity.gif" data-src="../img/users/members_profile/<?php echo $data_Sub_comment['user_profile_pic']; ?>" width="10%">
         </span>
 
-        <span style="float: right;">
-          <i title="Delete Comment" class="text-danger fa fa-trash-o "  data-toggle="modal" data-target="#editFloor" onclick="deleteComment('<?php echo $comments_id; ?>')"></i>
-        </span>
+        
             <p>
           <a style="padding-left: 5px !important;"  href="memberView?id=<?php echo $data_Sub_comment['user_id']; ?>" target="_blank" class="profileName1 text-primary"> <?php echo $data_Sub_comment['user_name']; ?></a><span class="pull-right"><?php echo time_elapsed_string($data_Sub_comment['modify_date']); ?></span> <br><?php echo html_entity_decode($data_Sub_comment['msg']); ?> 
           </p>
@@ -497,7 +487,7 @@ $totalCmt = mysqli_num_rows($qcomment);
         } 
         //IS_248
 
-        $qcomment=$d->select("timeline_comments,zoobiz_admin_master ","timeline_comments.timeline_id='$timeline_id' AND timeline_comments.user_id=zoobiz_admin_master.partner_login_id order by timeline_comments.modify_date asc limit 0,100");
+        $qcomment=$d->select("timeline_comments,zoobiz_admin_master ","timeline_comments.timeline_id='$timeline_id' AND timeline_comments.user_id=zoobiz_admin_master.zoobiz_admin_id order by timeline_comments.modify_date asc limit 0,100");
          while($data_comment=mysqli_fetch_array($qcomment)) {
             $comments_id=$data_comment['comments_id'];
             
@@ -507,9 +497,7 @@ $totalCmt = mysqli_num_rows($qcomment);
           <img  onerror="this.src='../zooAdmin/img/user.png'" class="imgRedonda1 lazyload" src="../img/infinity.gif" data-src="img/profile/<?php echo $data_comment['admin_profile']; ?>"  width="10%">
             </span>  
             
-            <span class=" cls-delete"  >
-          <b><i title="Delete Comment" class="text-danger fa fa-trash-o "  data-toggle="modal" data-target="#editFloor" onclick="deleteComment('<?php echo $comments_id; ?>')"></i></b>
-        </span>
+            
         
         <p class=" cls-content text-justify ">
           <a   href="memberView?id=<?php echo $data_comment['user_id']; ?>" target="_blank" class="profileName1 text-primary"> <?php echo $data_comment['user_name']; ?></a> <?php echo html_entity_decode($data_comment['msg']); ?> at <?php echo date("d-m-Y H:i A", strtotime($data_comment['modify_date'])); ?>  
@@ -519,12 +507,7 @@ $totalCmt = mysqli_num_rows($qcomment);
           <br><br>
         </div>
 
-       <!--   <div class="row">
-          <div class="col-md-1 cls-pic"> <img  onerror="this.src='../zooAdmin/img/user.png'" class="imgRedonda1" src="img/profile/<?php echo $data_comment['admin_profile']; ?>" width="10%"></div>
-           <div class="col-md-10 text-justify cls-content"> <a    href="viewOwner?id=<?php echo $data_comment['user_id']; ?>" target="_blank" class="profileName1 text-primary"> <?php echo $data_comment['user_name']; ?></a> <?php echo $data_comment['msg']; ?> at <?php echo date("d-m-Y H:i A", strtotime($data_comment['modify_date'])); ?>  </div>
-            <div class="col-md-1 cls-delete">  <b><i title="Delete Comment" class="text-danger fa fa-trash-o "  data-toggle="modal" data-target="#editFloor" onclick="deleteComment('<?php echo $comments_id; ?>')"></i></b></div>
-          
-        </div> -->
+     
 
 
         <?php  
