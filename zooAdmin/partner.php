@@ -49,6 +49,64 @@ extract($zoobiz_partner_master_data);
               <fieldset class="scheduler-border">
                 <legend  class="scheduler-border">Partner Details</legend>
 
+<div class="form-group row">
+                  <label for="country_id" class="col-sm-2 col-form-label"> Country <span class="required">*</span></label>
+                  <div class="col-sm-4">
+                    <select type="text" required="" id="country_id" onchange="getStates();" class="form-control single-select" name="country_id">
+                      <option value="">-- Select --</option>
+                      <?php 
+                        $q3=$d->select("countries","flag=1","");
+                         while ($blockRow=mysqli_fetch_array($q3)) {
+                       ?>
+                        <option   <?php if(  isset($zoobiz_partner_id_edit) && $country_id==$blockRow['country_id']) {echo "selected";} ?> value="<?php echo $blockRow['country_id'];?>"><?php echo $blockRow['country_name'];?></option>
+                        <?php }?>
+                      </select>
+                  </div>
+                   <label for="state_id" class="col-sm-2 col-form-label"> State <span class="required">*</span></label>
+                  <div class="col-sm-4">
+                       <?php  if(isset($zoobiz_partner_id_edit)) { ?>
+                      <select type="text" onchange="getCity();"  required="" class="form-control single-select" id="state_id" name="state_id">
+                        <?php
+                        
+                           $q31=$d->select("states","country_id='$country_id'","");
+                          while ($blockRow11=mysqli_fetch_array($q31)) {
+                           ?>
+                           <option <?php if( isset($zoobiz_partner_id_edit) && $state_id==$blockRow11['state_id']) {echo "selected";} ?> value="<?php echo $blockRow11['state_id'];?>"><?php echo $blockRow11['state_name'];?></option>
+                          <?php }  ?>
+                      </select>
+                      <?php } else { ?>
+                      <select type="text" onchange="getCity();"  required="" class="form-control single-select" id="state_id" name="state_id">
+                      <option value="">-- Select --</option>
+                      </select>
+                      <?php } ?>
+                  </div>
+                  
+                </div>
+
+                <div class="form-group row">
+                  <label for="input-101" class="col-sm-2 col-form-label"> City <span class="required">*</span></label>
+                  <div class="col-sm-10">
+                      <?php  if(isset($zoobiz_partner_id_edit)) {   ?>
+                      <select type="text"   multiple="multiple"   required="" class="form-control multiple-select "   name="city_id[]" id="city_id">
+                        <?php
+                           $q34=$d->select("cities","state_id='$state_id'","");
+                           $city_id = explode(",", $city_id);
+                          while ($blockRow12=mysqli_fetch_array($q34)) {
+                           
+
+
+                           ?>
+                           <option <?php if( isset($zoobiz_partner_id_edit) && in_array($blockRow12['city_id'], $city_id)   ) {echo "selected";} ?> value="<?php echo $blockRow12['city_id'];?>"><?php echo $blockRow12['city_name'];?></option>
+                          <?php }  ?>
+                      </select>
+                      <?php } else { ?>
+                      <select  type="text"   multiple="multiple"  required="" class="form-control multiple-select" name="city_id[]" id="city_id">
+                      <option value="">-- Select --</option>
+                      
+                      </select>
+                      <?php } ?>
+                  </div>
+                </div>
  <div class="form-group row">
                  <label class="col-lg-2 col-form-label form-control-label">Role <span class="required">*</span></label>
                       <div class="col-lg-10">
@@ -92,7 +150,7 @@ extract($zoobiz_partner_master_data);
             <input class="form-control-file border photoOnly" id="imgInp" accept="image/*" name="partner_profile" type="file">
             <?php if(isset($zoobiz_partner_id_edit)){
             ?> 
-          <input class="form-control-file border photoOnly"     name="admin_profile_old" type="hidden" value="<?php echo $partner_profile?>">
+          <input class="form-control-file border photoOnly"     name="partner_profile_old" type="hidden" value="<?php echo $partner_profile?>">
         <?php  }?>
              </div>
         </div>

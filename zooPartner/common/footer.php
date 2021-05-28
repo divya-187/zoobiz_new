@@ -207,9 +207,9 @@
     
     <!--Form Validatin Script-->
     <script src="../zooAdmin/assets/plugins/jquery-validation/js/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="../zooAdmin/assets/js/validate82.js"></script>
-    <script src="../zooAdmin/assets/js/custom80.js"></script>
     
+    <script type="text/javascript" src="../zooAdmin/assets/js/validate84.js"></script>
+    <script src="../zooAdmin/assets/js/custom81.js"></script>
     <!--Select Plugins Js-->
     <script src="../zooAdmin/assets/plugins/select2/js/select2.min.js"></script>
     <!--Inputtags Js-->

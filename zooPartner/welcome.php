@@ -70,12 +70,16 @@ $allowedMenus = array();
               <div class="media-body">
                 <p class="text-white">Monthly Transactions</p>
                
-             <?php //24nov2020  transection_master.coupon_id = 0 added to exclude coupon amount from transactions.
-             $y = date("Y");
+             <?php 
+
+
+             $selected_city_id = $_SESSION['city_id'];
+
+               $y = date("Y");
              $m = date("m");
                  /*$count5=$d->selectRow("transection_amount","transection_master","payment_status='success' and is_paid = 0  and YEAR(transection_date) = '$y' and MONTH(`transection_date`) = '$m'  and payment_mode !='Backend Admin' ");*/
 
-                   $qry=$d->select("users_master,company_master,transection_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id   and  payment_status='success' and is_paid = 0  and YEAR(transection_date) = '$y' and MONTH(`transection_date`) = '$m'  and payment_mode !='Backend Admin'  ","ORDER BY transection_master.transection_id DESC");
+                   $qry=$d->select("users_master,company_master,transection_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id   and  payment_status='success' and is_paid = 0  and YEAR(transection_date) = '$y' and MONTH(`transection_date`) = '$m'  and payment_mode !='Backend Admin'  and users_master.city_id='$selected_city_id' ","ORDER BY transection_master.transection_id DESC");
 
  
                  $trantotal = 0 ;
@@ -118,7 +122,10 @@ $asif = 0 ;
             </a>
           </div>
         </div>
-         <?php } ?> 
+         <?php }
+
+         // echo "<pre>";print_r($_SESSION);
+          ?> 
        <?php if(in_array('onlyViewMember', $allowedMenus)){ ?>  
         <div class="col-6 col-lg-6 col-xl-3">
           <div class="card gradient-ohhappiness">
@@ -132,9 +139,11 @@ $asif = 0 ;
 
 
 
-
+/*
               //  echo $d->count_data_direct("user_id","users_master, user_employment_details","users_master.active_status  = 0  AND user_employment_details.user_id=users_master.user_id ");
-                  $q=$d->select("users_master,user_employment_details,business_categories,business_sub_categories"," business_sub_categories.business_sub_category_id=user_employment_details.business_sub_category_id AND   business_categories.business_category_id=user_employment_details.business_category_id AND user_employment_details.user_id=users_master.user_id AND users_master.active_status=0 AND users_master.office_member=0   ","ORDER BY users_master.user_id DESC");
+
+echo $selected_city_id;*/
+                  $q=$d->select("users_master,user_employment_details,business_categories,business_sub_categories"," business_sub_categories.business_sub_category_id=user_employment_details.business_sub_category_id AND   business_categories.business_category_id=user_employment_details.business_category_id AND user_employment_details.user_id=users_master.user_id AND users_master.active_status=0 AND users_master.office_member=0 and users_master.city_id='$selected_city_id'   ","ORDER BY users_master.user_id DESC");
               echo   mysqli_num_rows($q);
                  ?></h4>
 
@@ -282,7 +291,7 @@ $asif = 0 ;
 $y11 = date("Y",strtotime($monthData11));
 $m11 = date("m",strtotime($monthData11));
                   
- $qry11=$d->select("users_master,company_master,transection_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id   and  payment_status='success' and is_paid = 0  and YEAR(transection_date) = '$y11' and MONTH(`transection_date`) = '$m11'  and payment_mode !='Backend Admin'  ","ORDER BY transection_master.transection_id DESC");
+ $qry11=$d->select("users_master,company_master,transection_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id   and  payment_status='success' and is_paid = 0  and YEAR(transection_date) = '$y11' and MONTH(`transection_date`) = '$m11'  and payment_mode !='Backend Admin' and users_master.city_id='$selected_city_id'  ","ORDER BY transection_master.transection_id DESC");
  $trantotal11 = 0 ;
  while($row11=mysqli_fetch_array($qry11)) {
   if(  $row11['coupon_id'] == 0){
@@ -295,7 +304,7 @@ $m11 = date("m",strtotime($monthData11));
 $y10 = date("Y",strtotime($monthData10));
 $m10 = date("m",strtotime($monthData10));
                   
- $qry10=$d->select("users_master,company_master,transection_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id   and  payment_status='success' and is_paid = 0  and YEAR(transection_date) = '$y10' and MONTH(`transection_date`) = '$m10'  and payment_mode !='Backend Admin'  ","ORDER BY transection_master.transection_id DESC");
+ $qry10=$d->select("users_master,company_master,transection_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id   and  payment_status='success' and is_paid = 0  and YEAR(transection_date) = '$y10' and MONTH(`transection_date`) = '$m10'  and payment_mode !='Backend Admin' and users_master.city_id='$selected_city_id'  ","ORDER BY transection_master.transection_id DESC");
  $trantotal10 = 0 ;
  while($row10=mysqli_fetch_array($qry10)) {
   if(  $row10['coupon_id'] == 0){
@@ -309,7 +318,7 @@ $m10 = date("m",strtotime($monthData10));
 $y9 = date("Y",strtotime($monthData9));
 $m9 = date("m",strtotime($monthData9));
                   
- $qry9=$d->select("users_master,company_master,transection_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id   and  payment_status='success' and is_paid = 0  and YEAR(transection_date) = '$y9' and MONTH(`transection_date`) = '$m9'  and payment_mode !='Backend Admin'  ","ORDER BY transection_master.transection_id DESC");
+ $qry9=$d->select("users_master,company_master,transection_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id   and  payment_status='success' and is_paid = 0  and YEAR(transection_date) = '$y9' and MONTH(`transection_date`) = '$m9'  and payment_mode !='Backend Admin' and users_master.city_id='$selected_city_id'  ","ORDER BY transection_master.transection_id DESC");
  $trantotal9 = 0 ;
  while($row9=mysqli_fetch_array($qry9)) {
   if(  $row9['coupon_id'] == 0){
@@ -323,7 +332,7 @@ $m9 = date("m",strtotime($monthData9));
 $y8 = date("Y",strtotime($monthData8));
 $m8 = date("m",strtotime($monthData8));
                   
- $qry8=$d->select("users_master,company_master,transection_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id   and  payment_status='success' and is_paid = 0  and YEAR(transection_date) = '$y8' and MONTH(`transection_date`) = '$m8'  and payment_mode !='Backend Admin'  ","ORDER BY transection_master.transection_id DESC");
+ $qry8=$d->select("users_master,company_master,transection_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id   and  payment_status='success' and is_paid = 0  and YEAR(transection_date) = '$y8' and MONTH(`transection_date`) = '$m8'  and payment_mode !='Backend Admin' and users_master.city_id='$selected_city_id'  ","ORDER BY transection_master.transection_id DESC");
  $trantotal8 = 0 ;
  while($row8=mysqli_fetch_array($qry8)) {
   if(  $row8['coupon_id'] == 0){
@@ -336,7 +345,7 @@ $m8 = date("m",strtotime($monthData8));
 $y7 = date("Y",strtotime($monthData7));
 $m7 = date("m",strtotime($monthData7));
                   
- $qry7=$d->select("users_master,company_master,transection_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id   and  payment_status='success' and is_paid = 0  and YEAR(transection_date) = '$y7' and MONTH(`transection_date`) = '$m7'  and payment_mode !='Backend Admin'  ","ORDER BY transection_master.transection_id DESC");
+ $qry7=$d->select("users_master,company_master,transection_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id   and  payment_status='success' and is_paid = 0  and YEAR(transection_date) = '$y7' and MONTH(`transection_date`) = '$m7'  and payment_mode !='Backend Admin'  and users_master.city_id='$selected_city_id' ","ORDER BY transection_master.transection_id DESC");
  $trantotal7 = 0 ;
  while($row7=mysqli_fetch_array($qry7)) {
   if(  $row7['coupon_id'] == 0){
@@ -349,7 +358,7 @@ $m7 = date("m",strtotime($monthData7));
 $y6 = date("Y",strtotime($monthData6));
 $m6 = date("m",strtotime($monthData6));
                   
- $qry6=$d->select("users_master,company_master,transection_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id   and  payment_status='success' and is_paid = 0  and YEAR(transection_date) = '$y6' and MONTH(`transection_date`) = '$m6'  and payment_mode !='Backend Admin'  ","ORDER BY transection_master.transection_id DESC");
+ $qry6=$d->select("users_master,company_master,transection_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id   and  payment_status='success' and is_paid = 0  and YEAR(transection_date) = '$y6' and MONTH(`transection_date`) = '$m6'  and payment_mode !='Backend Admin'  and users_master.city_id='$selected_city_id' ","ORDER BY transection_master.transection_id DESC");
  $trantotal6 = 0 ;
  while($row6=mysqli_fetch_array($qry6)) {
   if(  $row6['coupon_id'] == 0){
@@ -362,7 +371,7 @@ $m6 = date("m",strtotime($monthData6));
 $y5 = date("Y",strtotime($monthData5));
 $m5 = date("m",strtotime($monthData5));
                   
- $qry5=$d->select("users_master,company_master,transection_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id   and  payment_status='success' and is_paid = 0  and YEAR(transection_date) = '$y5' and MONTH(`transection_date`) = '$m5'  and payment_mode !='Backend Admin'  ","ORDER BY transection_master.transection_id DESC");
+ $qry5=$d->select("users_master,company_master,transection_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id   and  payment_status='success' and is_paid = 0  and YEAR(transection_date) = '$y5' and MONTH(`transection_date`) = '$m5'  and payment_mode !='Backend Admin' and users_master.city_id='$selected_city_id'  ","ORDER BY transection_master.transection_id DESC");
  $trantotal5 = 0 ;
  while($row5=mysqli_fetch_array($qry5)) {
   if(  $row5['coupon_id'] == 0){
@@ -376,7 +385,7 @@ $m5 = date("m",strtotime($monthData5));
 $y4 = date("Y",strtotime($monthData4));
 $m4 = date("m",strtotime($monthData4));
                   
- $qry4=$d->select("users_master,company_master,transection_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id   and  payment_status='success' and is_paid = 0  and YEAR(transection_date) = '$y4' and MONTH(`transection_date`) = '$m4'  and payment_mode !='Backend Admin'  ","ORDER BY transection_master.transection_id DESC");
+ $qry4=$d->select("users_master,company_master,transection_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id   and  payment_status='success' and is_paid = 0  and YEAR(transection_date) = '$y4' and MONTH(`transection_date`) = '$m4'  and payment_mode !='Backend Admin' and users_master.city_id='$selected_city_id'  ","ORDER BY transection_master.transection_id DESC");
  $trantotal4 = 0 ;
  while($row4=mysqli_fetch_array($qry4)) {
   if(  $row4['coupon_id'] == 0){
@@ -389,7 +398,7 @@ $m4 = date("m",strtotime($monthData4));
 $y3 = date("Y",strtotime($monthData3));
 $m3 = date("m",strtotime($monthData3));
                   
- $qry3=$d->select("users_master,company_master,transection_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id   and  payment_status='success' and is_paid = 0  and YEAR(transection_date) = '$y3' and MONTH(`transection_date`) = '$m3'  and payment_mode !='Backend Admin'  ","ORDER BY transection_master.transection_id DESC");
+ $qry3=$d->select("users_master,company_master,transection_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id   and  payment_status='success' and is_paid = 0  and YEAR(transection_date) = '$y3' and MONTH(`transection_date`) = '$m3'  and payment_mode !='Backend Admin' and users_master.city_id='$selected_city_id'  ","ORDER BY transection_master.transection_id DESC");
  $trantotal3 = 0 ;
  while($row3=mysqli_fetch_array($qry3)) {
   if(  $row3['coupon_id'] == 0){
@@ -402,7 +411,7 @@ $m3 = date("m",strtotime($monthData3));
 $y2 = date("Y",strtotime($monthData2));
 $m2 = date("m",strtotime($monthData2));
                   
- $qry2=$d->select("users_master,company_master,transection_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id   and  payment_status='success' and is_paid = 0  and YEAR(transection_date) = '$y2' and MONTH(`transection_date`) = '$m2'  and payment_mode !='Backend Admin'  ","ORDER BY transection_master.transection_id DESC");
+ $qry2=$d->select("users_master,company_master,transection_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id   and  payment_status='success' and is_paid = 0  and YEAR(transection_date) = '$y2' and MONTH(`transection_date`) = '$m2'  and payment_mode !='Backend Admin' and users_master.city_id='$selected_city_id'  ","ORDER BY transection_master.transection_id DESC");
  $trantotal2 = 0 ;
  while($row2=mysqli_fetch_array($qry2)) {
   if(  $row2['coupon_id'] == 0){
@@ -415,7 +424,7 @@ $m2 = date("m",strtotime($monthData2));
 $y1 = date("Y",strtotime($monthData1));
 $m1 = date("m",strtotime($monthData1));
                   
- $qry1=$d->select("users_master,company_master,transection_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id   and  payment_status='success' and is_paid = 0  and YEAR(transection_date) = '$y1' and MONTH(`transection_date`) = '$m1'  and payment_mode !='Backend Admin'  ","ORDER BY transection_master.transection_id DESC");
+ $qry1=$d->select("users_master,company_master,transection_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id   and  payment_status='success' and is_paid = 0  and YEAR(transection_date) = '$y1' and MONTH(`transection_date`) = '$m1'  and payment_mode !='Backend Admin' and users_master.city_id='$selected_city_id'  ","ORDER BY transection_master.transection_id DESC");
  $trantotal1 = 0 ;
  while($row1=mysqli_fetch_array($qry1)) {
   if(  $row1['coupon_id'] == 0){
@@ -428,7 +437,7 @@ $m1 = date("m",strtotime($monthData1));
 $y0 = date("Y",strtotime($monthData0));
 $m0 = date("m",strtotime($monthData0));
                   
- $qry0=$d->select("users_master,company_master,transection_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id   and  payment_status='success' and is_paid = 0  and YEAR(transection_date) = '$y0' and MONTH(`transection_date`) = '$m0'  and payment_mode !='Backend Admin'  ","ORDER BY transection_master.transection_id DESC");
+ $qry0=$d->select("users_master,company_master,transection_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id   and  payment_status='success' and is_paid = 0  and YEAR(transection_date) = '$y0' and MONTH(`transection_date`) = '$m0'  and payment_mode !='Backend Admin' and users_master.city_id='$selected_city_id'  ","ORDER BY transection_master.transection_id DESC");
  $trantotal0 = 0 ;
  while($row0=mysqli_fetch_array($qry0)) {
   if(  $row0['coupon_id'] == 0){

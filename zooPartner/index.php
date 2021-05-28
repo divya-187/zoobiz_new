@@ -19,14 +19,14 @@ if(isset($_SESSION['partner_login_id']))
   <!--favicon-->
   <link rel="icon" href="../img/fav.png" type="image/png">
   <!-- Bootstrap core CSS-->
-  <link href="../zooAdmin/../zooAdmin/assets/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="../zooAdmin/assets/css/bootstrap.min.css" rel="stylesheet"/>
   <!-- animate CSS-->
-  <link href="../zooAdmin/../zooAdmin/assets/css/animate.css" rel="stylesheet" type="text/css"/>
+  <link href="../zooAdmin/assets/css/animate.css" rel="stylesheet" type="text/css"/>
   <!-- Icons CSS-->
-  <link href="../zooAdmin/../zooAdmin/assets/css/icons.css" rel="stylesheet" type="text/css"/>
+  <link href="../zooAdmin/assets/css/icons.css" rel="stylesheet" type="text/css"/>
   <!-- Custom Style-->
-  <link href="../zooAdmin/../zooAdmin/assets/css/app-style13.css" rel="stylesheet"/>
-   <link href="../zooAdmin/../zooAdmin/assets/css/app-style13.css" rel="stylesheet"/>
+  <link href="../zooAdmin/assets/css/app-style13.css" rel="stylesheet"/>
+   <link href="../zooAdmin/assets/css/app-style13.css" rel="stylesheet"/>
 </head>
 
 <body class="bg-dark">
@@ -42,9 +42,19 @@ if(isset($_SESSION['partner_login_id']))
 					<form id="signupForm" action="controller/loginController.php" method="post">
 					 	<div class="form-group">
 
+
+              <label for="exampleInputUsername" class="">Mobile</label>
+              <div class="position-relative has-icon-right">
+                <input required="" onblur="checkMobileUser()" autocomplete="off" type="text" id="partnerNumber" class="form-control input-shadow" name="partnerNumber" placeholder="Mobile Number">
+                <div class="form-control-position">
+                  <i class="icon-user"></i>
+                </div>
+              </div>
+
+
 					 		<label for="exampleInputUsername" class="">Country</label>
 							<div class="position-relative has-icon-right">
-								  <select type="text" required="" id="country_id" onchange="getStates();" class="form-control single-select" name="country_id">
+								  <select disabled="" type="text" required="" id="country_id" onchange="getStates();" class="form-control single-select" name="country_id">
                       <option value="">-- Select --</option>
                       <?php 
                         $q3=$d->select("countries","flag=1","");
@@ -58,14 +68,14 @@ if(isset($_SESSION['partner_login_id']))
 
 							<label for="exampleInputUsername" class="">State</label>
 							<div class="position-relative has-icon-right">
-								   <select type="text" onchange="getCity();"  required="" class="form-control single-select" id="state_id" name="state_id">
+								   <select  disabled="" type="text" onchange="getCityPartner();"  required="" class="form-control single-select" id="state_id" name="state_id">
                       <option value="">-- Select --</option>
                       </select>
 							</div>
 
 							<label for="exampleInputUsername" class="">City</label>
 							<div class="position-relative has-icon-right">
-								    <select  type="text"   required="" class="form-control single-select" name="city_id" id="city_id">
+								    <select   disabled="" type="text"   required="" class="form-control single-select" name="city_id" id="city_id">
                       <option value="">-- Select --</option>
                       
                       </select>
@@ -74,19 +84,13 @@ if(isset($_SESSION['partner_login_id']))
 
 
 
-							<label for="exampleInputUsername" class="">Mobile</label>
-							<div class="position-relative has-icon-right">
-								<input required="" autocomplete="off" type="text" id="partnerNumber" class="form-control input-shadow" name="partnerNumber" placeholder="Mobile Number">
-								<div class="form-control-position">
-									<i class="icon-user"></i>
-								</div>
-							</div>
+							
 						</div>
 						 
 
 						 
 
-						<button type="submit" id="loginOTP" class="btn btn-primary shadow-primary btn-block waves-effect waves-light">Sign In</button>
+						<button type="submit" id="loginOTP" class="btn btn-primary shadow-primary btn-block waves-effect waves-light">Get OTP</button>
 
 						<div >
 							<br>
@@ -156,20 +160,66 @@ if(isset($_SESSION['partner_login_id']))
 
 
   <!-- Bootstrap core JavaScript-->
-  <script src="../zooAdmin/../zooAdmin/assets/js/jquery.min.js"></script>
+  <script src="../zooAdmin/assets/js/jquery.min.js"></script>
 
-    <script src="../zooAdmin/../zooAdmin/assets/js/bootstrap2.min.js"></script>
-    <script src="../zooAdmin/../zooAdmin/assets/plugins/summernote/dist/summernote-bs4.min.js"></script>
-  <script src="../zooAdmin/../zooAdmin/assets/js/custom80.js"></script>
-  <script src="../zooAdmin/../zooAdmin/assets/js/popper.min.js"></script> 
-  <script src="../zooAdmin/../zooAdmin/assets/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+    <script src="../zooAdmin/assets/js/bootstrap2.min.js"></script>
+    <script src="../zooAdmin/assets/plugins/summernote/dist/summernote-bs4.min.js"></script>
+  <script src="../zooAdmin/assets/js/custom81.js"></script>
+  <script src="../zooAdmin/assets/js/popper.min.js"></script> 
+  <script src="../zooAdmin/assets/plugins/jquery-validation/js/jquery.validate.min.js"></script>
 
   <!--Sweet Alerts -->
-  <script src="../zooAdmin/../zooAdmin/assets/plugins/alerts-boxes/js/sweetalert.min.js"></script>
-  <script src="../zooAdmin/../zooAdmin/assets/plugins/alerts-boxes/js/sweet-alert-script.js"></script>
+  <script src="../zooAdmin/assets/plugins/alerts-boxes/js/sweetalert.min.js"></script>
+  <script src="../zooAdmin/assets/plugins/alerts-boxes/js/sweet-alert-script.js"></script>
 <?php include 'common/alert.php'; ?>
   <script>
+
+     function checkMobileUser() {
+  var partnerNumber= $('#partnerNumber').val();
+   if($.trim(partnerNumber) !=''){ 
+     $.ajax({
+        url: "controller/userController.php",
+        cache: false,
+        type: "POST",
+        data: {partnerNumber : partnerNumber,checkUserMobile:'checkUserMobile'},
+        success: function(response){
+            if (response==1) {
+                document.getElementById("loginOTP").disabled=true;
+                $('#partnerNumber').val('');
+              swal("Error! Number Not Registered!", { icon: "error",  });
+                  
+           } else  {
+               document.getElementById("loginOTP").disabled=false;
+           }
+        }
+      });
+   }
+}
+
     $().ready(function() {
+
+
+
+
+
+      $( "#partnerNumber" ).blur(function() { 
+  
+    var partnerNumber = $('#partnerNumber').val();
+ 
+    if(partnerNumber.length >= 10){
+
+
+      $('#country_id').prop('disabled', false);
+      $('#state_id').prop('disabled', false);
+      $('#city_id').prop('disabled', false);
+    } else {
+       $('#country_id').prop('disabled', true);
+      $('#state_id').prop('disabled', true);
+      $('#city_id').prop('disabled', true);
+    }
+
+});
+
 
     	   <?php if(isset($_SESSION['mobile'])){ ?>
     $('#success_info').text('OTP Sent to '+'<?php echo $_SESSION['mobile'];?>'+', Please Provide Correct OTP.');
@@ -180,48 +230,24 @@ if(isset($_SESSION['partner_login_id']))
 
     $("#personal-info").validate();
    // validate signup form on keyup and submit
-    $("#signupForm").validate({
-	        rules: {
- 
- country_id: { required: true},
- state_id: { required: true},
- city_id: { required: true},
-	            partnerNumber: {
-	            	 noSpace: true,
-	                required: true,
-	                minlength: 5,
-	                maxlength: 50/*,
-	                digits: true,*/
-	            },
-	            inputPass: {
-	                required: true,
-	                minlength: 5,
-	                 noSpace: true,
-	            },
-	        },
-	         messages: {
-            country_id: { required: "Please select country" },
-            state_id: { required: "Please select State" },
-            city_id: { required: "Please select City" },
-            partnerNumber: { required: "Please enter mobile number" }
-             }
-    	});
+    
 
 
 
 
-$('#loginOTP').on('click',function(e){
+$('#signupForm').on('submit',function(e){
 
  	  e.preventDefault();
-
+ $("#signupForm").validate();
 
  var partnerNumber= $('#partnerNumber').val();
  var selected_country_id= $('#country_id').val();
  var selected_state_id= $('#state_id').val();
  var selected_city_id= $('#city_id').val();
  
- if($.trim(partnerNumber) ==''){
- 	 swal("Error! Please Provide Mobile Number!", {icon: "error",});
+ if($.trim(partnerNumber) =='' || $.trim(selected_country_id) =='' || $.trim(selected_state_id) =='' || $.trim(selected_city_id) ==''){
+  
+ 	 swal("Error! Please select all Details!", {icon: "error",});
  } else {
 
  	var csrf =$('input[name="csrf"]').val();
@@ -269,7 +295,26 @@ $("#verifyOTPFrm").validate({
 	        }
     	});
 
-
+$("#signupForm").validate({
+          rules: {
+ 
+ country_id: { required: true},
+ state_id: { required: true},
+ city_id: { required: true},
+              partnerNumber: {
+                 
+                  required: true,
+                  
+              }
+               
+          },
+          messages: {
+            country_id: { required: "Please select country" },
+            state_id: { required: "Please select State" },
+            city_id: { required: "Please select City" },
+            partnerNumber: { required: "Please enter mobile number" }
+             } 
+      });
 	});
 
     </script>

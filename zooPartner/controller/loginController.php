@@ -74,11 +74,14 @@ if(isset($_POST) && !empty($_POST) )//it can be $_GET doesn't matter
 		          'status' =>'1'
         	 );
 
-        	  
+        	  $cities=$d->select("cities","city_id='$selected_city_id'");
+		      $cities_data = mysqli_fetch_array($cities); 
+		      $_SESSION['city_name'] = $cities_data['city_name']; 
+
+		      
              $d->update("partner_login_master",$a,"partnerNumber='$mobile'  ");
 
-             $role_master_q=$d->select("role_master","role_name like '%partner%'");
-             $role_master_data = mysqli_fetch_array($role_master_q); 
+            
 
 
 			$_SESSION['admin_name'] = $data['partner_name']; 
@@ -87,10 +90,13 @@ if(isset($_POST) && !empty($_POST) )//it can be $_GET doesn't matter
 			$_SESSION['secretary_mobile'] = $data['partner_mobile']; 
 			$_SESSION['admin_profile'] = $data['partner_profile'];  
 			$_SESSION['partner_login_id'] = $data['zoobiz_partner_id']; 	 
-			$_SESSION['admin_type'] =$role_master_data['role_name']; 	  	
-			$_SESSION['partner_role_id'] = $role_master_data['role_id']; 	
+			$_SESSION['admin_type'] =$data['role_name']; 	  	
+			$_SESSION['partner_role_id'] = $data['role_id']; 	
+
+
+			$_SESSION['city_id'] =$selected_city_id; 	
 			
-			$_SESSION['msg']= "Welcome $_SESSION[admin_name]";
+		$_SESSION['msg']= "Welcome $_SESSION[admin_name]";
 		$_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT']; # Save The User Agent
 		$_SESSION['ip_address'] = $_SERVER['REMOTE_ADDR']; # Save The IP Address
 		$_SESSION['loginTime']=date("d M,Y h:i:sa");//Login Time

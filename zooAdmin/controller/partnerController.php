@@ -11,6 +11,12 @@ if(isset($_POST) && !empty($_POST) )//it can be $_GET doesn't matter
  if(isset($_POST['prtAddBtn'])){
     
     $m->set_data('role_id',$role_id);
+    $m->set_data('country_id',$country_id);
+    $m->set_data('state_id',$state_id);
+
+$city_id = implode(",", $_POST['city_id']);
+    $m->set_data('city_id',$city_id);
+
     $m->set_data('partner_name',ucfirst($partner_name)); 
     $m->set_data('partner_mobile',$partner_mobile); 
     
@@ -45,6 +51,9 @@ $a =array(
     'role_id'=> $m->get_data('role_id'),
     'partner_name'=> $m->get_data('partner_name'),
     'partner_mobile'=> $m->get_data('partner_mobile'), 
+    'country_id' => $m->get_data('country_id'), 
+    'state_id' => $m->get_data('state_id'), 
+    'city_id' => $m->get_data('city_id'), 
     'created_date'=> $m->get_data('created_date') 
   );
 
@@ -73,7 +82,11 @@ $a =array(
     $m->set_data('role_id',$role_id);
     $m->set_data('partner_name',ucfirst($partner_name)); 
     $m->set_data('partner_mobile',$partner_mobile); 
-   
+   $m->set_data('country_id',$country_id);
+    $m->set_data('state_id',$state_id);
+
+$city_id = implode(",", $_POST['city_id']);
+    $m->set_data('city_id',$city_id);
 
     $extension=array("jpeg","jpg","png","gif","JPG","JPEG","PNG");
       $uploadedFile = $_FILES['partner_profile']['tmp_name'];
@@ -85,7 +98,7 @@ $a =array(
           $newFileName = rand();
           $dirPath = "../img/profile/";
 
-          move_uploaded_file($_FILES["partner_profile"]["tmp_name"], "../img/profile/".$newFileName. "_admin.". $ext);
+          move_uploaded_file($_FILES["partner_profile"]["tmp_name"], "../img/profile/".$newFileName. "_partner.". $ext);
 
           $partner_profile= $newFileName."_partner.".$ext;
          } else {
@@ -106,11 +119,13 @@ $a =array(
     'role_id'=> $m->get_data('role_id'),
     'partner_name'=> $m->get_data('partner_name'),
     'partner_mobile'=> $m->get_data('partner_mobile'), 
+    'country_id' => $m->get_data('country_id'), 
+    'state_id' => $m->get_data('state_id'), 
+    'city_id' => $m->get_data('city_id'), 
     'created_date'=> $m->get_data('created_date') 
   );
-
  
-$q=$d->update("zoobiz_partner_master",$a,"zoobiz_partner_id = '$zoobiz_partner_id'");
+$q=$d->update("zoobiz_partner_master",$a,"zoobiz_partner_id = '$zoobiz_partner_id_edit'");
   
   if($q>0) {
     $_SESSION['msg']=ucfirst($partner_name) ." Partner Updated";

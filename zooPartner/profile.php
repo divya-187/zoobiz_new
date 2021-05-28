@@ -15,7 +15,7 @@
           <img class="img-fluid" src="../zooAdmin/img/Free-hd-building-wallpaper.jpg" alt="Card image cap">
         </div>
         <div class="card-body pt-5">
-           <img id="blah"  onerror="this.src='../zooAdmin/img/user.png'" src="img/profile/<?php echo $_SESSION['admin_profile']; ?>"  width="75" height="75"   src="#" alt="your image" class='profile' />
+           <img id="blah"  onerror="this.src='../zooAdmin/img/user.png'" src="../zooAdmin/img/profile/<?php echo $_SESSION['admin_profile']; ?>"  width="75" height="75"   src="#" alt="your image" class='profile' />
           <h5 class="card-title"><?php echo $_SESSION['full_name']; ?></h5>
           
         </div>
@@ -23,6 +23,7 @@
         <div class="card-body border-top">
 
            <?php 
+         //  echo "<pre>";print_r($_SESSION);
          $role_master=$d->select("role_master","role_id='$_SESSION[partner_role_id]'");
       $role_master_data=mysqli_fetch_array($role_master);
        ?>
@@ -54,18 +55,7 @@
         </div>
        
 
-        <div class="media align-items-center">
-           <div>
-             <i class="fa fa-envelope"></i>
-           </div>
-           <div class="media-body text-left ml-3">
-             <div class="progress-wrapper">
-               <marquee scrollamount="3"> <a href="mailto:<?php echo $user_email;?>"  >  <?php echo $_SESSION['admin_email']; ?></a>   </marquee>
-               
-            </div>                   
-          </div>
-
-        </div>
+        
 </div>
 </div>
 
@@ -78,77 +68,41 @@
       <li class="nav-item">
         <a href="javascript:void();" data-target="#edit" data-toggle="pill" class="nav-link active"><i class="icon-note"></i> <span class="hidden-xs">Edit Profile</span></a>
       </li>
-      <li class="nav-item">
-        <a href="javascript:void();" data-target="#messages" data-toggle="pill" class="nav-link"><i class="icon-envelope-open"></i> <span class="hidden-xs">Change Password</span></a>
-      </li>
+      
 
     </ul>
     <div class="tab-content p-3">
      
-      <div class="tab-pane" id="messages">
-        
-      <div class="">
-        <form id="profileFrm1" action="controller/profileController.php" method="post">
-          <input type="hidden" name="admin_mobile" value="<?php echo $_SESSION['mobile_number']; ?>">
-          <input type="hidden" name="admin_email" value="<?php echo $_SESSION['admin_email']; ?>">
-          <input type="hidden" name="full_name" value="<?php echo $_SESSION['full_name']; ?>">
-        <div class="form-group row">
-          <label class="col-lg-3 col-form-label form-control-label">Old Password <span class="required">*</span></label>
-          <div class="col-lg-9">
-            <input class="form-control" minlength="5" maxlength="50" required="" name="old_password" type="password" value="">
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-lg-3 col-form-label form-control-label">Password <span class="required">*</span></label>
-          <div class="col-lg-9">
-            <input class="form-control" minlength="5" maxlength="50" required="" type="password" name="password" id="password" value="">
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-lg-3 col-form-label form-control-label">Confirm password <span class="required">*</span></label>
-          <div class="col-lg-9">
-            <input class="form-control" minlength="5" maxlength="50" required="" name="password2" type="password" value="">
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-lg-3 col-form-label form-control-label"></label>
-          <div class="col-lg-9">
-            <input type="submit" name="passwordChange" class="btn btn-primary" value="Change Password">
-          </div>
-        </div>
-      </form>
-</div>
-</div>
+       
 <div class="tab-pane active" id="edit">
   <form id="profileDetailFrm" action="controller/profileController.php" method="post" enctype="multipart/form-data">
     <?php   
+
       if(isset($_SESSION['partner_login_id'])) {
-      $q=$d->select("zoobiz_admin_master","partner_login_id='$_SESSION[partner_login_id]'");
+        
+      $q=$d->select("zoobiz_partner_master","zoobiz_partner_id='$_SESSION[partner_login_id]'");
       $data=mysqli_fetch_array($q);
       extract($data);
+
+      
       } ?>
 
-      <input   name="partner_login_id" type="hidden" value="<?php echo $_SESSION['partner_login_id']; ?>">
+      <input   name="zoobiz_partner_id" type="hidden" value="<?php echo $_SESSION['partner_login_id']; ?>">
 
 
     <div class="form-group row">
       <label class="col-lg-3 col-form-label form-control-label">Full Name <span class="required">*</span></label>
       <div class="col-lg-9">
-        <input required="" minlength="3" maxlength="80" class="form-control" name="full_name" type="text" value="<?php echo $admin_name; ?>">
+        <input required="" minlength="3" maxlength="80" class="form-control" name="partner_name" type="text" value="<?php echo $partner_name; ?>">
       </div>
     </div>
     <div class="form-group row">
       <label class="col-lg-3 col-form-label form-control-label">Mobile <span class="required">*</span></label>
       <div class="col-lg-9">
-        <input class="form-control" minlength="10" maxlength="10"  readonly=""  type="text" value="<?php echo $data['admin_mobile']; ?>">
+        <input class="form-control" minlength="10" maxlength="10"  readonly=""  type="text" value="<?php echo $data['partner_mobile']; ?>">
       </div>
     </div>
-      <div class="form-group row">
-      <label class="col-lg-3 col-form-label form-control-label">Email <span class="required">*</span></label>
-      <div class="col-lg-9">
-        <input class="form-control" minlength="3" maxlength="80" name="admin_email"  type="email" value="<?php echo $data['admin_email']; ?>">
-      </div>
-    </div>
+      
 
 
     <div class="form-group row">
@@ -157,8 +111,8 @@
 
               <?php //IS_573   id="profile_image_old" ?> 
 
-            <input class="form-control-file border photoOnly" id="imgInp" accept="image/*" name="profile_image" type="file">
-            <input class="form-control-file border" value="<?php if(isset($_SESSION['admin_profile'])){  echo $_SESSION['admin_profile']; } else { echo $data['admin_profile']; } ?>" name="profile_image_old" id="profile_image_old" type="hidden">
+            <input class="form-control-file border photoOnly" id="imgInp" accept="image/*" name="partner_profile" type="file">
+            <input class="form-control-file border" value="<?php if(isset($_SESSION['partner_profile'])){  echo $_SESSION['partner_profile']; } else { echo $data['partner_profile']; } ?>" name="partner_profile_old" id="partner_profile_old" type="hidden">
 
           </div>
         </div>

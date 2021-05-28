@@ -2302,6 +2302,15 @@ $("#partnerFrm").validate({
             }
         },
         rules: {
+             country_id:{
+                required: true
+            },
+             state_id:{
+                required: true
+            },
+             'city_id[]':{
+                required: true
+            },
             role_id:{
                 required: true
             },
@@ -2341,7 +2350,15 @@ $("#partnerFrm").validate({
               ,
         },
         messages: {
-            //5nov2020
+            country_id:{
+                 required: "Please select Country"
+            },
+             state_id:{
+                 required: "Please select state"
+            },
+             'city_id[]':{
+                 required: "Please select CITY"
+            },
             role_id:{
                 required: "Please select role"
             },

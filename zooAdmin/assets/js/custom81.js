@@ -52,6 +52,23 @@ function  getCity() {
 }
 
 
+function  getCityPartner() {
+  var state_id = $("#state_id").val();
+  var partnerNumber = $("#partnerNumber").val();
+  $.ajax({
+        url: "getCities.php",
+        cache: false,
+        type: "POST",
+        data: {partnerNumber : partnerNumber,state_id : state_id,getCity:'getCity'},
+        success: function(response){
+            $('#city_id').html(response);
+          
+            
+        }
+     });
+}
+
+
 function  getArea() {
   var city_id = $("#city_id").val();
   $.ajax({

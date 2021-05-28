@@ -294,6 +294,12 @@ $user_id  = $con->insert_id;
 
 
 				$q3 = $d->insert("transection_master", $paymentAry);
+
+				$user_data =array(
+					'invoice_download' =>'1' 
+				);
+				$q=$d->update("users_master",$user_data," user_id='$user_id'"); 
+				 
 			} else {
 				$q3 =1;
 			}

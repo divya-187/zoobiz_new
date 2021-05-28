@@ -179,7 +179,8 @@ if (isset($_POST) && !empty($_POST)) {
 				$user_array =array(
 					'plan_id' => $m->get_data('plan_id'),
 					'plan_renewal_date'=> $m->get_data('plan_renewal_date'),
-					'plan_renewal_date_old'=> $m->get_data('plan_renewal_date_old') 
+					'plan_renewal_date_old'=> $m->get_data('plan_renewal_date_old'),
+					'invoice_download' =>'1'  
 				);
 				$q=$d->update("users_master",$user_array," user_id='$user_id'"); 
 

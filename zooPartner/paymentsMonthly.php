@@ -17,7 +17,7 @@
 
           
                  $where = "";
-
+$selected_city_id = $_SESSION['city_id'];
 
                 if(isset($_GET['from']) && isset($_GET['toDate']) ){
                      extract(array_map("test_input" , $_GET));
@@ -38,7 +38,7 @@
                   $where ="  and YEAR(transection_master.transection_date) = '$y' and MONTH(transection_master.transection_date) = '$m'  ";
                 }
 
-    $qry=$d->select("users_master,company_master,transection_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id AND transection_master.payment_status='success'  and is_paid = 0 and  transection_master.payment_mode !='Backend Admin' $where ","ORDER BY transection_master.transection_id DESC");
+    $qry=$d->select("users_master,company_master,transection_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id AND transection_master.payment_status='success'  and is_paid = 0 and  transection_master.payment_mode !='Backend Admin' and users_master.city_id='$selected_city_id' $where ","ORDER BY transection_master.transection_id DESC");
 
   
                   $total_transaction = 0 ;
@@ -125,7 +125,7 @@
                  
  
 
-                  $q=$d->select("transection_master,users_master,company_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id AND transection_master.payment_status='success'  and is_paid = 0 and  transection_master.payment_mode !='Backend Admin' $where ","ORDER BY transection_master.transection_id DESC");
+                  $q=$d->select("transection_master,users_master,company_master"," users_master.company_id = company_master.company_id and transection_master.user_id=users_master.user_id AND transection_master.payment_status='success'  and is_paid = 0 and  transection_master.payment_mode !='Backend Admin' and users_master.city_id='$selected_city_id' $where ","ORDER BY transection_master.transection_id DESC");
                   $i = 0;
                   while($row=mysqli_fetch_array($q))
                   {

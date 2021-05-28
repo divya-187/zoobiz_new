@@ -6,19 +6,15 @@ if(isset($_POST) && !empty($_POST) )//it can be $_GET doesn't matter
   /*echo "<pre>";print_r($_POST);exit;*/
 // add main menu
  //echo "<pre>";print_r($_POST);exit;
-   if(isset($_POST['checkUserMobile'])){
-    $q=$d->select("users_master","user_mobile='$userMobile'");
-    $data=mysqli_fetch_array($q);
-    if ($data>0) {
-       if($data['active_status'] == 1){
-                   echo 2;
-                     exit();
-                  } else {
-                  echo 1;
-                   exit();
-                 }
+      if(isset($_POST['checkUserMobile'])){
+       
+    $q=$d->select("zoobiz_partner_master","partner_mobile='$partnerNumber'");
+   // $data=mysqli_fetch_array($q);
+    if (mysqli_num_rows($q) > 0 ) {
+       echo 0;
+       exit();
     } else {
-      echo 0;
+      echo 1;
       exit();
     }
 

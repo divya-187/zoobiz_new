@@ -178,9 +178,20 @@ if(!isset($_GET['map_view_filter_city_id'])){
       <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown" href="#">
         <span class="user-profile"> <img onerror="this.src='../zooAdmin/img/user.png'"  src="../zooAdmin/img/profile/<?php echo $_SESSION['admin_profile']; ?>" class="img-circle" alt="user avatar"> 
           <?php
-        echo  $_SESSION['admin_name'] ;
-        ?>  </span>
+        echo  $_SESSION['admin_name'].'('.$_SESSION['city_name'].')' ;
+        ?> <i class="fa fa-angle-down"></i> </span>
       </a>
+ <ul class="dropdown-menu dropdown-menu-right" style="right: 90px;">
+        <li class="dropdown-divider"></li>
+       
+        <a href="profile"><li class="dropdown-item"><i class="icon-wallet mr-2"></i> Partner Profile</li></a>
+        <li class="dropdown-divider"></li>
+       
+        <a href="logout"><li class="dropdown-item"><i class="icon-power mr-2"></i> Logout</li></a>
+      </ul>
+
+      
+
      
     </li>
     <li class="nav-item dropdown-lg">
