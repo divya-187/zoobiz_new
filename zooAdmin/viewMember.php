@@ -451,10 +451,10 @@ while ($transection_master_data_new2=mysqli_fetch_array($qp)) {
 
 
           <br>
-          <a target="_blank"  href="../paymentReceipt.php?user_id=<?php echo $user_id; ?>&download=true&transection_date=<?php echo date("Y-m-d", strtotime($transection_master_data_new2['transection_date'])); ?>" class=" btn-sm btn-info"><i class="fa fa-download"></i>Download Invoice <?php echo $invoice_no;?> </a>
+          <a target="_blank"  href="../paymentReceipt.php?tId=<?php echo $transection_master_data_new2['transection_id']; ?>&user_id=<?php echo $user_id; ?>&download=true&transection_date=<?php echo date("Y-m-d", strtotime($transection_master_data_new2['transection_date'])); ?>" class=" btn-sm btn-info"><i class="fa fa-download"></i>Download Invoice <?php echo $invoice_no;?> </a>
 
           <br>
-          <a onclick="return popitup('../paymentReceipt.php?user_id=<?php echo $user_id; ?>&transection_date=<?php echo date("Y-m-d", strtotime($transection_master_data_new2['transection_date'])); ?>')" href="#" class=" btn-sm btn-warning"><i class="fa fa-print"></i>Print Invoice <?php echo $invoice_no;?> </a>
+          <a onclick="return popitup('../paymentReceipt.php?tId=<?php echo $transection_master_data_new2['transection_id']; ?>&user_id=<?php echo $user_id; ?>&transection_date=<?php echo date("Y-m-d", strtotime($transection_master_data_new2['transection_date'])); ?>')" href="#" class=" btn-sm btn-warning"><i class="fa fa-print"></i>Print Invoice <?php echo $invoice_no;?> </a>
         <?php }
         $invoice_no++;
          } ?>

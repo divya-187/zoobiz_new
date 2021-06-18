@@ -313,7 +313,7 @@ if ($data['active_status'] == 1) {
     $response["message_title"] = $msg_title;
     $msg = "Your Account Is Deactive, Please Contact ZooBiz Support Team";
     $response["message"] = $msg;
-    $response["status"] = "202";
+    $response["status"] = "205";
     echo json_encode($response);
     exit();
 }

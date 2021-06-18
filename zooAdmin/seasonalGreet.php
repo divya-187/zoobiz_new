@@ -122,9 +122,12 @@ extract($seasonal_greet_master_data);
                   
                   <?php  if(isset($seasonal_greet_id)){ ?>
                   <input type="hidden" name="seasonal_greet_id" value="<?php echo $seasonal_greet_id;?>">
-                  <button type="submit" name="updateSeasonalGreet" class="btn btn-success"><i class="fa fa-check-square-o"></i> UPDATE</button>
+                  <input type="hidden" name="updateSeasonalGreet" value="addSeasonalGreet">
+                  
+                  <button type="submit" name="" class="btn btn-success"><i class="fa fa-check-square-o"></i> UPDATE</button>
                   <?php  } else {?>
-                  <button type="submit" name="addSeasonalGreet" class="btn btn-success"><i class="fa fa-check-square-o"></i> SAVE</button>
+                  <input type="hidden" name="addSeasonalGreet" value="addSeasonalGreet">
+                  <button type="submit" name="" class="btn btn-success"><i class="fa fa-check-square-o"></i> SAVE</button>
                   <?php }?>
                   <a href="seasonalGreetList" class="btn btn-danger">Cancel</a>
                   

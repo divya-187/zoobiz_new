@@ -16,8 +16,10 @@ if (filter_var($_GET['user_id'], FILTER_VALIDATE_INT) == true && filter_var($_GE
   <html lang="en">
   <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=1024">
     <title>ZooBiz Invoice</title>
     <link href="img/fav.png" rel="icon">
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -69,18 +71,18 @@ $where=" and users_master.invoice_download=1  ";
 
 
        
-       $where .=" and ( DATE(transection_master.transection_date) ='$transection_date'  )   ";
+       // $where .=" and ( DATE(transection_master.transection_date) ='$transection_date'  )   ";
        
       //$where .=" and ( DATE(transection_master.transection_date) ='$transection_date' OR  DATE(user_employment_details.complete_profile_date) ='$transection_date' )   ";
       
 
        
     }
-   $qry =  $qp=$d->select("transection_master, user_employment_details ,business_adress_master,users_master,states,countries","countries.country_id=business_adress_master.country_id AND transection_master.user_id = users_master.user_id and
+   $qry =  $qp=$d->select("transection_master,user_employment_details ,business_adress_master,users_master,states,countries","countries.country_id=business_adress_master.country_id AND transection_master.user_id = users_master.user_id and
       user_employment_details.user_id = users_master.user_id and
       business_adress_master.user_id = users_master.user_id and
       states.state_id = business_adress_master.state_id and
-      users_master.user_id='$user_id'  and transection_master.is_paid = 0  $where group by DATE(transection_master.transection_date)  order by transection_master.transection_id desc ");
+      users_master.user_id='$user_id'  and transection_master.is_paid = 0 AND  transection_master.transection_id='$tId' $where  ");
 
 
   
@@ -391,9 +393,9 @@ if($data456['paid_amount_with_gst'] > 0 ){
                             $package_master_qry = $d->select("package_master", "package_id='$package_id'", "");
                             $package_master_data = mysqli_fetch_array($package_master_qry);
                           }
- if($data456['paid_amount_with_gst'] > 0 ){
-  $package_master_data['package_amount'] =  $data456['paid_amount_with_gst'];
-}
+//  if($data456['paid_amount_with_gst'] > 0 ){
+//   $package_master_data['package_amount'] =  $data456['paid_amount_with_gst'];
+// }
                            if($package_master_data['gst_slab_id'] !="0"){
           $gst_slab_id = $package_master_data['gst_slab_id'];
           $gst_master=$d->select("gst_master","slab_id = '$gst_slab_id'","");

@@ -667,7 +667,7 @@ $transection_master_qry_new=$d->select("transection_master","user_id='$user_id'"
     if($transection_master_data_new['is_paid'] == 0){
 
     	if($data_app["invoice_download"]=="1"    ){
-					$response["invoice_download_url"]=$base_url."paymentReceipt.php?user_id=".$data_app["user_id"]."&download=true&transection_date=".date("Y-m-d", strtotime($transection_master_data_new['transection_date']));
+					$response["invoice_download_url"]=$base_url."paymentReceipt.php?tId=".$transection_master_data_new['transection_id']."&user_id=".$data_app["user_id"]."&download=true&transection_date=".date("Y-m-d", strtotime($transection_master_data_new['transection_date']));
 				} else {
 					$response["invoice_download_url"]="";
 				}

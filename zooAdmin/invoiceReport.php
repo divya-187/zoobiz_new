@@ -173,7 +173,7 @@ $_REQUEST['paid_trans'] = 0 ; ?>
                  }
                  $renew_trans_ids = implode(",",$renew_trans_ids);
 
- $q3=$d->select("users_master,user_employment_details,company_master,transection_master,business_categories,business_sub_categories ","company_master.company_id= users_master.company_id AND business_sub_categories.business_sub_category_id=user_employment_details.business_sub_category_id AND   business_categories.business_category_id=user_employment_details.business_category_id  and   users_master.user_id =transection_master.user_id and    user_employment_details.user_id =users_master.user_id and  users_master.office_member=0 AND users_master.active_status= 0    and transection_master.transection_id not in ($renew_trans_ids)   $where group by transection_master.user_id order by user_employment_details.complete_profile_date  asc  ","");
+ $q3=$d->select("users_master,user_employment_details,company_master,transection_master,business_categories,business_sub_categories ","company_master.company_id= users_master.company_id AND business_sub_categories.business_sub_category_id=user_employment_details.business_sub_category_id AND   business_categories.business_category_id=user_employment_details.business_category_id  and   users_master.user_id =transection_master.user_id and    user_employment_details.user_id =users_master.user_id and  users_master.office_member=0     and transection_master.transection_id not in ($renew_trans_ids)   $where group by transection_master.user_id order by user_employment_details.complete_profile_date  asc  ","");
 
   
  
@@ -216,7 +216,7 @@ $_REQUEST['paid_trans'] = 0 ; ?>
 
  
                       ?> 
-                     <a target="_blank"  href="../paymentReceipt.php?user_id=<?php echo $user_id; ?>&downloadInvoice=true&transection_date=<?php echo date("Y-m-d", strtotime($complete_profile_date)); ?>" class=" btn-sm btn-info"><i class="fa fa-download"></i>Download</a>
+                     <a target="_blank"  href="../paymentReceipt.php?tId=<?php echo $transection_id; ?>&user_id=<?php echo $user_id; ?>&downloadInvoice=true&transection_date=<?php echo date("Y-m-d", strtotime($complete_profile_date)); ?>" class=" btn-sm btn-info"><i class="fa fa-download"></i>Download</a>
                    <?php }  ?> 
                   </td>
 

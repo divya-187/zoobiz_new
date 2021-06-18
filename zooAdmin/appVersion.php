@@ -74,9 +74,11 @@
                  
                    
                   <input type="hidden" name="version_id" value="<?php echo $data['version_id'];?>">
-                <button name="updateVersionData" type="submit" class="btn btn-success"><i class="fa fa-check-square-o"></i> Update</button>
+                  <input type="hidden" name="updateVersionData" value="updateVersionData">
+                <button name="" type="submit" class="btn btn-success"><i class="fa fa-check-square-o"></i> Update</button>
               <?php } else { ?>
-               <button name="addVersionData" type="submit" class="btn btn-success"><i class="fa fa-check-square-o"></i> Save</button>
+                  <input type="hidden" name="addVersionData" value="addVersionData">
+               <button name="" type="submit" class="btn btn-success"><i class="fa fa-check-square-o"></i> Save</button>
                 <?php } ?> 
               </div>
             </form>
